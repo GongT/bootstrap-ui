@@ -1,12 +1,53 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap-responsive.min.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap-theme.min.css">
 	<script type="text/javascript" src="./jquery-2.0.0.min.js"></script>
 	<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
 	<title></title>
+	<script type="text/javascript">
+(function  ($) {
+	var _ms='<select multiple class="form-control">';
+	var ms_='</select>';
+	var bs=function(){
+		
+	};
+	var ms=function(){
+		this.options=[];
+	};
+	ms.prototype={
+		addItem:function(s){
+			this.options.push(s);
+		},
+		appendTo:function(s){
+			var options;
+			for (var i = 0; i < this.options.length; i++) {
+				options+=' <option>'+this.options[i]+'</option>';
+			};
+			$(_ms+options+ms_).appendTo(s);
+		}
+	};
+	bs.prototype={
+		MutiSelect:ms
+	};
+	$.extend({
+  bootstrap: bs.prototype
+});
+
+})(jQuery);
+	</script>
 </head>
 <body>
 
 </body>
+<script type="text/javascript">
+(function($){
+	var obj = new $.bootstrap.MutiSelect();
+obj.addItem('A');
+obj.addItem('b');
+obj.addItem('c');
+obj.appendTo('body');
+
+})(jQuery);
+</script>
 </html>
