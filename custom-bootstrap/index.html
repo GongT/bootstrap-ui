@@ -9,31 +9,39 @@
 (function  ($) {
 	var _ms='<select multiple class="form-control">';
 	var ms_='</select>';
-	var bs=function(){
+/*	var bs=function(){
 		
-	};
+	};*/
 	var ms=function(){
+	
 		this.options=[];
+		if(arguments.length>0){
+			var args=Array.prototype.slice.call(arguments) ;
+				var args1=args.shift();
+				for (var i = 0; i < args1.length; i++) {
+					this.options.push(args1[i]);
+				};			
+		}
 	};
 	ms.prototype={
 		addItem:function(s){
 			this.options.push(s);
 		},
 		appendTo:function(s){
-			var options;
+			var options='';
 			for (var i = 0; i < this.options.length; i++) {
 				options+=' <option>'+this.options[i]+'</option>';
 			};
 			$(_ms+options+ms_).appendTo(s);
 		}
 	};
-	bs.prototype={
-		MutiSelect:ms
+	$bui={
+		multiSelect:ms
 	};
-	$.extend({
-  bootstrap: bs.prototype
+/*	$.extend({
+  BUI: bs.prototype
 });
-
+*/
 })(jQuery);
 	</script>
 </head>
@@ -42,7 +50,7 @@
 </body>
 <script type="text/javascript">
 (function($){
-	var obj = new $.bootstrap.MutiSelect();
+	var obj = new $bui.multiSelect(['1','2']);
 obj.addItem('A');
 obj.addItem('b');
 obj.addItem('c');
