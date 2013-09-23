@@ -50,6 +50,24 @@
 	function setValue(value){
 
 	}
+// $(function(){
 
+// });
 	plugin('MultiSelect', construct, setValue);
 })($bui);
+$(document).on('click','.bui-select-option',function(){
+	var $this=$(this);
+	var $select=$this.parent().next();
+	$select.focus();
+	
+	$select.find('option').eq($this.index()).click();
+	console.log($select);
+	item=$select.find('option').get($this.index());
+	
+	if(item.selected) 
+		item.selected=false;
+	else
+		item.selected=true;
+	
+	$this.toggleClass('btn-primary');
+});
