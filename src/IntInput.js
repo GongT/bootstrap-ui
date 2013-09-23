@@ -43,7 +43,7 @@
 		//自动增减
 		function go(){
 			if($this.pressed){
-				console.log($this.pressed);
+				//console.log($this.pressed);
 				if($this.pressed > 50){//最大速度
 					$this.pressed -= Math.round($this.pressed/3);//加速度
 				}
