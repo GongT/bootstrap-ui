@@ -6,19 +6,21 @@
 	<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
 	<title></title>
 	<style type="text/css">
-	.c:after{content:"";display:block; clear:both;}
-.c {zoom:1;}
 
 	.bui-switcher .bui-switcher-blue{
 		width:100%;height:100%;position:absolute;
-		background: blue;
+		background-color: blue;
 	}
 	.bui-checkbox-con {
+		display: inline-block !important;
 		cursor: pointer;
-		border:1px solid #dddddd;
+		border:1px solid #ddd;
+		padding: 0.9em;
+display: inline-block;
+margin: 0 0 -5px 0;
 	}
 	.bui-switcher{
-		padding:0;position:relative;overflow:hidden;height:3em;min-width: 5em;border-radius:1.5em;
+		padding:0;position:relative;overflow:hidden;height:3em;min-width: 5em;
 		background-color: #e6e6e6;
 border-color: #e0e0e0;
 		-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
@@ -30,7 +32,7 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
 	.bui-switcher[data-state=off] .bui-switcher-blue{right:100%;}
 	.bui-switcher-btn{
 		z-index:3;
-		width: 3em;
+		
 		border-radius:50%;position:absolute;right:0;height:101%;padding:0
 	}
 	.bui-list-remove:hover{
@@ -43,9 +45,7 @@ top: 0;}
 		outline: none;
 		border:none;
 	}
-	.bui-select::-webkit-scrollbars {
-display: none;
-}
+
 
 ::selection {
 background:#FF99CC;
@@ -60,13 +60,15 @@ background:#FF99CC;
 color: #FFF;
 }
 	.bui-select{
+
 		margin:10px;
 		border: 1px solid #e0e0e0;
 		background: transparent;
-	padding: 10px 0;
+	padding: 0;
 		  -moz-appearance:none;
     -webkit-appearance:none;
-		overflow: hidden;
+		overflow-x: hidden ;
+		overflow-y:scroll;
 
 border-color: #e0e0e0;
 -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
@@ -75,9 +77,10 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
 	border-radius: 0;
 	border: none;
 }
-.bui-select li:hover{
+.bui-select li:first-child {background-color: transparent;}
+.bui-select li.list-group-item:hover{
 	color: #fff;
-	background-color: #428bca;
+	background-color: #428bca !important ;
 }
 	</style>
 	<script type="text/javascript">
@@ -93,24 +96,30 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
 		if(arguments.length>0){
 			var args=Array.prototype.slice.call(arguments) ;
 				var args1=args.shift();
-				for (var i = 0; i < args1.length; i++) {
-					this.options.push(args1[i]);
+				this.name=args1.name;
+				this.lines=args1.lines;
+				for (var i = 0; i < args1.options.length; i++) {
+					this.options.push(args1.options[i]);
 				};			
 		}
 	};
 	ms.prototype={
-		addItem:function(s){
-			this.options.push(s);
+		addItem:function(n,v){
+			var arr=new Array(n,v);
+			this.options.push(arr);
 		},
 		appendTo:function(s){
-			var ss='<select multiple name="bui_select" style="display:none;">';
+			var ss='<select multiple name="'+this.name+'[]" style="display:none;">';
 			var se='</select>';
 			var options='',lis='';
 			for (var i = 0; i < this.options.length; i++) {
-				options+=' <option value="'+this.options[i]+'">'+this.options[i]+'</option>';
-				lis+=' <li class="btn  list-group-item bui-select-option">'+this.options[i]+'</li>';
+				options+=' <option value="'+this.options[i][1]+'">'+this.options[i][0]+'</option>';
+				lis+=' <li class="btn  list-group-item bui-select-option">'+this.options[i][0]+'</li>';
 			};
-			$(_ms+lis+ms_+ss+options+se).appendTo(s);
+			var $r=$(_ms+lis+ms_+ss+options+se);
+			$r.appendTo(s);
+			console.log(this.lines);
+			$r.first().css({height:this.lines*$r.find('li').get(0).clientHeight});
 		}
 	};
 	$bui={
@@ -133,7 +142,7 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
  </div>
 
  <h1>Checkbox</h1>
- <input type="checkbox" class="bui-checkbox" id="checkbox2" checked>
+ <input type="checkbox" class="bui-checkbox" id="checkbox2" >
             <label for="checkbox2" class="checkbox-label inline">Checkbox 2</label>
             <div class="bui-list">
 <h1>List<span class="glyphicon glyphicon-plus bui-list-plus"></span></h1>
@@ -149,11 +158,16 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
 </body>
 <script type="text/javascript">
 (function($){
+var o={
+	name:'bui_select',
+	lines:3,
+	options:[['option1','1'],['option2','2']]
+};
+	var obj = new $bui.multiSelect(o);
+obj.addItem('option3','3');
+obj.addItem('option4','4');
+obj.addItem('option5','5');
 
-	var obj = new $bui.multiSelect(['1','2']);
-obj.addItem('A');
-obj.addItem('b');
-obj.addItem('c');
 obj.appendTo('body');
 var $switcher=$('.bui-switcher');
 $(document).on('click','.item-content',function(){
@@ -200,7 +214,7 @@ $('.bui-checkbox').each(function(i,e){
 	var $this=$(this);
 	$this.hide();
 	var c=$this.get(0).checked ? ' label-primary' : '';
-	var s='<label for="'+this.id+'" class="label bui-checkbox-con'+c+'">&nbsp;</label>';
+	var s='<label for="'+this.id+'" class="label bui-checkbox-con'+c+'"></label>';
 	$this.after(s);
 	$this.on('change',function(){
 		console.log('change');
@@ -208,22 +222,23 @@ $('.bui-checkbox').each(function(i,e){
 		$this.next().addClass('label-primary');	
 		}else{
 			$this.next().removeClass('label-primary');	
-			// $this.next().addClass('label-primary');	
 		}
 	});
 });
 $switcher.each(function(i,e){
 	var $this=$(this);
-
+	var h=$this.height();
+	$this.css({borderRadius:h/2});
 	$clip=$('.bui-switcher-blue');
 	$btn=$this.find('.bui-switcher-btn');
+	
+	$btn.width(h);
 	$b=$this.find('.bui-switcher-blue');
+	$b.css({borderRadius:h/2});
 
-
+var r=$this.offset().left+$this.width()-$btn.width();
 	$(this).on('click',function(){
-	console.log($(this).data('state'));
-	
-	
+
 	if($(this).data('state')=='on'){
 		$(this).data('state','off');
 		// $(this).attr('data-state','off');
@@ -237,13 +252,14 @@ $switcher.each(function(i,e){
 		// $(this).attr('data-state','on');
 		$clip.animate({right:0},500);
 		$b.animate({right:0},500);
-		$btn.css({left:'auto'}).animate({right:0},500);
+		
+		$btn.css({left:'auto',right:r}).animate({right:0},500);
 	}
 	
 	});
 
 });
-// $('.switcher-c').width($('#switcher').width()-$('#switcher').height()*2);
+
 
 })(jQuery);
 </script>
