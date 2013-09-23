@@ -14,8 +14,12 @@
 		background-color: blue;
 	}
 	.bui-checkbox-con {
+		display: inline-block !important;
 		cursor: pointer;
-		border:1px solid #dddddd;
+		border:1px solid #ddd;
+		padding: 0.9em;
+display: inline-block;
+margin: 0 0 -5px 0;
 	}
 	.bui-switcher{
 		padding:0;position:relative;overflow:hidden;height:3em;min-width: 5em;border-radius:1.5em;
@@ -134,7 +138,7 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
  </div>
 
  <h1>Checkbox</h1>
- <input type="checkbox" class="bui-checkbox" id="checkbox2" checked>
+ <input type="checkbox" class="bui-checkbox" id="checkbox2" >
             <label for="checkbox2" class="checkbox-label inline">Checkbox 2</label>
             <div class="bui-list">
 <h1>List<span class="glyphicon glyphicon-plus bui-list-plus"></span></h1>
@@ -201,7 +205,7 @@ $('.bui-checkbox').each(function(i,e){
 	var $this=$(this);
 	$this.hide();
 	var c=$this.get(0).checked ? ' label-primary' : '';
-	var s='<label for="'+this.id+'" class="label bui-checkbox-con'+c+'">&nbsp;</label>';
+	var s='<label for="'+this.id+'" class="label bui-checkbox-con'+c+'"></label>';
 	$this.after(s);
 	$this.on('change',function(){
 		console.log('change');
