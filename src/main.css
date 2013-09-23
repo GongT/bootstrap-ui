@@ -50,5 +50,9 @@
 }
 
 .bui-formcontrol .bui-icon-outer .bui-append {
-	float: left;
+	float: none;
+}
+
+.bui-formcontrol .btn-group > .btn {
+	float: none;
 }

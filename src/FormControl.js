@@ -61,7 +61,7 @@
 
 		$this.appendItem = function ($item){
 			$item = parseNewElement($item);
-			$item.addClass('pull-left').appendTo($append);
+			$item.appendTo($append);
 			return $item;
 		};
 
