@@ -10,8 +10,22 @@ function plugin(name, constructor, setter, props){
 		if(ret !== undefined){
 			$obj = ret;
 		}
-		$obj.prop('type', 'bui.' + name);
+		$obj._bui_type = name.toLowerCase();
+
+		if(!$obj.prop('type')){
+			$obj.prop('type', 'bui.' + name);
+		} else if($obj[0].tagName.toLowerCase() != 'div'){
+			if(setter){
+				$.valHooks[ $obj[0].tagName.toLowerCase()] = {
+					set: setter_proxy
+				};
+			}
+		} else{
+			$obj.prop('type', 'bui.' + name);
+		}
+		$obj.prop('bui_id', 'bui.' + name);
 		$obj.data('__bui__', $obj);
+		$obj.addClass('bui bui-' + $obj._bui_type);
 		if(props){
 			$obj.prop = function (name, value){
 				if(value){
@@ -25,22 +39,27 @@ function plugin(name, constructor, setter, props){
 	};
 	if(setter){
 		$.valHooks[ 'bui.' + name] = {
-			set: function (dom, value){
-				value = setter.call($(dom).data('__bui__'), value);
-				if(value === false || value === undefined){
-					return value;
-				}
-				return dom.value = value;
-			}
+			set: setter_proxy
 		};
 	}
+	function setter_proxy(elem, value){
+		if(!elem.bui_id || !elem.bui_id.substr(0, 4) === 'bui.'){
+			return undefined;
+		}
+		value = setter.call($(elem).data('__bui__'), value);
+		if(value === false || value === undefined){
+			return value;
+		}
+		return elem.value = value;
+	}
+
 	return plug;
 }
 $bui.plugin = plugin;
 
 $.attrHooks[ 'name' ] = {
 	set: function (elem, value){
-		if(elem.type.substr(0, 4) === 'bui.'){
+		if(elem.bui_id && elem.bui_id.substr(0, 4) === 'bui.'){
 			//console.log('set(custom)  #' + dom.id+'['+dom.type+']', value);
 			return $(elem).data('__bui__').$input.attr('name', value);
 		}
@@ -48,7 +67,7 @@ $.attrHooks[ 'name' ] = {
 		//console.log('set(default)  #' + elem.id+'['+elem.type+'] = ', value);
 	},
 	get: function (elem){
-		if(elem.type.substr(0, 4) === 'bui.'){
+		if(elem.bui_id && elem.bui_id.substr(0, 4) === 'bui.'){
 			//console.log('get(custom)  #' + dom.id+'['+dom.type+']');
 			return $(elem).data('__bui__').$input.attr('name');
 		}

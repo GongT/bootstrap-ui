@@ -20,11 +20,11 @@
 			trigger_change($this, new_index, name, new_item);
 
 			new_item.attr('name', name);
-			new_item.oprepend.css('color','#356635').children().removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+			new_item.oprepend.css('color','#356635').change('check').addClass('alert-success');
 			
 			if(current != -1){
 				items[current].attr('name', '');
-				items[current].oprepend.css('color','').children().removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+				items[current].oprepend.change('unchecked').removeClass('alert-success');
 			}
 
 			current = new_index;
@@ -43,7 +43,9 @@
 			if(!buiItem.parent().length){
 				buiItem.appendTo(this);
 			}
-			buiItem.oprepend = buiItem.prependItem($('<i class="glyphicon glyphicon-unchecked"></i>'));
+			var ico = new $bui.Icon('unchecked');
+			buiItem.oprepend = ico;
+			buiItem.prependItem(ico);
 			
 			items.push(buiItem);
 			name_list.push(name);

@@ -28,9 +28,10 @@
 		$this.range = new Range();
 		$this.prop('speed', 1);
 
-		$this.$show = $('<input type="number"/>').addClass('form-control text-center').appendTo($this).on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189'));
-		$this.$left = $('<span/>').addClass('input-group-addon btn').append($('<i/>').addClass('glyphicon glyphicon-arrow-left')).prependTo($this);
-		$this.$right = $('<span/>').addClass('input-group-addon btn').append($('<i/>').addClass('glyphicon glyphicon-arrow-right')).appendTo($this);
+		$this.$show = $('<input type="number"/>').addClass('form-control text-center').on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189'));
+		$this.centerWidget($this.$show);
+		$this.$left = $this.prependItem($bui.Button(new $bui.Icon('arrow-left'), 'span', 'default'));
+		$this.$right = $this.appendItem($bui.Button(new $bui.Icon('arrow-right'), 'span', 'default'));
 
 		$this.$show.on('change', function (){
 			if($this.val($(this).val())){
@@ -42,22 +43,28 @@
 		//自动增减
 		function go(){
 			if($this.pressed){
+				console.log($this.pressed);
 				if($this.pressed > 50){//最大速度
 					$this.pressed -= Math.round($this.pressed/3);//加速度
 				}
 
 				$this.val(intval($this.value) + go.dir*$this.prop('speed'));
 				trigger_change($this, $this.value);
-				setTimeout(go, $this.pressed);
+				go._time=setTimeout(go, $this.pressed);
 			}
 		}
 
 		//左右按钮
-		$this.$left.mousedown(function (){
+		$this.$left.mousedown(function (event){
+			if(event.which > 2){
+				return;
+			}
+
 			$this.pressed = 500; //初始速度
-			go.dir = -1;
+			go.dir = -(1 + (event.which-1)*9);
 			go();
 			function up(){
+				clearTimeout(go._time);
 				$this.pressed = false;
 				$(document).off('mouseup', up);
 			}
@@ -65,10 +72,15 @@
 			$(document).on('mouseup', up);
 		});
 		$this.$right.mousedown(function (){
+			if(event.which > 2){
+				return;
+			}
+
 			$this.pressed = 500; //初始速度
-			go.dir = 1;
+			go.dir = 1 + (event.which-1)*9;
 			go();
 			function up(){
+				clearTimeout(go._time);
 				$this.pressed = false;
 				$(document).off('mouseup', up);
 			}
@@ -78,7 +90,7 @@
 
 		// 滚轮调整
 		$this.on('mousewheel', function (e, delta){
-			$this.pressed = 1;
+			$this.pressed = 1000;
 			go.dir = delta;
 			go();
 			$this.pressed = false;

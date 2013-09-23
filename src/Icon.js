@@ -6,17 +6,32 @@
 		this.css({display: 'inline'}).addClass('glyphicon');
 		var last = '';
 		this.change = function (icon){
+			if(!icon){
+				return last;
+			}
 			if(last){
 				this.removeClass('glyphicon-' + last);
 			}
 			this.addClass('glyphicon-' + icon);
 			last = icon;
+			return this;
 		};
 		if(icon){
 			this.change(icon);
 		}
 	}
 
-	var Icon = plugin('Icon', construct);
+	var props = {
+		icon: {
+			get: function (){
+				return this.change();
+			},
+			set: function (text){
+				return this.change(text);
+			}
+		}
+	};
+
+	var Icon = plugin('Icon', construct, null, props);
 	Icon.list = list;
 })($bui);
