@@ -23,52 +23,53 @@
 			range = '';
 		}
 		//初始化变量
-		var $obj = $('<div/>').addClass('input-group');
-		$obj.value = 0;
-		$obj.range = new Range();
-		$obj.prop('speed', 1);
+		var $this = this.addClass('input-group');
+		$this.value = 0;
+		$this.range = new Range();
+		$this.prop('speed', 1);
 
-		$obj.$show = $('<input type="text"/>').addClass('form-control text-center').appendTo($obj).on('keydown', keycodefilter('or', '[0,32)', '[96,105]', '[48,57]', '109', '189'));
-		$obj.$left = $('<span/>').addClass('input-group-addon btn').append($('<i/>').addClass('glyphicon glyphicon-arrow-left')).prependTo($obj);
-		$obj.$right = $('<span/>').addClass('input-group-addon btn').append($('<i/>').addClass('glyphicon glyphicon-arrow-right')).appendTo($obj);
+		$this.$show = $('<input type="number"/>').addClass('form-control text-center').appendTo($this).on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189'));
+		$this.$left = $('<span/>').addClass('input-group-addon btn').append($('<i/>').addClass('glyphicon glyphicon-arrow-left')).prependTo($this);
+		$this.$right = $('<span/>').addClass('input-group-addon btn').append($('<i/>').addClass('glyphicon glyphicon-arrow-right')).appendTo($this);
 
-		$obj.$show.on('change', function (){
-			if($obj.val($(this).val())){
-				trigger_change($obj, $obj.value);
+		$this.$show.on('change', function (){
+			if($this.val($(this).val())){
+				trigger_change($this, $this.value);
 			}
 			return false;
 		});
 
 		//自动增减
 		function go(){
-			if($obj.pressed){
-				if($obj.pressed > 50){//最大速度
-					$obj.pressed -= Math.round($obj.pressed/3);//加速度
+			if($this.pressed){
+				if($this.pressed > 50){//最大速度
+					$this.pressed -= Math.round($this.pressed/3);//加速度
 				}
-				$obj.val($obj.value + go.dir*$obj.prop('speed'));
-				trigger_change($obj, $obj.value);
-				setTimeout(go, $obj.pressed);
+				
+				$this.val(intval($this.value) + go.dir*$this.prop('speed'));
+				trigger_change($this, $this.value);
+				setTimeout(go, $this.pressed);
 			}
 		}
 
 		//左右按钮
-		$obj.$left.mousedown(function (){
-			$obj.pressed = 500; //初始速度
+		$this.$left.mousedown(function (){
+			$this.pressed = 500; //初始速度
 			go.dir = -1;
 			go();
 			function up(){
-				$obj.pressed = false;
+				$this.pressed = false;
 				$(document).off('mouseup', up);
 			}
 
 			$(document).on('mouseup', up);
 		});
-		$obj.$right.mousedown(function (){
-			$obj.pressed = 500; //初始速度
+		$this.$right.mousedown(function (){
+			$this.pressed = 500; //初始速度
 			go.dir = 1;
 			go();
 			function up(){
-				$obj.pressed = false;
+				$this.pressed = false;
 				$(document).off('mouseup', up);
 			}
 
@@ -76,36 +77,34 @@
 		});
 
 		// 滚轮调整
-		$obj.on('mousewheel', function (e, delta){
-			$obj.pressed = 1;
+		$this.on('mousewheel', function (e, delta){
+			$this.pressed = 1;
 			go.dir = delta;
 			go();
-			$obj.pressed = false;
+			$this.pressed = false;
 		});
 
-		Object.defineProperty($obj, 'name', {
+		Object.defineProperty($this, 'name', {
 			get: function (){
-				return $obj.$show.attr('name');
+				return $this.$show.attr('name');
 			},
 			set: function (value){
-				return $obj.$show.attr('name', value);
+				return $this.$show.attr('name', value);
 			}
 		});
-		setRange.call($obj, range);
-		$obj.removeClass('has-error');
+		setRange.call($this, range);
+		$this.removeClass('has-error');
 
-		filter_attr($obj, {
+		filter_attr($this, {
 			name: {
 				get: function (){
-					$obj.$show.attr('name');
+					$this.$show.attr('name');
 				},
 				set: function (value){
-					$obj.$show.attr('name', value);
+					$this.$show.attr('name', value);
 				}
 			}
 		});
-
-		return $obj;
 	}
 
 	function setRange(rangeStr){

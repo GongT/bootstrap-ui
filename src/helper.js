@@ -15,11 +15,20 @@ function intval(val){
 	}
 }
 
-function keycodefilter(logic_and){
+function keycodefilter(plogic_and, pspecial_keys){
 	var filter = [], equal = [], i = 0;
-	if(typeof logic_and === 'string'){
-		logic_and = !(logic_and = 'or');
-		i = 1;
+	var logic_and, special_keys = false;
+	if(typeof plogic_and === 'string'){
+		logic_and = !(plogic_and == 'or');
+		i++;
+	} else if(typeof logic_and === 'boolean'){
+		logic_and = false;
+		special_keys = logic_and;
+		i++;
+	}
+	if(typeof pspecial_keys === 'boolean'){
+		i++;
+		special_keys = pspecial_keys;
 	}
 
 	for(; i < arguments.length; i++){
@@ -29,9 +38,27 @@ function keycodefilter(logic_and){
 			filter.push(Range(arguments[i]));
 		}
 	}
+	function testSpecial(code){
+		if(code < 47){
+			return true;
+		}
+		if( 90<code && code < 94){
+			return true;
+		}
+		if( 111<code && code < 146){
+			return true;
+		}
+		return false;
+	}
+
 	return function (event){
 		if(event.shiftKey || event.ctrlKey || event.altKey){
 			return true;
+		}
+		if(!special_keys){
+			if(testSpecial(event.which)){
+				return;
+			}
 		}
 		var in_range = true;
 		for(var i = filter.length - 1; i >= 0; i--){

@@ -6,6 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<link href="../lib/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+	<link href="../src/main.css" type="text/css" rel="stylesheet"/>
 	<script src="../lib/jquery.js" type="text/javascript"></script>
 	<script src="../lib/bootstrap/js/bootstrap.js" type="text/javascript"></script>
 
@@ -32,13 +33,13 @@
 			b.append('必须大于等于100：');
 			(new $bui.IntInput('[100,)')).appendTo(b).val(123).attr('name','testii_1');
 			b.append('必须小于等于50：');
-			(new $bui.IntInput('[,50]')).appendTo(b).val(100);
+			(new $bui.IntInput('[,50]')).appendTo(b).val(100).attr('name','testii_2');
 			b.append('介于25和75之间：');
-			(new $bui.IntInput('(25,75)')).appendTo(b).val(0);
+			(new $bui.IntInput('(25,75)')).appendTo(b).val(0).attr('name','testii_3');
 
 			var $show = $('<span/>');
 			b.append('改变事件：').append($show).append($show);
-			(new $bui.IntInput('[0,)')).appendTo(b).val(0).on('change', function (e, value){
+			(new $bui.IntInput('[0,)')).appendTo(b).val(0).attr('name','testii_4').on('change', function (e, value){
 				$show.html(value)
 			});
 		});
