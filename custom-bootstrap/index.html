@@ -6,8 +6,6 @@
 	<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
 	<title></title>
 	<style type="text/css">
-	.c:after{content:"";display:block; clear:both;}
-.c {zoom:1;}
 
 	.bui-switcher .bui-switcher-blue{
 		width:100%;height:100%;position:absolute;
@@ -47,9 +45,7 @@ top: 0;}
 		outline: none;
 		border:none;
 	}
-	.bui-select::-webkit-scrollbars {
-display: none;
-}
+
 
 ::selection {
 background:#FF99CC;
@@ -64,13 +60,15 @@ background:#FF99CC;
 color: #FFF;
 }
 	.bui-select{
+
 		margin:10px;
 		border: 1px solid #e0e0e0;
 		background: transparent;
 	padding: 0;
 		  -moz-appearance:none;
     -webkit-appearance:none;
-		overflow: hidden;
+		overflow-x: hidden ;
+		overflow-y:scroll;
 
 border-color: #e0e0e0;
 -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
@@ -98,24 +96,30 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
 		if(arguments.length>0){
 			var args=Array.prototype.slice.call(arguments) ;
 				var args1=args.shift();
-				for (var i = 0; i < args1.length; i++) {
-					this.options.push(args1[i]);
+				this.name=args1.name;
+				this.lines=args1.lines;
+				for (var i = 0; i < args1.options.length; i++) {
+					this.options.push(args1.options[i]);
 				};			
 		}
 	};
 	ms.prototype={
-		addItem:function(s){
-			this.options.push(s);
+		addItem:function(n,v){
+			var arr=new Array(n,v);
+			this.options.push(arr);
 		},
 		appendTo:function(s){
-			var ss='<select multiple name="bui_select" style="display:none;">';
+			var ss='<select multiple name="'+this.name+'" style="display:none;">';
 			var se='</select>';
 			var options='',lis='';
 			for (var i = 0; i < this.options.length; i++) {
-				options+=' <option value="'+this.options[i]+'">'+this.options[i]+'</option>';
-				lis+=' <li class="btn  list-group-item bui-select-option">'+this.options[i]+'</li>';
+				options+=' <option value="'+this.options[i][1]+'">'+this.options[i][0]+'</option>';
+				lis+=' <li class="btn  list-group-item bui-select-option">'+this.options[i][0]+'</li>';
 			};
-			$(_ms+lis+ms_+ss+options+se).appendTo(s);
+			var $r=$(_ms+lis+ms_+ss+options+se);
+			$r.appendTo(s);
+			console.log(this.lines);
+			$r.first().css({height:this.lines*$r.find('li').get(0).clientHeight});
 		}
 	};
 	$bui={
@@ -154,11 +158,16 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
 </body>
 <script type="text/javascript">
 (function($){
+var o={
+	name:'bui_select',
+	lines:3,
+	options:[['option1','1'],['option2','2']]
+};
+	var obj = new $bui.multiSelect(o);
+obj.addItem('option3','3');
+obj.addItem('option4','4');
+obj.addItem('option5','5');
 
-	var obj = new $bui.multiSelect(['1','2']);
-obj.addItem('A');
-obj.addItem('b');
-obj.addItem('c');
 obj.appendTo('body');
 var $switcher=$('.bui-switcher');
 $(document).on('click','.item-content',function(){
