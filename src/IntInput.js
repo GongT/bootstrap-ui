@@ -22,7 +22,6 @@
 		if(!range){
 			range = '';
 		}
-		this.test=123;
 		//初始化变量
 		var $this = this.addClass('input-group');
 		$this.value = 0;

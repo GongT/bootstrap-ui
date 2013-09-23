@@ -28,30 +28,31 @@ function plugin(name, constructor, setter, props){
 				return jQuery.access($obj, jQuery.prop, name, value, arguments.length > 1);
 			};
 		}
+
+		$obj.appendItem = function ($item){
+			var addon = $('<span/>');
+			if($item.filter('input:submit,input:button,.btn').length){
+				addon.addClass('input-group-btn');
+			} else{
+				addon.addClass('input-group-addon');
+			}
+			return addon.append($item).appendTo($obj);
+		};
+
+		$obj.prependItem = function ($item){
+			var addon = $('<span/>');
+			if($item.filter('input:submit,input:button,.btn').length){
+				addon.addClass('input-group-btn');
+			} else{
+				addon.addClass('input-group-addon');
+			}
+			addon.append($item).prependTo($obj);
+			return addon;
+		};
+
 		return $obj;
 	};
-	$.attrHooks[ 'name' ] = {
-		set: function (elem, value){
-			if(elem.type.substr(0, 4) === 'bui.'){
-				//console.log('set(custom)  #' + dom.id+'['+dom.type+']', value);
-				return $(elem).data('__bui__').$input.attr('name', value);
-			}
-			//elem.setAttribute( 'name', value + "" );
-			//console.log('set(default)  #' + elem.id+'['+elem.type+'] = ', value);
-		},
-		get: function (elem){
-			if(elem.type.substr(0, 4) === 'bui.'){
-				//console.log('get(custom)  #' + dom.id+'['+dom.type+']');
-				return $(elem).data('__bui__').$input.attr('name');
-			}
-			/*var ret = jQuery.find.attr( elem, 'name' );
-			// Non-existent attributes return null, we normalize to undefined
-			ret = ret == null ?undefined :ret;
-			console.log('get(default)  #' + elem.id+'['+elem.type+'] <- ',ret);
-			return ret;*/
-			return null;
-		}
-	};
+
 	$.valHooks[ 'bui.' + name] = {
 		set: function (dom, value){
 			value = setter.call($(dom).data('__bui__'), value);
@@ -63,6 +64,29 @@ function plugin(name, constructor, setter, props){
 	};
 }
 $bui.plugin = plugin;
+
+$.attrHooks[ 'name' ] = {
+	set: function (elem, value){
+		if(elem.type.substr(0, 4) === 'bui.'){
+			//console.log('set(custom)  #' + dom.id+'['+dom.type+']', value);
+			return $(elem).data('__bui__').$input.attr('name', value);
+		}
+		//elem.setAttribute( 'name', value + "" );
+		//console.log('set(default)  #' + elem.id+'['+elem.type+'] = ', value);
+	},
+	get: function (elem){
+		if(elem.type.substr(0, 4) === 'bui.'){
+			//console.log('get(custom)  #' + dom.id+'['+dom.type+']');
+			return $(elem).data('__bui__').$input.attr('name');
+		}
+		/*var ret = jQuery.find.attr( elem, 'name' );
+		 // Non-existent attributes return null, we normalize to undefined
+		 ret = ret == null ?undefined :ret;
+		 console.log('get(default)  #' + elem.id+'['+elem.type+'] <- ',ret);
+		 return ret;*/
+		return null;
+	}
+};
 
 function trigger_change(ths, new_value){
 	return ths.trigger('change', Array.prototype.slice.call(arguments, 1));
