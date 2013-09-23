@@ -8,24 +8,40 @@
 	<style type="text/css">
 	.c:after{content:"";display:block; clear:both;}
 .c {zoom:1;}
-	.switcher .switcher-blue{
+
+	.bui-switcher .bui-switcher-blue{
+		width:100%;height:100%;position:absolute;
 		background: blue;
 	}
-	.switcher{
+	.bui-checkbox-con {
+		cursor: pointer;
+		border:1px solid #dddddd;
+	}
+	.bui-switcher{
 		padding:0;position:relative;overflow:hidden;height:3em;min-width: 5em;border-radius:1.5em;
 		background-color: #e6e6e6;
 border-color: #e0e0e0;
 		-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
 box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
 	}
-	.switcher[data-state=off] .switcher-btn{
+	.bui-switcher[data-state=off] .bui-switcher-btn{
 		left:0;
 	}
-	.switcher[data-state=off] .switcher-blue{right:100%;}
-	.switcher-btn{
+	.bui-switcher[data-state=off] .bui-switcher-blue{right:100%;}
+	.bui-switcher-btn{
 		z-index:3;
 		width: 3em;
 		border-radius:50%;position:absolute;right:0;height:101%;padding:0
+	}
+	.bui-list-remove:hover{
+		background-color: #428bca;
+	}
+	.bui-list-plus{font-size: 20px;
+margin-left: 20px;
+top: 0;}
+	.list-group-item input{
+		outline: none;
+		border:none;
 	}
 	</style>
 	<script type="text/javascript">
@@ -69,13 +85,28 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
 	</script>
 </head>
 <body>
-	<p>switcher</p>
- <div class="switcher" id="switcher" data-state="off">
- 	<span class="switcher-blue" style="width:100%;height:100%;position:absolute;"></span>
+	<h1>Switcher</h1>
+ <div class="bui-switcher" id="switcher" data-state="off">
+ 	<span class="bui-switcher-blue"></span>
 
-<i class="btn btn-default switcher-btn"></i>
+<i class="btn btn-default bui-switcher-btn"></i>
 
  </div>
+
+ <h1>Checkbox</h1>
+ <input type="checkbox" class="bui-checkbox" id="checkbox2" checked>
+            <label for="checkbox2" class="checkbox-label inline">Checkbox 2</label>
+            <div class="bui-list">
+<h1>List<span class="glyphicon glyphicon-plus bui-list-plus"></span></h1>
+<ul class="list-group"> 
+
+  <li class="list-group-item">
+   <span class="glyphicon glyphicon-remove bui-list-remove pull-right"></span>
+    <span class="item-content">Cras justo odio</span>
+  </li>
+</ul>
+</div>
+<h1>Multi Select</h1>
 </body>
 <script type="text/javascript">
 (function($){
@@ -85,13 +116,54 @@ obj.addItem('A');
 obj.addItem('b');
 obj.addItem('c');
 obj.appendTo('body');
-var $switcher=$('.switcher');
-$switcher.each(function(i,e){
-	$this=$(this);
+var $switcher=$('.bui-switcher');
+$(document).on('click','.item-content',function(){
+	var $this=$(this);
+	$this.replaceWith('<input autofocus="true" type="text" value="'+$this.text()+'">');
+});
+$(document).on('click','.glyphicon-remove',function(){
+		var $p=$(this).parent();
+		$p.fadeOut(500,function(){
+			$p.remove();
+		});
+		
+	});
 
-	$clip=$('.switcher-blue');
-	$btn=$this.find('.switcher-btn');
-	$b=$this.find('.switcher-blue');
+$('.bui-list').each(function(i,e){
+
+	var $this=$(this);
+
+	$list=$this.find('.list-group');
+	$list.find('li').on('click',function(){
+
+	});
+	$this.find('.bui-list-plus').on('click',function(){
+		$list.append('<li class="list-group-item"><span class="glyphicon bui-list-remove glyphicon-remove pull-right"></span> <span class="item-content">Cras justo odio</span></li>');
+	});
+
+});
+$('.bui-checkbox').each(function(i,e){
+	var $this=$(this);
+	$this.hide();
+	var c=$this.get(0).checked ? ' label-primary' : '';
+	var s='<label for="'+this.id+'" class="label bui-checkbox-con'+c+'">&nbsp;</label>';
+	$this.after(s);
+	$this.on('change',function(){
+		console.log('change');
+		if(this.checked){
+		$this.next().addClass('label-primary');	
+		}else{
+			$this.next().removeClass('label-primary');	
+			// $this.next().addClass('label-primary');	
+		}
+	});
+});
+$switcher.each(function(i,e){
+	var $this=$(this);
+
+	$clip=$('.bui-switcher-blue');
+	$btn=$this.find('.bui-switcher-btn');
+	$b=$this.find('.bui-switcher-blue');
 
 
 	$(this).on('click',function(){
