@@ -29,16 +29,16 @@
 	<script type="text/javascript">
 		$(function (){
 			var b = $('.panel-body');
-			b.append('必须大于100：');
-			(new $bui.IntInput('>100')).appendTo(b).val(123);
-			b.append('必须小于50：');
-			(new $bui.IntInput('<100')).appendTo(b).val(100);
+			b.append('必须大于等于100：');
+			(new $bui.IntInput('[100,)')).appendTo(b).val(123);
+			b.append('必须小于等于50：');
+			(new $bui.IntInput('[,50]')).appendTo(b).val(100);
 			b.append('介于25和75之间：');
-			(new $bui.IntInput('25-75')).appendTo(b).val(0);
+			(new $bui.IntInput('(25,75)')).appendTo(b).val(0);
 			
 			var $show=$('<span/>');
 			b.append('改变事件：').append($show).append($show);
-			(new $bui.IntInput('0~')).appendTo(b).val(0).on('change',function(e,value){
+			(new $bui.IntInput('[0,)')).appendTo(b).val(0).on('change',function(e,value){
 				$show.html(value)
 			});
 		});

@@ -20,7 +20,11 @@ function plugin(name, constructor, setter, props){
 					get   : function (){
 						$obj.prop.call($obj, prop);
 					}, set: function (value){
-						$obj.prop.call($obj, prop, value);
+						value = props[prop].call($obj, value);
+						if(value === false){
+							return $obj.prop.call($obj, prop);
+						}
+						return $obj.prop.call($obj, prop, value);
 					}
 				});
 			})(prop);
