@@ -8,23 +8,20 @@
 	<style type="text/css">
 	.c:after{content:"";display:block; clear:both;}
 .c {zoom:1;}
-	.switcher[data-state=on] .switcher-l,.switcher[data-state=on] .switcher-r,.switcher[data-state=on] .switcher-c{
+	.switcher .switcher-blue{
 		background: blue;
 	}
-	.switcher-clips{position: relative;z-index: 2;}
-	.switcher-clips-back{z-index: 1;}
-	.switcher-clips-back *{background: #fff !important;}
-
-	
-	.switcher-l,.switcher-r{
-		height:100%;width:3em;border-radius: 50%;padding: 0;
-		/*position:absolute;*/
+	.switcher{
+		padding:0;position:relative;overflow:hidden;height:3em;min-width: 5em;border-radius:1.5em;
+		background-color: #e6e6e6;
+border-color: #e0e0e0;
+		-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
 	}
-	.switcher-l{float:left;border-top-right-radius: 0;
-				border-bottom-right-radius: 0;border-right:0 }
-	.switcher-r{right:0;border-top-left-radius: 0;
-				border-bottom-left-radius: 0;float:left;border-left: 0}
-	.switcher-c{height: 100%;float:left;border-width:1px 0 1px 0;border-radius: 0}
+	.switcher[data-state=off] .switcher-btn{
+		left:0;
+	}
+	.switcher[data-state=off] .switcher-blue{right:100%;}
 	.switcher-btn{
 		z-index:3;
 		width: 3em;
@@ -73,15 +70,11 @@
 </head>
 <body>
 	<p>switcher</p>
- <div class="switcher" id="switcher" style="padding:0;position:relative;overflow:hidden;height:3em;min-width: 5em;" data-state="on">
- 	<!--span class="btn btn-primary" style="width:100%;height:100%;position:absolute;"></span-->
+ <div class="switcher" id="switcher" data-state="off">
+ 	<span class="switcher-blue" style="width:100%;height:100%;position:absolute;"></span>
 
 <i class="btn btn-default switcher-btn"></i>
-<div class="switcher-clips c">
-<div class="btn btn-default switcher-l" ></div>
-<div class="btn btn-default switcher-c"></div>
-<div class="btn btn-default switcher-r" ></div>
-</div>
+
  </div>
 </body>
 <script type="text/javascript">
@@ -96,16 +89,11 @@ var $switcher=$('.switcher');
 $switcher.each(function(i,e){
 	$this=$(this);
 
-	// $this.width($this.width());
+	$clip=$('.switcher-blue');
 	$btn=$this.find('.switcher-btn');
-	$c=$this.find('.switcher-c');
-	$clip=$this.find('.switcher-clips');
-	var $clone=$clip.clone(true).css({position: 'absolute',top: 0,left: 0,height:$this.height()}).addClass('switcher-clips-back');
-	
-	$clone.appendTo(this);
-	
-/*	$(this).width($(this).width());
-	$(this).height($(this).height());*/
+	$b=$this.find('.switcher-blue');
+
+
 	$(this).on('click',function(){
 	console.log($(this).data('state'));
 	
@@ -114,20 +102,22 @@ $switcher.each(function(i,e){
 		$(this).data('state','off');
 		// $(this).attr('data-state','off');
 		$clip.animate({right:'100%'},500);
+		$b.animate({right:'100%'},500);
 		var x=$this.width()-$btn.width();
-		// $(this).children().eq(1).width($(this).children().eq(1).height());
-		$btn.animate({right:x},500);
+		
+		$btn.css({left:'auto'}).animate({right:x},500);
 	}else{
 		$(this).data('state','on');
 		// $(this).attr('data-state','on');
 		$clip.animate({right:0},500);
-		$btn.animate({right:0},500);
+		$b.animate({right:0},500);
+		$btn.css({left:'auto'}).animate({right:0},500);
 	}
 	
 	});
 
 });
-$('.switcher-c').width($('#switcher').width()-$('#switcher').height()*2);
+// $('.switcher-c').width($('#switcher').width()-$('#switcher').height()*2);
 
 })(jQuery);
 </script>
