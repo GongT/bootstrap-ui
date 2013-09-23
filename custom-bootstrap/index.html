@@ -43,11 +43,47 @@ top: 0;}
 		outline: none;
 		border:none;
 	}
+	.bui-select::-webkit-scrollbars {
+display: none;
+}
+
+::selection {
+background:#FF99CC;
+color: #FFF;
+}
+::-moz-selection {
+background:#FF99CC;
+color: #FFF;
+}
+::-webkit-selection {
+background:#FF99CC;
+color: #FFF;
+}
+	.bui-select{
+		margin:10px;
+		border: 1px solid #e0e0e0;
+		background: transparent;
+	padding: 10px 0;
+		  -moz-appearance:none;
+    -webkit-appearance:none;
+		overflow: hidden;
+
+border-color: #e0e0e0;
+-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
+.bui-select li{
+	border-radius: 0;
+	border: none;
+}
+.bui-select li:hover{
+	color: #fff;
+	background-color: #428bca;
+}
 	</style>
 	<script type="text/javascript">
 (function  ($) {
-	var _ms='<select multiple class="form-control">';
-	var ms_='</select>';
+	var _ms='<ul multiple class="bui-select list-group">';
+	var ms_='</ul>';
 /*	var bs=function(){
 		
 	};*/
@@ -67,11 +103,14 @@ top: 0;}
 			this.options.push(s);
 		},
 		appendTo:function(s){
-			var options='';
+			var ss='<select multiple name="bui_select" style="display:none;">';
+			var se='</select>';
+			var options='',lis='';
 			for (var i = 0; i < this.options.length; i++) {
-				options+=' <option>'+this.options[i]+'</option>';
+				options+=' <option value="'+this.options[i]+'">'+this.options[i]+'</option>';
+				lis+=' <li class="btn  list-group-item bui-select-option">'+this.options[i]+'</li>';
 			};
-			$(_ms+options+ms_).appendTo(s);
+			$(_ms+lis+ms_+ss+options+se).appendTo(s);
 		}
 	};
 	$bui={
@@ -128,6 +167,21 @@ $(document).on('click','.glyphicon-remove',function(){
 		});
 		
 	});
+$(document).on('click','.bui-select-option',function(){
+	var $this=$(this);
+	var $select=$this.parent().next();
+	$select.focus();
+	
+	$select.find('option').eq($this.index()).click();
+	item=$select.find('option').get($this.index());
+	
+	if(item.selected) 
+		item.selected=false;
+	else
+		item.selected=true;
+	
+	$this.toggleClass('btn-primary');
+});
 
 $('.bui-list').each(function(i,e){
 
