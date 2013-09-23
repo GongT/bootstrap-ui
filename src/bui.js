@@ -6,18 +6,10 @@ var $ = global.jQuery;
 function plugin(name, constructor, setter, props){
 	$bui[name] = function (){
 		var $obj = $('<div/>');
-		var input = $('<input type="hidden"/>');
-		$obj.append(input);
-		$obj.$input = input;
-		Object.defineProperty($obj, 'value', {
-			get: function (){
-				return input.val();
-			},
-			set: function (value){
-				return input.val(value);
-			}
-		});
-		constructor.apply($obj, arguments);
+		var ret = constructor.apply($obj, arguments);
+		if(ret !== undefined){
+			$obj = ret;
+		}
 		$obj.prop('type', 'bui.' + name);
 		$obj.data('__bui__', $obj);
 		if(props){
@@ -29,39 +21,19 @@ function plugin(name, constructor, setter, props){
 			};
 		}
 
-		$obj.appendItem = function ($item){
-			var addon = $('<span/>');
-			if($item.filter('input:submit,input:button,.btn').length){
-				addon.addClass('input-group-btn');
-			} else{
-				addon.addClass('input-group-addon');
-			}
-			return addon.append($item).appendTo($obj);
-		};
-
-		$obj.prependItem = function ($item){
-			var addon = $('<span/>');
-			if($item.filter('input:submit,input:button,.btn').length){
-				addon.addClass('input-group-btn');
-			} else{
-				addon.addClass('input-group-addon');
-			}
-			addon.append($item).prependTo($obj);
-			return addon;
-		};
-
 		return $obj;
 	};
-
-	$.valHooks[ 'bui.' + name] = {
-		set: function (dom, value){
-			value = setter.call($(dom).data('__bui__'), value);
-			if(value === false || value === undefined){
-				return value;
+	if(setter){
+		$.valHooks[ 'bui.' + name] = {
+			set: function (dom, value){
+				value = setter.call($(dom).data('__bui__'), value);
+				if(value === false || value === undefined){
+					return value;
+				}
+				return dom.value = value;
 			}
-			return dom.value = value;
-		}
-	};
+		};
+	}
 }
 $bui.plugin = plugin;
 

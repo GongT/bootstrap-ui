@@ -23,7 +23,7 @@
 			range = '';
 		}
 		//初始化变量
-		var $this = this.addClass('input-group');
+		var $this = $bui.FormControl(this);
 		$this.value = 0;
 		$this.range = new Range();
 		$this.prop('speed', 1);
@@ -95,8 +95,9 @@
 		if(range){
 			setRange.call($this, range);
 		}
-		$this.removeClass('has-error');
+		$this.alert('');
 
+		return $this;
 	}
 
 	function setRange(rangeStr){
