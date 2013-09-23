@@ -14,22 +14,6 @@ function plugin(name, constructor, setter, props){
 			}
 			return jQuery.access($obj, jQuery.prop, name, value, arguments.length > 1);
 		};
-		for(var prop in props){
-			(function (prop){
-				Object.defineProperty($obj, prop, {
-					get   : function (){
-						$obj.prop.call($obj, prop);
-					}, set: function (value){
-						value = props[prop].call($obj, value);
-						if(value === false){
-							return $obj.prop.call($obj, prop);
-						}
-						return $obj.prop.call($obj, prop, value);
-					}
-				});
-			})(prop);
-			prop = null;
-		}
 		return $obj;
 	};
 	$.valHooks[ 'bui.' + name] = {
@@ -48,4 +32,35 @@ function trigger_change(ths, new_value){
 	return ths.trigger('change', [new_value]);
 }
 
+function filter_attr($obj, attr){
+	if($obj.attr !== $.fn.attr){
+		throw new Error('重复调用 filter_attr()');
+	}
+	$obj.attr = function (name, value){
+		if(attr[name] === undefined){
+			if(value === undefined){
+				return $.fn.attr.call($obj, name);
+			} else{
+				return $.fn.attr.call($obj, name, value);
+			}
+		} else{
+			var ret;
+			if(value === undefined){
+				ret = attr[name].get();
+				if(ret !== undefined){
+					return ret;
+				}
+				return $.fn.attr.call($obj, name);
+			} else{
+				ret = attr[name].set(value);
+				if(ret !== undefined){
+					return ret;
+				}
+				return $.fn.attr.call($obj, value);
+			}
+		}
+	}
+}
+
 module.exports[module.name] = $bui;
+

@@ -3,7 +3,7 @@
 
 	function setValue(val){
 		this.value = parseInt(val);
-		if(this.value == val && this._range.test(this.value)){
+		if(this.value == val && this.range.test(this.value)){
 			if(this.hasClass('has-error')){
 				this.value = intval(this.val());
 				this.removeClass('has-error');
@@ -12,7 +12,7 @@
 			this.$show.val(this.value);
 			return;
 		}
-		this.value = this._range.fit(this.value);
+		this.value = this.range.fit(this.value);
 		this.$show.val(this.value);
 		this.addClass('has-error');
 		return this.value;
@@ -25,12 +25,12 @@
 		//初始化变量
 		var $obj = $('<div/>').addClass('input-group');
 		$obj.value = 0;
-		$obj._range = new Range();
+		$obj.range = new Range();
 		$obj.prop('speed', 1);
 
-		$obj.$show = $('<input type="text"/>').addClass('form-control text-center').appendTo($obj).on('keydown', typefilter('[0,32)', '[48,57]', '45'));
-		$obj.$left = $('<span/>').addClass('input-group-addon btn').append($('<i/>').addClass('glyphicon glyphicon-arrow-left')).prependTo($obj)
-		$obj.$right = $('<span/>').addClass('input-group-addon btn').append($('<i/>').addClass('glyphicon glyphicon-arrow-right')).appendTo($obj)
+		$obj.$show = $('<input type="text"/>').addClass('form-control text-center').appendTo($obj).on('keydown', keycodefilter('or', '[0,32)', '[96,105]', '[48,57]', '109', '189'));
+		$obj.$left = $('<span/>').addClass('input-group-addon btn').append($('<i/>').addClass('glyphicon glyphicon-arrow-left')).prependTo($obj);
+		$obj.$right = $('<span/>').addClass('input-group-addon btn').append($('<i/>').addClass('glyphicon glyphicon-arrow-right')).appendTo($obj);
 
 		$obj.$show.on('change', function (){
 			if($obj.val($(this).val())){
@@ -83,20 +83,40 @@
 			$obj.pressed = false;
 		});
 
+		Object.defineProperty($obj, 'name', {
+			get: function (){
+				return $obj.$show.attr('name');
+			},
+			set: function (value){
+				return $obj.$show.attr('name', value);
+			}
+		});
 		setRange.call($obj, range);
 		$obj.removeClass('has-error');
+
+		filter_attr($obj, {
+			name: {
+				get: function (){
+					$obj.$show.attr('name');
+				},
+				set: function (value){
+					$obj.$show.attr('name', value);
+				}
+			}
+		});
+
 		return $obj;
 	}
 
 	function setRange(rangeStr){
-		this._range.fromString(rangeStr);
-		var fitvalue = this._range.fit(this.value);
+		this.range.fromString(rangeStr);
+		var fitvalue = this.range.fit(this.value);
 		if(this.value != fitvalue){
 			this.value = fitvalue;
 			this.$show.val(fitvalue);
 			trigger_change(this, fitvalue);
 		}
-		return this._range;
+		return this.range;
 	}
 
 	var props = {};

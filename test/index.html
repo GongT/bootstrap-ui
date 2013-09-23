@@ -28,30 +28,42 @@
 
 	<script type="text/javascript">
 		$(function (){
-			var b = $('.panel-body');
+			var b = $('#IntInput').find('.panel-body');
 			b.append('必须大于等于100：');
-			(new $bui.IntInput('[100,)')).appendTo(b).val(123);
+			(new $bui.IntInput('[100,)')).appendTo(b).val(123).attr('name','testii_1');
 			b.append('必须小于等于50：');
 			(new $bui.IntInput('[,50]')).appendTo(b).val(100);
 			b.append('介于25和75之间：');
 			(new $bui.IntInput('(25,75)')).appendTo(b).val(0);
-			
-			var $show=$('<span/>');
+
+			var $show = $('<span/>');
 			b.append('改变事件：').append($show).append($show);
-			(new $bui.IntInput('[0,)')).appendTo(b).val(0).on('change',function(e,value){
+			(new $bui.IntInput('[0,)')).appendTo(b).val(0).on('change', function (e, value){
 				$show.html(value)
 			});
 		});
+		function serilize($obj){
+			var container = $(this).next();
+			if(!container.length){
+				container = $('<span/>').insertAfter(this);
+			}
+			var s = $.fn.serialize.call($obj);
+			container.text(s);
+			console.log(s);
+		}
 	</script>
 </head>
 <body>
 <div class="container">
-	<div class="panel panel-primary">
+	<form id="IntInput" class="panel panel-primary">
 		<div class="panel-heading">test</div>
 		<div class="panel-body">
-			
+
 		</div>
-	</div>
+		<div class="panel-footer">
+			<a class="btn btn-primary" onclick="serilize.call(this,$('#IntInput'));">序列化</a>
+		</div>
+	</form>
 
 </div>
 </body>

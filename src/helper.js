@@ -15,18 +15,42 @@ function intval(val){
 	}
 }
 
-function typefilter(){
-	var filter = [];
-	for(var i = 0; i < arguments.length; i++){
-		filter.push(Range(arguments[i]));
+function keycodefilter(logic_and){
+	var filter = [], equal = [], i = 0;
+	if(typeof logic_and === 'string'){
+		logic_and = !(logic_and = 'or');
+		i = 1;
+	}
+
+	for(; i < arguments.length; i++){
+		if(parseInt(arguments[i]) == arguments[i]){
+			equal.push(parseInt(arguments[i]));
+		} else{
+			filter.push(Range(arguments[i]));
+		}
 	}
 	return function (event){
+		if(event.shiftKey || event.ctrlKey || event.altKey){
+			return true;
+		}
+		var in_range = true;
 		for(var i = filter.length - 1; i >= 0; i--){
-			if(!inRange(filter, event.which)){
+			in_range = equal[i] === event.which;
+			if(logic_and && !in_range){
 				return false;
+			} else if(in_range){
+				return true;
 			}
 		}
-		return true;
+		for(i = filter.length - 1; i >= 0; i--){
+			in_range = filter[i].test(event.which);
+			if(logic_and && !in_range){
+				return false;
+			} else if(in_range){
+				return true;
+			}
+		}
+		return in_range;
 	}
 }
 
@@ -36,12 +60,12 @@ function Range(range){
 		test      : function (value){
 			return (rr[0]? r[0] <= value : r[0] < value) && (rr[1]? r[1] >= value : r[1] > value);
 		},
-		fit:function(value){
+		fit       : function (value){
 			if((rr[0]? r[0] > value : r[0] >= value)){
-				return rr[0]?r[0]:r[0]+1;
+				return rr[0]? r[0] : r[0] + 1;
 			}
 			if((rr[1]? r[1] < value : r[1] <= value)){
-				return rr[1]?r[1]:r[1]-1;
+				return rr[1]? r[1] : r[1] - 1;
 			}
 			return value;
 		},
@@ -60,7 +84,7 @@ function Range(range){
 				rr[0] = r[0].substr(0, 1) == '[';
 				rr[1] = r[1].substr(-1) == ']';
 				r[0] = r[0].substr(1);
-				r[1] = r[1].substr(0, r[1].length-1);
+				r[1] = r[1].substr(0, r[1].length - 1);
 				r[0] = r[0].length? intval(r[0]) : -Infinity;
 				r[1] = r[1].length? intval(r[1]) : Infinity;
 
@@ -109,9 +133,6 @@ function Range(range){
 	} else{
 		return ret;
 	}
-}
-function inRange(range, value){
-	return range[0] <= value && value <= range[1];
 }
 
 (function ($){
