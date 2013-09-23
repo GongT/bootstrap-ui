@@ -174,7 +174,7 @@ $(document).on('click','.item-content',function(){
 	var $this=$(this);
 	$this.replaceWith('<input autofocus="true" type="text" value="'+$this.text()+'">');
 });
-$(document).on('click','.glyphicon-remove',function(){
+$(document).on('click','.bui-list-remove',function(){
 		var $p=$(this).parent();
 		$p.fadeOut(500,function(){
 			$p.remove();
