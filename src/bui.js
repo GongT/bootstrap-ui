@@ -20,25 +20,36 @@ function plugin(name, constructor, setter, props){
 		constructor.apply($obj, arguments);
 		$obj.prop('type', 'bui.' + name);
 		$obj.data('__bui__', $obj);
-		$obj.prop = function (name, value){
-			if(value){
-				value = props[name].call($obj, value);
-			}
-			return jQuery.access($obj, jQuery.prop, name, value, arguments.length > 1);
-		};
+		if(props){
+			$obj.prop = function (name, value){
+				if(value){
+					value = props[name].call($obj, value);
+				}
+				return jQuery.access($obj, jQuery.prop, name, value, arguments.length > 1);
+			};
+		}
 		return $obj;
 	};
 	$.attrHooks[ 'name' ] = {
-		set: function (dom, value){
-			if(dom.type.substr(0, 4) === 'bui.'){
-				$(dom).data('__bui__').$input.attr('name', value);
-				return false;
+		set: function (elem, value){
+			if(elem.type.substr(0, 4) === 'bui.'){
+				//console.log('set(custom)  #' + dom.id+'['+dom.type+']', value);
+				return $(elem).data('__bui__').$input.attr('name', value);
 			}
+			//elem.setAttribute( 'name', value + "" );
+			//console.log('set(default)  #' + elem.id+'['+elem.type+'] = ', value);
 		},
-		get:function(dom){
-			if(dom.type.substr(0, 4) === 'bui.'){
-				return $(dom).data('__bui__').$input.attr('name');
+		get: function (elem){
+			if(elem.type.substr(0, 4) === 'bui.'){
+				//console.log('get(custom)  #' + dom.id+'['+dom.type+']');
+				return $(elem).data('__bui__').$input.attr('name');
 			}
+			/*var ret = jQuery.find.attr( elem, 'name' );
+			// Non-existent attributes return null, we normalize to undefined
+			ret = ret == null ?undefined :ret;
+			console.log('get(default)  #' + elem.id+'['+elem.type+'] <- ',ret);
+			return ret;*/
+			return null;
 		}
 	};
 	$.valHooks[ 'bui.' + name] = {
@@ -54,7 +65,7 @@ function plugin(name, constructor, setter, props){
 $bui.plugin = plugin;
 
 function trigger_change(ths, new_value){
-	return ths.trigger('change', [new_value]);
+	return ths.trigger('change', Array.prototype.slice.call(arguments, 1));
 }
 
 function filter_attr($obj, attr){
@@ -81,7 +92,7 @@ function filter_attr($obj, attr){
 				if(ret !== undefined){
 					return ret;
 				}
-				return $.fn.attr.call($obj, value);
+				return $.fn.attr.call($obj, name, value);
 			}
 		}
 	}

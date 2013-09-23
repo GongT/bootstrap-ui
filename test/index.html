@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-	<link href="../lib/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+	<link href="../lib/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet"/>
 	<link href="../src/main.css" type="text/css" rel="stylesheet"/>
 	<script src="../lib/jquery.js" type="text/javascript"></script>
 	<script src="../lib/bootstrap/js/bootstrap.js" type="text/javascript"></script>
@@ -26,31 +26,42 @@
 	<script src="../src/bui.js" type="text/javascript"></script>
 	<script src="../src/helper.js" type="text/javascript"></script>
 	<script src="../src/IntInput.js" type="text/javascript"></script>
+	<script src="../src/OneOf.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
 		$(function (){
-			var b = $('#IntInput').find('.panel-body');
+			var b;
+			b = $('#IntInput').find('.panel-body');
 			b.append('必须大于等于100：');
-			(new $bui.IntInput('[100,)')).appendTo(b).val(123).attr('name','testii_1');
+			(new $bui.IntInput('[100,)')).val(123).attr('name', 'test_ii_1').appendTo(b);
 			b.append('必须小于等于50：');
-			(new $bui.IntInput('[,50]')).appendTo(b).val(100).attr('name','testii_2');
+			(new $bui.IntInput('[,50]')).val(100).attr('name', 'test_ii_2').appendTo(b);
 			b.append('介于25和75之间：');
-			(new $bui.IntInput('(25,75)')).appendTo(b).val(0).attr('name','testii_3');
+			(new $bui.IntInput('(25,75)')).val(0).attr('name', 'test_ii_3').appendTo(b);
 
 			var $show = $('<span/>');
 			b.append('改变事件：').append($show).append($show);
-			(new $bui.IntInput('[0,)')).appendTo(b).val(0).attr('name','testii_4').on('change', function (e, value){
-				$show.html(value)
-			});
+			(new $bui.IntInput('[0,)')).val(0).attr('name', 'test_ii_4')
+					.on('change',function (e, value){
+						$show.html(value)
+					}).appendTo(b);
+
+			b = $('#OneOf').find('.panel-body');
+			b.append('选择其中一个：');
+			new $bui.OneOf()
+					.addItem((new $bui.IntInput('')).val(9).attr('name', 'test_oo_1'))
+					.addItem((new $bui.IntInput('')).val(233).attr('name', 'test_oo_2'))
+					.appendTo(b);
+
 		});
-		function serilize($obj){
-			var container = $(this).next();
+		function serilize(ths){
+			var form = $(ths).parentsUntil('form').parent();
+			var container = $(ths).next();
 			if(!container.length){
-				container = $('<span/>').insertAfter(this);
+				container = $('<span/>').insertAfter(ths);
 			}
-			var s = $.fn.serialize.call($obj);
+			var s = form.serialize();
 			container.text(s);
-			console.log(s);
 		}
 	</script>
 </head>
@@ -62,10 +73,19 @@
 
 		</div>
 		<div class="panel-footer">
-			<a class="btn btn-primary" onclick="serilize.call(this,$('#IntInput'));">序列化</a>
+			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
 		</div>
 	</form>
 
+	<form id="OneOf" class="panel panel-primary">
+		<div class="panel-heading">test</div>
+		<div class="panel-body">
+
+		</div>
+		<div class="panel-footer">
+			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
+		</div>
+	</form>
 </div>
 </body>
 </html>

@@ -82,7 +82,7 @@ function keycodefilter(plogic_and, pspecial_keys){
 }
 
 function Range(range){
-	var r = [], rr = [];
+	var r = [-Infinity,Infinity], rr = [true,true];
 	var ret = {
 		test      : function (value){
 			return (rr[0]? r[0] <= value : r[0] < value) && (rr[1]? r[1] >= value : r[1] > value);

@@ -22,6 +22,7 @@
 		if(!range){
 			range = '';
 		}
+		this.test=123;
 		//初始化变量
 		var $this = this.addClass('input-group');
 		$this.value = 0;
@@ -45,7 +46,7 @@
 				if($this.pressed > 50){//最大速度
 					$this.pressed -= Math.round($this.pressed/3);//加速度
 				}
-				
+
 				$this.val(intval($this.value) + go.dir*$this.prop('speed'));
 				trigger_change($this, $this.value);
 				setTimeout(go, $this.pressed);
@@ -92,19 +93,11 @@
 				return $this.$show.attr('name', value);
 			}
 		});
-		setRange.call($this, range);
+		if(range){
+			setRange.call($this, range);
+		}
 		$this.removeClass('has-error');
 
-		filter_attr($this, {
-			name: {
-				get: function (){
-					$this.$show.attr('name');
-				},
-				set: function (value){
-					$this.$show.attr('name', value);
-				}
-			}
-		});
 	}
 
 	function setRange(rangeStr){
