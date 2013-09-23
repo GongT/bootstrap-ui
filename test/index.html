@@ -33,6 +33,8 @@
 	<script type="text/javascript">
 		$(function (){
 			var b;
+			
+			// IntInput
 			b = $('#IntInput').find('.panel-body');
 			b.append('必须大于等于100：');
 			(new $bui.IntInput('[100,)')).val(123).attr('name', 'test_ii_1').appendTo(b);
@@ -48,6 +50,7 @@
 						$show.html(value)
 					}).appendTo(b);
 
+			// OneOf
 			b = $('#OneOf').find('.panel-body');
 			b.append('选择其中一个：');
 			new $bui.OneOf()
@@ -55,6 +58,17 @@
 					.addItem((new $bui.IntInput('')).val(233).attr('name', 'test_oo_2'))
 					.appendTo(b);
 
+			//Icon
+			b = $('#Icon').find('.panel-body');
+			var ico = $bui.Icon('thumbs-up').addClass('').css({'font-size':'42px'});
+			b.append($('<div class="alert alert-info text-center"></div>').append(ico));
+			b.append('查看其他：');
+			(new $bui.IntInput('[0,'+$bui.Icon.list.length+')')).val(181)
+					.on('change',function (e, value){
+						ico.change($bui.Icon.list[value]);
+					}).appendTo(b);
+			
+			
 		});
 		function serilize(ths){
 			var form = $(ths).parentsUntil('form').parent();
@@ -70,7 +84,7 @@
 <body>
 <div class="container">
 	<form id="IntInput" class="panel panel-primary">
-		<div class="panel-heading">test</div>
+		<div class="panel-heading">整数输入</div>
 		<div class="panel-body">
 
 		</div>
@@ -80,12 +94,21 @@
 	</form>
 
 	<form id="OneOf" class="panel panel-primary">
-		<div class="panel-heading">test</div>
+		<div class="panel-heading">选择部分提交</div>
 		<div class="panel-body">
 
 		</div>
 		<div class="panel-footer">
 			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
+		</div>
+	</form>
+
+	<form id="Icon" class="panel panel-primary">
+		<div class="panel-heading">图标</div>
+		<div class="panel-body">
+
+		</div>
+		<div class="panel-footer">
 		</div>
 	</form>
 </div>

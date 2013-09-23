@@ -82,6 +82,7 @@
 			go.dir = delta;
 			go();
 			$this.pressed = false;
+			return false;
 		});
 
 		Object.defineProperty($this, 'name', {

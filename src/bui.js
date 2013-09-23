@@ -4,7 +4,7 @@ var $bui = function (call, arg){
 var $ = global.jQuery;
 
 function plugin(name, constructor, setter, props){
-	$bui[name] = function (){
+	var plug = $bui[name] = function (){
 		var $obj = $('<div/>');
 		var ret = constructor.apply($obj, arguments);
 		if(ret !== undefined){
@@ -34,6 +34,7 @@ function plugin(name, constructor, setter, props){
 			}
 		};
 	}
+	return plug;
 }
 $bui.plugin = plugin;
 
