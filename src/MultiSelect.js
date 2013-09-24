@@ -28,8 +28,12 @@
 		
 			_self.$list=$(_ms+lis+ms_).appendTo(_self);
 			_self.$select=$(ss+options+se).appendTo(_self);
-			
+
 		};
+			this.appendTo=function(s){
+		$.fn.appendTo.call(this,s);
+		this.adjustSize();
+	};
 		this.addItem=function(n,v){
 			var arr=new Array(n,v);
 			this.options.push(arr);
@@ -41,7 +45,7 @@
 			}
 		};
 		this.adjustSize=function(){
-			$select.css({height:this.lines*$r.find('li').get(0).clientHeight});
+			this.$select.css({height:this.lines*this.$list.find('li').get(0).clientHeight});
 		};
 		
 	};

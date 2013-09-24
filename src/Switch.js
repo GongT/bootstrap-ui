@@ -13,10 +13,15 @@
 	$btn.width(h);
 	var $b=$this.find('.bui-switcher-blue');
 	$b.css({borderRadius:h/2});
+	this.appendTo=function(s){
+		$.fn.appendTo.call(this,s);
+		// $this.appendTo(s);
+		this.init();
+	}
 
-	this.adjustSize=function(){
+	this.init=function(){
 		var r=$switcher.offset().left+$switcher.width()-$btn.width();
-	$switcher.on('click',function(){
+			$switcher.on('click',function(){
 
 	if($switcher.data('state')=='on'){
 		$switcher.data('state','off');
@@ -36,7 +41,8 @@
 	}
 	
 	});
-	}
+		};
+
 		
 	};
 

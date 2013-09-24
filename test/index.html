@@ -52,13 +52,13 @@
 	options:[['option1','1'],['option2','2']]
 };
 var $s=new $bui.MultiSelect(o); 
-$s.appendTo('body');
+$s.appendTo('#multiselect .panel-body');
 var $s2=new $bui.Switch(40);
 var $c=new $bui.Checkbox({id:'checkbbbox',checked:true,label:'labelllll',name:'naame'});
-$c.appendTo('body');
-$s2.appendTo('body');
-$s2.adjustSize();
-console.log($s);
+$c.appendTo('#checkbox .panel-body');
+$s2.appendTo('#switch .panel-body');
+// $s2.adjustSize();
+
 
 			// Button
 			b = $('#Button').find('.panel-body');
@@ -168,6 +168,33 @@ console.log($s);
 
 	<form id="Icon" class="panel panel-primary">
 		<div class="panel-heading">图标</div>
+		<div class="panel-body">
+
+		</div>
+		<div class="panel-footer">
+		</div>
+	</form>
+
+		<form id="multiselect" class="panel panel-primary">
+		<div class="panel-heading">多选</div>
+		<div class="panel-body">
+
+		</div>
+		<div class="panel-footer">
+		</div>
+	</form>
+
+	<form id="checkbox" class="panel panel-primary">
+		<div class="panel-heading">复选</div>
+		<div class="panel-body">
+
+		</div>
+		<div class="panel-footer">
+		</div>
+	</form>
+
+	<form id="switch" class="panel panel-primary">
+		<div class="panel-heading">开关</div>
 		<div class="panel-body">
 
 		</div>

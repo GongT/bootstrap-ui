@@ -60,7 +60,7 @@
 
 .bui-switcher .bui-switcher-blue{
 		width:100%;height:100%;position:absolute;
-		background-color: blue;
+		background-color: #428bca;
 	}
 	.bui-checkbox-con {
 		display: inline-block !important;
@@ -68,7 +68,7 @@
 		border:1px solid #ddd;
 		padding: 0.9em;
 display: inline-block;
-margin: 0 0 -5px 0;
+margin: 0 5px -5px 0;
 	}
 	.bui-switcher{
 		padding:0;position:relative;overflow:hidden;height:3em;min-width: 5em;
@@ -129,7 +129,11 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
 	border: none;
 }
 .bui-select li:first-child {background-color: transparent;}
-.bui-select li.list-group-item:hover,.bui-select li.btn-primary{
+.bui-select li.list-group-item:hover{
 	color: #fff;
-	background-color: #428bca !important ;
+
+	background-color: #3276b1 !important ;
+}
+.bui-select li.btn-primary{
+	background-color: #428bca;
 }
