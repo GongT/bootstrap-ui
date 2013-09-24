@@ -30,6 +30,7 @@
 	
 	<script src="../src/Button.js" type="text/javascript"></script>
 	<script src="../src/Check.js" type="text/javascript"></script>
+	<script src="../src/Checkbox.js" type="text/javascript"></script>
 	<script src="../src/Date.js" type="text/javascript"></script>
 	<script src="../src/FormControl.js" type="text/javascript"></script>
 	<script src="../src/Icon.js" type="text/javascript"></script>
@@ -53,7 +54,8 @@
 var $s=new $bui.MultiSelect(o); 
 $s.appendTo('body');
 var $s2=new $bui.Switch(40);
-
+var $c=new $bui.Checkbox({id:'checkbbbox',checked:true,label:'labelllll',name:'naame'});
+$c.appendTo('body');
 $s2.appendTo('body');
 $s2.adjustSize();
 console.log($s);
