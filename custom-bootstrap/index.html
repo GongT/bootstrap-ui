@@ -134,7 +134,7 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
 </head>
 <body>
 	<h1>Switcher</h1>
- <div class="bui-switcher" id="switcher" data-state="off">
+ <div class="bui-switcher" data-state="off">
  	<span class="bui-switcher-blue"></span>
 
 <i class="btn btn-default bui-switcher-btn"></i>
@@ -149,7 +149,7 @@ box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);}
 <ul class="list-group"> 
 
   <li class="list-group-item">
-   <span class="glyphicon glyphicon-remove bui-list-remove pull-right"></span>
+   <span class="glyphicon glyphicon-remove bui-list-item-remove pull-right"></span>
     <span class="item-content">Cras justo odio</span>
   </li>
 </ul>
@@ -170,11 +170,11 @@ obj.addItem('option5','5');
 
 obj.appendTo('body');
 var $switcher=$('.bui-switcher');
-$(document).on('click','.item-content',function(){
+$(document).on('click','.bui-list-item-content',function(){
 	var $this=$(this);
 	$this.replaceWith('<input autofocus="true" type="text" value="'+$this.text()+'">');
 });
-$(document).on('click','.bui-list-remove',function(){
+$(document).on('click','.bui-list-item-remove',function(){
 		var $p=$(this).parent();
 		$p.fadeOut(500,function(){
 			$p.remove();
@@ -206,7 +206,7 @@ $('.bui-list').each(function(i,e){
 
 	});
 	$this.find('.bui-list-plus').on('click',function(){
-		$list.append('<li class="list-group-item"><span class="glyphicon bui-list-remove glyphicon-remove pull-right"></span> <span class="item-content">Cras justo odio</span></li>');
+		$list.append('<li class="list-group-item"><span class="glyphicon bui-list-remove glyphicon-remove pull-right"></span> <span class="bui-list-item-content">Cras justo odio</span></li>');
 	});
 
 });
