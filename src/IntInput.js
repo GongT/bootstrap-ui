@@ -90,7 +90,6 @@
 
 		// 滚轮调整
 		$this.on('mousewheel', function (e, delta){
-			console.log(e,delta);
 			$this.pressed = 1000;
 			go.dir = delta;
 			go();

@@ -45,7 +45,7 @@
 			}
 			var ico = new $bui.Icon('unchecked');
 			buiItem.oprepend = ico;
-			buiItem.prependItem(ico);
+			ico.insertBefore(buiItem);
 			
 			items.push(buiItem);
 			name_list.push(name);
