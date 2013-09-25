@@ -64,7 +64,7 @@
 	background-color: #428bca;
 	height: 34px;
 	padding-right: 34px;
-	
+
 	vertical-align: middle;
 	border: 1px solid #cccccc;
 	-webkit-box-shadow: inset 2px 3px 2px black;
@@ -103,9 +103,10 @@
 	height: 34px;
 	width: 34px;
 	position: absolute;
-	-webkit-transition: 0.4s;
-	transition: 0.4s;
+	-webkit-transition: left 0.4s;
+	transition: left 0.4s;
 }
+
 .bui-switch.drag .bui-switch-btn {
 	-webkit-transition: none;
 	transition: none;
@@ -131,13 +132,15 @@
 	width: 200%;
 	height: 100%;
 	top: 0;
+	left: 0;
 	border-radius: 200px;
 	position: absolute;
-	-webkit-transition: 0.4s;
-	transition: 0.4s;
+	-webkit-transition: left 0.4s;
+	transition: left 0.4s;
 	-webkit-box-shadow: inset -1px 2px 1px black;
 	box-shadow: inset -1px 2px 1px black;
 }
+
 .bui-switch.drag .bui-switch-mask {
 	-webkit-transition: none;
 	transition: none;

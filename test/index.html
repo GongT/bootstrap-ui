@@ -67,9 +67,7 @@
 
 			// Switch
 			b = $('#Switch').find('.panel-body');
-			var $s2 = new $bui.Switch(40);
-			$s2.appendTo(b);
-			// $s2.adjustSize();
+			(new $bui.Switch(true)).attr('name','test_sw_1').appendTo(b);
 
 			// Button
 			b = $('#Button').find('.panel-body');
