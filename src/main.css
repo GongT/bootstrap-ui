@@ -59,11 +59,14 @@
 
 /* 切换按钮 */
 .bui-switch {
+	cursor: pointer;
 	overflow: hidden;
 	border-radius: 200px;
 	background-color: #428bca;
 	height: 34px;
 	padding-right: 34px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
 
 	vertical-align: middle;
 	border: 1px solid #cccccc;
@@ -71,6 +74,9 @@
 	box-shadow: inset 2px 3px 2px black;
 	-webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 	transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+.bui-switch.drag {
+	cursor: ew-resize;
 }
 
 .bui-switch:hover {
@@ -95,7 +101,7 @@
 }
 
 .bui-switch-btn {
-	cursor: pointer;
+	cursor: ew-resize;
 	z-index: 1;
 	border-radius: 200px;
 	left: 0;
