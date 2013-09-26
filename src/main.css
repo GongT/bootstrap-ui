@@ -171,7 +171,7 @@
 	border: none;
 }
 
-::selection {
+/*::selection {
 	background: #FF99CC;
 	color: #FFF;
 }
@@ -184,7 +184,7 @@
 ::-webkit-selection {
 	background: #FF99CC;
 	color: #FFF;
-}
+}*/
 
 .bui-select {
 
@@ -220,3 +220,12 @@
 .bui-select li.btn-primary {
 	background-color: #428bca;
 }
+.bui-checkbox-con {
+
+		display: inline-block !important;
+		cursor: pointer;
+		border:1px solid #ddd;
+		padding: 0.9em;
+display: inline-block;
+margin: 0 5px -5px 0;
+	}

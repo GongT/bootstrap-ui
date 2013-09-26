@@ -8,11 +8,11 @@
 		return this.change();
 	});
 	Icon.hook('attr','icon','set',function (text){
-		return this.change(text);
+		this.change(text);
 	});
 	
 	function construct(icon){
-		this.css({display: 'inline'}).addClass('glyphicon');
+		this.addClass('glyphicon');
 		var last = '';
 		this.change = function (icon){
 			if(!icon){

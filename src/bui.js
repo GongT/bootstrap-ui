@@ -16,11 +16,11 @@ function plugin(name, constructor){
 		$obj.data('bui', name.toLowerCase());
 
 		if(p.proxyInput){
-			jquery_function_replace($obj, 'attr')('name', function (){
-				return $obj.$input.attr('name');
-			}, function (n){
+			jquery_function_replace($obj, 'attr')('name', function (n){
 				$obj.$input.attr('name', n);
-				return n;
+				return $obj;
+			}, function (){
+				return $obj.$input.attr('name');
 			});
 			$obj.val = function (v){
 				if(v === undefined){//get
@@ -43,7 +43,9 @@ function plugin(name, constructor){
 		var fn;
 		for(var type in handles){
 			fn = jquery_function_replace($obj, type);
-			$.extend(fn, handles[type]);
+			for(var n in handles[type]){
+				fn(n, handles[type][n]['set'], handles[type][n]['get']);
+			}
 		}
 		for(type in proxis){
 			$obj[type] = proxis[type];
@@ -88,7 +90,7 @@ function trigger_change(ths, new_value){
  * 劫持 $obj 对象的 jquery 方法，转发到自定义函数
  *
  * @param $obj 属性被转发的物体
- * @param func 要转发的方法名字
+ * @param func_name 要转发的方法名字
  *
  * $obj[func].handle(name,get,set);
  *
@@ -108,58 +110,66 @@ function trigger_change(ths, new_value){
  * 只能hook双参数的东西（data,attr,css...）
  *
  */
-function jquery_function_replace($obj, func){
-	if($.fn[func] && !$obj[func]){
+function jquery_function_replace($obj, func_name){
+	if($.fn[func_name] && !$obj[func_name]){
 		if(window.JS_DEBUG){
 			console.error($obj);
 		}
 		throw new Error(' * 参数不是jquery对象。');
 	}
-	if($.fn[func] != $obj[func]){
-		return $obj[func].handle; // 已经注册过了
+	if($.fn[func_name] != $obj[func_name]){
+		return $obj[func_name].handle; // 已经注册过了
 	}
+	//console.log('replace jquery method: '+func_name);
 	$obj._test = 1;
 	function processor(elem, name, value){
+		var handle = '_' + name;
 		var isGet = value === undefined;
-		if($obj[func].handle[name] !== undefined && $obj[func].handle[name][isGet? 'get' : 'set'] !== undefined){
+		if($obj[func_name].handle[handle] !== undefined &&
+		   $obj[func_name].handle[handle][isGet? 'get' : 'set'] !== undefined){
 			// 有hook的属性
 			if(isGet){ // 获取
-				value = $obj[func].handle[name].get.call($obj);
+				//console.log('access get : '+func_name+'('+name+','+value+')');
+				value = $obj[func_name].handle[handle].get.call($obj);
 				if(value !== undefined){
 					return false;
 				}
 			} else{ // 设置
-				value = $obj[func].handle[name].set.call($obj, value);
+				//console.log('access set : '+func_name+'('+name+','+value+')');
+				value = $obj[func_name].handle[handle].set.call($obj, value);
 				if(value === undefined){
 					return false;
 				}
 			}
 		}
 		// 没有hook(调用jq原始方法)
-		return $.fn[func].apply($obj, Array.prototype.slice.call(arguments, 1));
+		return $.fn[func_name].apply($obj, Array.prototype.slice.call(arguments, 1));
 	}
 
-	$obj[func] = function (name, value){
+	$obj[func_name] = function (name, value){
 		return jQuery.access(this, processor, name, value, false);
 	};
-	$obj[func].handle = function (name, setter, getter){
+	$obj[func_name].handle = function (name, setter, getter){
 		if(typeof name === 'object'){
 			for(var n in name){
-				$obj[func].handle(n, name[n].set, name[n].get);
+				$obj[func_name].handle(n, name[n].set, name[n].get);
 			}
 		}
-		if(!$obj[func].handle[name]){
-			$obj[func].handle[name] = {};
+		var handle = '_' + name;
+		if(!$obj[func_name].handle[handle]){
+			$obj[func_name].handle[handle] = {};
 		}
 		if(setter){
-			$obj[func].handle[name].set = getter;
+			//console.log('create set handle: '+func_name+'('+name+')');
+			$obj[func_name].handle[handle].set = setter;
 		}
 		if(getter){
-			$obj[func].handle[name].get = getter;
+			//console.log('create get handle: '+func_name+'('+name+')');
+			$obj[func_name].handle[handle].get = getter;
 		}
-		return $obj[func].handle[name];
+		return $obj[func_name].handle[handle];
 	};
-	return $obj[func].handle;
+	return $obj[func_name].handle;
 }
 
 // 防止调用后属性消失，但是这样就不能同时appendTo多个目标了（使用0下标的那个）

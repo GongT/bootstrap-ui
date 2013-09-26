@@ -1,6 +1,6 @@
 (function ($bui){
 	"use strict";
-	var IntInput = $bui.IntInput = new plugin('IntInput', IntInputConstruct);
+	var IntInput = $bui.IntInput = plugin('IntInput', IntInputConstruct);
 
 	IntInput.hook('attr', 'range', 'get', function (){
 		return this.range.toString();
