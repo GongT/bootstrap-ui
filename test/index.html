@@ -43,6 +43,7 @@
 	<script src="../src/Progress.js" type="text/javascript"></script>
 	<script src="../src/Select.js" type="text/javascript"></script>
 	<script src="../src/Switch.js" type="text/javascript"></script>
+	<script src="../src/PanelTab.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
 		$(function (){
@@ -68,6 +69,9 @@
 			// Switch
 			b = $('#Switch').find('.panel-body');
 			(new $bui.Switch(true)).attr('name','test_sw_1').appendTo(b);
+			//PanelTab
+			b= $('#paneltab');
+			new $bui.PanelTab().appendTo(b);
 
 			// Button
 			b = $('#Button').find('.panel-body');
@@ -211,6 +215,7 @@
 			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
 		</div>
 	</form>
+	<div id="paneltab"></div>
 </div>
 </body>
 </html>
