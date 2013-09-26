@@ -28,17 +28,16 @@
 		$this.range = new Range();
 		$this.prop('speed', 1);
 
-		$this.$show = $('<input type="number"/>').addClass('form-control text-center').on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189'));
-		$this.centerWidget($this.$show);
+		$this.$show = $this.centerWidget().addClass('text-center').attr('type','number').on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189'));
 		$this.$left = $this.prependItem($bui.Button(new $bui.Icon('arrow-left'), 'span', 'default'));
 		$this.$right = $this.appendItem($bui.Button(new $bui.Icon('arrow-right'), 'span', 'default'));
 
-		$this.$show.on('change', function (){
+		/*$this.$show.on('change', function (){
 			if($this.val($(this).val())){
 				trigger_change($this, $this.value);
 			}
 			return false;
-		});
+		});*/
 
 		//自动增减
 		function go(){
