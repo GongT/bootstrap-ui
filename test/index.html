@@ -42,7 +42,7 @@
 	<script src="../src/Progress.js" type="text/javascript"></script>
 	<script src="../src/Select.js" type="text/javascript"></script>
 	<script src="../src/Switch.js" type="text/javascript"></script>
-	
+	<script src="../src/PanelTab.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(function (){
 			var b;
@@ -57,6 +57,8 @@ var $s2=new $bui.Switch(40);
 var $c=new $bui.Checkbox({id:'checkbbbox',checked:true,label:'labelllll',name:'naame'});
 $c.appendTo('#checkbox .panel-body');
 $s2.appendTo('#switch .panel-body');
+var $p=new $bui.PanelTab();
+$p.appendTo('#panel-tab');
 // $s2.adjustSize();
 
 
@@ -201,6 +203,10 @@ $s2.appendTo('#switch .panel-body');
 		<div class="panel-footer">
 		</div>
 	</form>
+<div id="panel-tab" >
+			
+</div>
+	
 </div>
 </body>
 </html>
