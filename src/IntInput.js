@@ -1,43 +1,53 @@
 (function ($bui){
 	"use strict";
+	var IntInput = $bui.IntInput = new plugin('IntInput', IntInputConstruct);
 
-	function setValue(val){
-		this.value = parseInt(val);
-		if(this.value == val && this.range.test(this.value)){
-			if(this.hasClass('has-error')){
-				this.value = intval(this.val());
-				this.removeClass('has-error');
-				return false;
-			}
-			this.$show.val(this.value);
-			return;
+	IntInput.hook('attr', 'range', 'get', function (){
+		return this.range.toString();
+	});
+	IntInput.hook('attr', 'range', 'set', function (rangeStr){
+		this.range.fromString(rangeStr);
+		var value = this.val();
+		var fitvalue = this.range.fit(value);
+		if(value != fitvalue){
+			this.val(fitvalue);
+			trigger_change(this, fitvalue);
 		}
-		this.value = this.range.fit(this.value);
-		this.$show.val(this.value);
-		this.addClass('has-error');
-		return this.value;
-	}
+	});
+	IntInput.proxyInput = true;
 
-	function IntInput(range){
+	function IntInputConstruct(range){
 		if(!range){
 			range = '';
 		}
 		//初始化变量
-		var $this = $bui.FormControl(this);
-		$this.value = 0;
-		$this.range = new Range();
+		var $this = $bui.FormControl.call(this);
+		$this.val(0);
+		var r = $this.range = new Range();
 		$this.prop('speed', 1);
 
-		$this.$show = $this.centerWidget().addClass('text-center').attr('type','number').on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189'));
-		$this.$left = $this.prependItem($bui.Button(new $bui.Icon('arrow-left'), 'span', 'default'));
-		$this.$right = $this.appendItem($bui.Button(new $bui.Icon('arrow-right'), 'span', 'default'));
+		// 输入框和左右按钮
+		var $input = $this.$input = $this.centerWidget().addClass('text-center').attr('type', 'number').on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189'));
+		$this.$left = $this.prepend($bui.Button(new $bui.Icon('arrow-left'), 'span', 'default'));
+		$this.$right = $this.append($bui.Button(new $bui.Icon('arrow-right'), 'span', 'default'));
 
-		/*$this.$show.on('change', function (){
-			if($this.val($(this).val())){
-				trigger_change($this, $this.value);
+		$input.set = function (val){
+			var value = parseInt(val);
+			if(value == val && r.test(value)){
+				if($this.hasClass('has-error')){
+					$this.removeClass('has-error');
+					return false;
+				}
+				return val;
 			}
-			return false;
-		});*/
+			value = r.fit(value);
+			$this.addClass('has-error');
+			return value+'';
+		};
+		$input.get = intval;
+
+		$this.attr('range', range);
+		$this.alert('');
 
 		//自动增减
 		function go(){
@@ -46,10 +56,10 @@
 				if($this.pressed > 50){//最大速度
 					$this.pressed -= Math.round($this.pressed/3);//加速度
 				}
-
-				$this.val(intval($this.value) + go.dir*$this.prop('speed'));
-				trigger_change($this, $this.value);
-				go._time=setTimeout(go, $this.pressed);
+				var v = $this.val() + go.dir*$this.prop('speed');
+				$this.val(v);
+				trigger_change($this, v);
+				go._time = setTimeout(go, $this.pressed);
 			}
 		}
 
@@ -60,7 +70,7 @@
 			}
 
 			$this.pressed = 500; //初始速度
-			go.dir = -(1 + (event.which-1)*9);
+			go.dir = -(1 + (event.which - 1)*9);
 			go();
 			function up(){
 				clearTimeout(go._time);
@@ -76,7 +86,7 @@
 			}
 
 			$this.pressed = 500; //初始速度
-			go.dir = 1 + (event.which-1)*9;
+			go.dir = 1 + (event.which - 1)*9;
 			go();
 			function up(){
 				clearTimeout(go._time);
@@ -96,34 +106,6 @@
 			return false;
 		});
 
-		Object.defineProperty($this, 'name', {
-			get: function (){
-				return $this.$show.attr('name');
-			},
-			set: function (value){
-				return $this.$show.attr('name', value);
-			}
-		});
-		if(range){
-			setRange.call($this, range);
-		}
-		$this.alert('');
-
 		return $this;
 	}
-
-	function setRange(rangeStr){
-		this.range.fromString(rangeStr);
-		var fitvalue = this.range.fit(this.value);
-		if(this.value != fitvalue){
-			this.value = fitvalue;
-			this.$show.val(fitvalue);
-			trigger_change(this, fitvalue);
-		}
-		return this.range;
-	}
-
-	var props = {};
-	props.range = setRange;
-	plugin('IntInput', IntInput, setValue, props);
 })($bui);

@@ -1,10 +1,13 @@
 (function ($bui){
 	"use strict";
 	var allow_type = /^warning|success|error$/i;
+	var FormControl = $bui.FormControl = plugin('FormControl', construct);
+	FormControl.proxyInput = true;
 
 	function parseNewElement($item){
-		if($item._bui_type == 'button'){
-		} else if($item._bui_type == 'icon'){
+		var type = $item.data('bui');
+		if(type == 'button'){
+		} else if(type == 'icon'){
 			$item = $('<span class="bui-icon-outer"/>').append($item);
 		} else if($item.filter('input:not(:button,:submit)').length){
 			$item.addClass('form-control')
@@ -14,37 +17,20 @@
 		return $item;
 	}
 
-	function construct(obj){
-		var $this = obj? obj : this;
-		var input = $('<input type="hidden"/>');
-		var $center = $('<input class="form-control center-widget"/>').on('change',centerChange).attr('type', 'text');
+	function construct(){
+		var $this = this;
+		$this.$input = $('<input class="form-control center-widget"/>').attr('type', 'text').appendTo($this);
 		var $prepend, $append;
 
-		$this.append($center);
-		$this.append(input);
-		$this.$input = input;
-		Object.defineProperty($this, 'value', {
-			get: function (){
-				return input.val();
-			},
-			set: function (value){
-				return input.val(value);
-			}
-		});
-		
-		function centerChange(){
-			console.log(arguments)
-		}
+		$this.addClass('input-group');
 
 		$this.centerWidget = function (newvalue){
 			if(arguments.length == 1){
-				$center.removeClass('center-widget').replaceWith(newvalue.on('change',centerChange).addClass('center-widget form-control'));
-				$center = newvalue;
+				$this.$input.removeClass('center-widget').replaceWith(newvalue.addClass('center-widget form-control'));
+				$this.$input = newvalue;
 			}
-			return $center;
+			return $this.$input;
 		};
-
-		$this.addClass('input-group');
 
 		var alert = '';
 		$this.alert = function (type){
@@ -60,33 +46,23 @@
 			}
 		};
 
-		$this.appendItem = function ($item){
+		$this.append = function ($item){
 			if(!$append){
 				$append = $('<div class="input-group-btn btn-group bui-append"/>');
-				$this.append($append);
+				$.fn.append.call($this, $append);
 			}
 			$item = parseNewElement($item);
 			$item.appendTo($append);
 			return $item;
 		};
 
-		$this.prependItem = function ($item){
+		$this.prepend = function ($item){
 			if(!$prepend){
 				$prepend = $('<div class="input-group-btn bui-prepend"/>');
-				$this.prepend($prepend);
+				$.fn.prepend.call($this, $prepend);
 			}
 			$item = parseNewElement($item);
-			$item.prependTo($prepend);
-			return $item;
+			return $item.prependTo($prepend);
 		};
-		if(obj){
-			return $this;
-		}
 	}
-
-	function setValue(value){
-		return this.$input.val(value);
-	}
-
-	plugin('FormControl', construct, setValue);
 })($bui);

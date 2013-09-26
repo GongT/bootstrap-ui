@@ -44,12 +44,12 @@
 	<script src="../src/Select.js" type="text/javascript"></script>
 	<script src="../src/Switch.js" type="text/javascript"></script>
 
-	<script type="text/javascript">
+	<script type="text/javascript" declare="a">
 		$(function (){
 			var b;
 
 			// MultiSelect
-			b = $('#MultiSelect').find('.panel-body');
+			/*b = $('#MultiSelect').find('.panel-body');
 			var $s = new $bui.MultiSelect({
 				name   : 'bui_select',
 				lines  : 3,
@@ -58,26 +58,27 @@
 					['option2', '2']
 				]
 			});
-			$s.appendTo(b);
-
+			$s.appendTo(b);*/
+			
 			// Checkbox
-			b = $('#Checkbox').find('.panel-body');
+			/*b = $('#Checkbox').find('.panel-body');
 			var $c = new $bui.Checkbox({id: 'checkbbbox', checked: true, label: 'labelllll', name: 'naame'});
-			$c.appendTo(b);
+			$c.appendTo(b);*/
 
 			// Switch
-			b = $('#Switch').find('.panel-body');
-			(new $bui.Switch(true)).attr('name','test_sw_1').appendTo(b);
+			/*b = $('#Switch').find('.panel-body');
+			(new $bui.Switch(true)).attr('name','test_sw_1').appendTo(b);*/
 
 			// Button
-			b = $('#Button').find('.panel-body');
+			/*b = $('#Button').find('.panel-body');
 			b.append(new $bui.Button('提 交', 'submit', 'success'));
 			b.append(new $bui.Button('确 定', 'span', 'info'));
 			b.append(new $bui.Button('取 消', 'input', 'warning'));
 			b.append(new $bui.Button('返 回', 'button', 'primary'));
-			b.append('<hr>');
+			b.append('<hr>');*/
 
-			var bar = new $bui.FormControl();
+			// FormControl
+			/*var bar = new $bui.FormControl();
 			b.append(bar);
 
 			bar.centerWidget($('<input/>').attr('type', 'text'));
@@ -92,7 +93,7 @@
 			bar.appendItem(new $bui.Button('B', 'span', 'info'));
 			bar.appendItem($('<input/>').attr('type', 'text'));
 			bar.appendItem(new $bui.Button('C', 'input', 'warning'));
-			bar.appendItem(new $bui.Button('D', 'button', 'primary'));
+			bar.appendItem(new $bui.Button('D', 'button', 'primary'));*/
 
 			// IntInput
 			b = $('#IntInput').find('.panel-body');
@@ -111,15 +112,15 @@
 					}).appendTo(b);
 
 			// OneOf
-			b = $('#OneOf').find('.panel-body');
+			/*b = $('#OneOf').find('.panel-body');
 			new $bui.OneOf()
 					.addItem((new $bui.IntInput('')).val(9).attr('name', 'test_oo_1'))
 					.addItem((new $bui.IntInput('')).val(233).attr('name', 'test_oo_2'))
 					.addItem(new $bui.Switch().attr('name', 'test_oo_3'))
-					.appendTo(b);
+					.appendTo(b);*/
 
 			//Icon
-			b = $('#Icon').find('.panel-body');
+			/*b = $('#Icon').find('.panel-body');
 			var ico = $bui.Icon('thumbs-up').addClass('').css({'font-size': '42px'});
 			var ico2 = $bui.Icon('thumbs-up').addClass('').css({'font-size': '42px'});
 			var btnparent = $('<div class="alert alert-info text-center"></div>').appendTo(b);
@@ -130,8 +131,8 @@
 					.on('change',function (e, value){
 						ico.change($bui.Icon.list[value]);
 						ico2.change($bui.Icon.list[value]);
-					}).appendTo(b);
-
+					}).appendTo(b);*/
+			
 		});
 		function serilize(ths){
 			var form = $(ths).parentsUntil('form').parent();

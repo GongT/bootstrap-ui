@@ -3,172 +3,182 @@ var $bui = function (call, arg){
 };
 var $ = global.jQuery;
 
-function plugin(name, constructor, setter, props){
-	var plug = $bui[name] = function (){
-		var $obj = $('<div/>');
-		var ret = constructor.apply($obj, arguments);
-		if(ret !== undefined){
-			$obj = ret;
-		}
-		$obj._bui_type = name.toLowerCase();
-
-		if(!$obj.prop('type')){
-			$obj.prop('type', 'bui.' + name);
-		} else if($obj[0].tagName.toLowerCase() != 'div'){
-			if(setter){
-				$.valHooks[ $obj[0].tagName.toLowerCase()] = {
-					set: setter_proxy
-				};
-			}
+function plugin(name, constructor){
+	function BuiItemConstructor(){
+		var $obj;
+		if(this.__proto__ == $.fn){
+			$obj = this;
 		} else{
-			$obj.prop('type', 'bui.' + name);
+			$obj = $('<div/>');
 		}
-		$obj.prop('bui_id', 'bui.' + name);
-		$obj.data('__bui__', $obj);
-		$obj.addClass('bui bui-' + $obj._bui_type);
-		if(props){
-			$obj.prop = function (name, value){
-				if(value){
-					value = props[name].call($obj, value);
+
+		$obj.addClass('bui' + (p.class? ' bui-' + p.class : ''));
+		$obj.data('bui', name.toLowerCase());
+
+		if(p.proxyInput){
+			jquery_function_replace($obj, 'attr')('name', function (){
+				return $obj.$input.attr('name');
+			}, function (n){
+				$obj.$input.attr('name', n);
+				return n;
+			});
+			$obj.val = function (v){
+				if(v === undefined){//get
+					v = $obj.$input.val();
+					return $obj.$input.get? $obj.$input.get(v) : v;
+				} else{// set
+					if($obj.$input.set){
+						v = $obj.$input.set(v);
+						if(v === false){
+							return this;
+						}
+					}
+					$obj.$input.val(v);
+					return this;
 				}
-				return jQuery.access($obj, jQuery.prop, name, value, arguments.length > 1);
-			};
+			}
 		}
 
+		modify_jquery($obj);
+		var fn;
+		for(var type in handles){
+			fn = jquery_function_replace($obj, type);
+			$.extend(fn, handles[type]);
+		}
+		for(type in proxis){
+			$obj[type] = proxis[type];
+		}
+
+		constructor.apply($obj, arguments);
+		if(p.proxyInput && !$obj.$input){
+			throw new Error("目标输入域没有定义（$bui." + name + ".$input）");
+		}
 		return $obj;
-	};
-	if(setter){
-		$.valHooks[ 'bui.' + name] = {
-			set: setter_proxy
-		};
-	}
-	function setter_proxy(elem, value){
-		if(!elem.bui_id || !elem.bui_id.substr(0, 4) === 'bui.'){
-			return undefined;
-		}
-		value = setter.call($(elem).data('__bui__'), value);
-		if(value === false || value === undefined){
-			return value;
-		}
-		return elem.value = value;
 	}
 
-	return plug;
+	var handles = {};
+	var proxis = {};
+	var p = BuiItemConstructor;
+
+	p.class = name.toLowerCase();
+	p.hook = function (type, name, gs, func){
+		if(!handles[type]){
+			handles[type] = {};
+		}
+		if(!handles[type][name]){
+			handles[type][name] = {};
+		}
+		handles[type][name][gs] = func;
+		return this;
+	};
+	p.proxy = function (func, cb){
+		proxis[func] = cb;
+		return this;
+	};
+
+	return p;
 }
 $bui.plugin = plugin;
-
-$.attrHooks[ 'name' ] = {
-	set: function (elem, value){
-		if(elem.bui_id && elem.bui_id.substr(0, 4) === 'bui.'){
-			//console.log('set(custom)  #' + dom.id+'['+dom.type+']', value);
-			if($(elem).data('__bui__').$input){
-				return $(elem).data('__bui__').$input.attr('name', value);
-			}
-		}
-		//elem.setAttribute( 'name', value + "" );
-		//console.log('set(default)  #' + elem.id+'['+elem.type+'] = ', value);
-	},
-	get: function (elem){
-		if(elem.bui_id && elem.bui_id.substr(0, 4) === 'bui.'){
-			//console.log('get(custom)  #' + dom.id+'['+dom.type+']');
-			if($(elem).data('__bui__').$input){
-				return $(elem).data('__bui__').$input.attr('name');
-			}
-		}
-		/*var ret = jQuery.find.attr( elem, 'name' );
-		 // Non-existent attributes return null, we normalize to undefined
-		 ret = ret == null ?undefined :ret;
-		 console.log('get(default)  #' + elem.id+'['+elem.type+'] <- ',ret);
-		 return ret;*/
-		return null;
-	}
-};
 
 function trigger_change(ths, new_value){
 	return ths.trigger('change', Array.prototype.slice.call(arguments, 1));
 }
 
 /**
- * 用 getter_setter 定义的函数代替 $.fn.attr()
- * getter_setter可以有“get”和“set”两个元素，分别是对应的函数
- * 例如
- * {
- *   get: function (){
- *       return test.val();
- *   },
- *   set: function (v){
- *      test.val(v);
- *      return this;
- *   }
- * }
- * 其中set返回值作为attr()的返回值（连贯操作的下一个this）
- * 两个函数里this都是$obj本身
+ * 劫持 $obj 对象的 jquery 方法，转发到自定义函数
  *
  * @param $obj 属性被转发的物体
- * @param attr 要转发的属性名字，可以是 name=>g_s 数组对象
- * @param getter_setter （可选）如果attr是名字，这里定义getter和setter
+ * @param func 要转发的方法名字
+ *
+ * $obj[func].handle(name,get,set);
+ *
+ * 两个函数里this都是$obj本身，而不是对应的dom对象
+ * 其中set返回值用来调用原始jq方法，不返回值则原始的方法不会被调用
+ * get方法返回值就是最终结果，不返回值则调用原始函数
+ *
+ * 例如：
+ *   get: function (){
+ *       return testInput.val();
+ *   }
+ *   set: function (v){
+ *      testInput.val(v);
+ *      // no return -> 不要改变this的属性
+ *   }
+ *
+ * 只能hook双参数的东西（data,attr,css...）
+ *
  */
-function filter_attr($obj, attr, getter_setter){
-	if(getter_setter){
-		var name = attr;
-		attr = {};
-		attr[name] = getter_setter;
+function jquery_function_replace($obj, func){
+	if($.fn[func] && !$obj[func]){
+		if(window.JS_DEBUG){
+			console.error($obj);
+		}
+		throw new Error(' * 参数不是jquery对象。');
 	}
-	if($obj.attr !== $.fn.attr){
-		$.extend($obj.attr.__list, attr);
+	if($.fn[func] != $obj[func]){
+		return $obj[func].handle; // 已经注册过了
 	}
-	$obj.attr = function (name, value){
+	$obj._test = 1;
+	function processor(elem, name, value){
 		var isGet = value === undefined;
-		if($obj.attr.__list[name] !== undefined && $obj.attr.__list[name][isGet? 'get' : 'set'] !== undefined){
+		if($obj[func].handle[name] !== undefined && $obj[func].handle[name][isGet? 'get' : 'set'] !== undefined){
 			// 有hook的属性
-			var ret;
-			if(value === undefined){ // 获取
-				ret = $obj.attr.__list[name].get.call($obj);
-				if(ret !== undefined){
-					return ret;
+			if(isGet){ // 获取
+				value = $obj[func].handle[name].get.call($obj);
+				if(value !== undefined){
+					return false;
 				}
-				return $.fn.attr.call($obj, name);
 			} else{ // 设置
-				ret = $obj.attr.__list[name].set.call($obj, value);
-				if(ret !== undefined){
-					return ret;
+				value = $obj[func].handle[name].set.call($obj, value);
+				if(value === undefined){
+					return false;
 				}
-				return $.fn.attr.call($obj, name, value);
-			}
-		} else{
-			// 没有hook(调用jq原始attr方法)
-			if(value === undefined){
-				return $.fn.attr.call($obj, name);
-			} else{
-				return $.fn.attr.call($obj, name, value);
 			}
 		}
+		// 没有hook(调用jq原始方法)
+		return $.fn[func].apply($obj, Array.prototype.slice.call(arguments, 1));
+	}
+
+	$obj[func] = function (name, value){
+		return jQuery.access(this, processor, name, value, false);
 	};
-	$obj.attr.__list = attr;
+	$obj[func].handle = function (name, setter, getter){
+		if(typeof name === 'object'){
+			for(var n in name){
+				$obj[func].handle(n, name[n].set, name[n].get);
+			}
+		}
+		if(!$obj[func].handle[name]){
+			$obj[func].handle[name] = {};
+		}
+		if(setter){
+			$obj[func].handle[name].set = getter;
+		}
+		if(getter){
+			$obj[func].handle[name].get = getter;
+		}
+		return $obj[func].handle[name];
+	};
+	return $obj[func].handle;
 }
 
-/**
- * 把对象self的attr方法发给to对象
- * @param self
- * @param attr
- * @param to
- * @param chain_next 连贯操作this（默认self，true返回to对象，其他返回这个值）
- */
-function send_attr_to(self, attr, to, chain_next){
-	if(undefined === chain_next){
-		chain_next = self;
-	}
-	if(chain_next === true){
-		chain_next = to;
-	}
-	filter_attr(self, attr, {
-		get: function (){
-			return to.attr(attr);
-		},
-		set: function (v){
-			to.attr(attr, v);
-			return chain_next;
-		}
+// 防止调用后属性消失，但是这样就不能同时appendTo多个目标了（使用0下标的那个）
+function modify_jquery($obj){
+	$.each({
+		appendTo    : "append",
+		prependTo   : "prepend",
+		insertBefore: "before",
+		insertAfter : "after",
+		replaceAll  : "replaceWith"
+	}, function (name, original){
+		$obj[ name ] = function (selector){
+			var target = $(selector);
+			if(target.length == 0){
+				return this;
+			}
+			$(target[0])[original](this);
+			return this;
+		};
 	});
 }
 
