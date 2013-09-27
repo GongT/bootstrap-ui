@@ -26,13 +26,7 @@
 		this.current_status = !!state;
 		this.$input = $('<input/>').val('true').attr('type', 'hidden').appendTo(this);
 		this.$input.set = function (value){
-			if(typeof value == 'string'){
-				value = value.toLowerCase();
-				value = (value == 'on' ) || (value == 'yes');
-			}
-			if(typeof value != 'boolean'){
-				value = !!value;
-			}
+			value = bui_bool(value);
 			$this[(value? 'add' : 'remove') + 'Class']('on');
 			$this.current_status = value;
 			return value? 'true' : 'false';

@@ -42,10 +42,10 @@ function keycodefilter(plogic_and, pspecial_keys){
 		if(code < 47){
 			return true;
 		}
-		if( 90<code && code < 94){
+		if(90 < code && code < 94){
 			return true;
 		}
-		if( 111<code && code < 146){
+		if(111 < code && code < 146){
 			return true;
 		}
 		return false;
@@ -82,7 +82,7 @@ function keycodefilter(plogic_and, pspecial_keys){
 }
 
 function Range(range){
-	var r = [-Infinity,Infinity], rr = [true,true];
+	var r = [-Infinity, Infinity], rr = [true, true];
 	var ret = {
 		test      : function (value){
 			return (rr[0]? r[0] <= value : r[0] < value) && (rr[1]? r[1] >= value : r[1] > value);
@@ -107,8 +107,8 @@ function Range(range){
 					return ret;
 				}
 				if(!str){
-					r[0]=-Infinity;
-					r[1]=Infinity;
+					r[0] = -Infinity;
+					r[1] = Infinity;
 					return ret;
 				}
 				r = str.split(',');
@@ -165,4 +165,15 @@ function Range(range){
 	} else{
 		return ret;
 	}
+}
+
+function bui_bool(value){
+	if(typeof value == 'string'){
+		value = value.toLowerCase();
+		value = (value == 'on' ) || (value == 'yes');
+	}
+	if(typeof value != 'boolean'){
+		value = !!value;
+	}
+	return value;
 }

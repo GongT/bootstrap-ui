@@ -62,13 +62,13 @@
 			 $s.appendTo(b);*/
 
 			// Checkbox
-			/*b = $('#Checkbox').find('.panel-body');
-			 var $c = new $bui.Checkbox({id: 'checkbbbox', checked: true, label: 'labelllll', name: 'naame'});
-			 $c.appendTo(b);*/
+			b = $('#Checkbox').find('.panel-body');
+			(new $bui.Checkbox('我是攻').attr('name','test_c_1')).appendTo(b);
+			(new $bui.Checkbox('我是受').attr('name','test_c_1')).appendTo(b);
 
 			// Switch
-			/*b = $('#Switch').find('.panel-body');
-			 (new $bui.Switch(true)).attr('name','test_sw_1').appendTo(b);*/
+			b = $('#Switch').find('.panel-body');
+			(new $bui.Switch(true)).attr('name', 'test_sw_1').appendTo(b);
 
 			//PanelTab
 			/*b= $('#PanelTab').find('.panel-body');
@@ -132,8 +132,8 @@
 					.on('change',function (e, value){
 						ico.change($bui.Icon.list[value]);
 						ico2.change($bui.Icon.list[value]);
-						ico_show.text('  -  ('+$bui.Icon.list[value]+')');
-					}).trigger('change',181).appendTo('#Icon .panel-footer');
+						ico_show.text('  -  (' + $bui.Icon.list[value] + ')');
+					}).trigger('change', 181).appendTo('#Icon .panel-footer');
 
 		});
 		function serilize(ths){

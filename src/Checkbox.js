@@ -1,43 +1,39 @@
 (function ($bui){
 	"use strict";
-
-	var construct=function(){
-		
-		if(arguments.length>0){
-			var args=Array.prototype.slice.call(arguments) ;
-				var args1=args.shift();
-				this._id=args1.id;
-				this.label=args1.label;
-				this.checked=args1.checked;
-				this.name=args1.name;
-			init.call(this);
-		}
-		function init(){
-			 var $input=$('<input type="checkbox" '+(this.checked ? 'checked' : '')+' name="'+this.name+'" class="bui-checkbox" id="'+this._id+'" style="display:none">');
-			
-			 var c=this.checked ? ' label-primary' : '';
-	var s='<label for="'+this._id+'" class="label bui-checkbox-con'+c+'"></label>';
-			 var label= '<label for="'+this._id+'" class="checkbox-label inline">'+this.label+'</label>';
-			        	
-	$input.appendTo(this);
-	this.append(s+label);
-
-	$input.on('change',function(){
-		var $this=$(this);
-		if(this.checked){
-		$this.next().addClass('label-primary');	
-		}else{
-			$this.next().removeClass('label-primary');	
-		}
+	var Checkbox = $bui.Checkbox = plugin('Checkbox', construct);
+	Checkbox.proxyInput = true;
+	Checkbox.hook('attr', 'label', 'set', function (v){
+		this.$text.text(v);
 	});
+	Checkbox.hook('attr', 'label', 'get', function (){
+		return this.$text.text();
+	});
+
+	function construct(label){
+		var $label = $('<label>').appendTo(this);
+		$('<span class="checkbox-show">').appendTo($label);
+		this.$input = $('<input/>').val('false').attr('type', 'hidden').appendTo($label);
+		this.$text = $('<span/>').appendTo($label);
+		this.addClass('checkbox');
+
+		var checked = false;
+		this.$input.set = function (v){
+			checked = bui_bool(v);
+			$this[(checked? 'add' : 'remove') + 'Class']('on');
+			return checked?'true':'false';
 		};
-		
-	};
+		this.$input.get = function (v){
+			return checked;
+		};
 
+		var $this = this;
+		this.click(function (e){
+			$this.val(!checked);
+			return false;
+		});
 
-	function setValue(value){
-
+		if(label){
+			this.attr('label', label);
+		}
 	}
-
-	plugin('Checkbox', construct, setValue);
 })($bui);
