@@ -22,12 +22,12 @@
 			$this[(checked? 'add' : 'remove') + 'Class']('on');
 			return checked?'true':'false';
 		};
-		this.$input.get = function (v){
+		this.$input.get = function (){
 			return checked;
 		};
 
 		var $this = this;
-		this.click(function (e){
+		this.click(function (){
 			$this.val(!checked);
 			return false;
 		});

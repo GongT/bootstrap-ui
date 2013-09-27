@@ -1,7 +1,6 @@
 var $bui = function (call, arg){
 	return this[call].apply(this, Array.slice.call(arguments, 1));
 };
-var $ = global.jQuery;
 
 function plugin(name, constructor){
 	function BuiItemConstructor(){
