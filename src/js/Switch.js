@@ -3,14 +3,23 @@
 	var Switch = $bui.Switch = plugin('Switch', construct);
 	Switch.proxyInput = true;
 
+	Switch.hook('attr', 'disabled', 'set', function (v){
+		if(typeof v === 'string'){
+			v = v.toLowerCase() == 'disabled';
+		}
+		if(v){
+			this.$btn.addClass('disabled');
+			this.addClass('disabled');
+		} else{
+			this.$btn.removeClass('disabled');
+			this.removeClass('disabled');
+		}
+		this._lock = v;
+		return v;
+	});
+
 	function boolval(value){
-		if(typeof value == 'string'){
-			value = value.toLowerCase();
-			value = (value == 'on' ) || (value == 'yes');
-		}
-		if(typeof value != 'boolean'){
-			value = !!value;
-		}
+		value = bui_bool(value);
 		$(this)[(value? 'add' : 'remove') + 'Class']('on');
 		if(value){
 			this.$input.removeAttr('disabled');
@@ -24,6 +33,7 @@
 	function construct(state){
 		var $this = this;
 		this.current_status = !!state;
+		this.icon = new $bui.Icon('');
 		this.$input = $('<input/>').val('true').attr('type', 'hidden').appendTo(this);
 		this.$input.set = function (value){
 			value = bui_bool(value);
@@ -40,9 +50,13 @@
 		var $mask = $('<div class="bui-switch-mask"/>').appendTo($switcher);
 		var $clip = $('<span class="bui-switch-blue"/>');
 
+		this.$btn = $btn;
 		var dragstate = false;
 
 		function dragHandler(e){
+			if($this._lock){
+				return;
+			}
 			$this.addClass('drag');
 			var max = $this.width();
 			var start = e.pageX - parseFloat($btn.css('left'));
@@ -84,6 +98,9 @@
 		this.on('click', function (){
 			if(dragstate){
 				dragstate = false;
+				return;
+			}
+			if($this._lock){
 				return;
 			}
 			$this.val(!$this.current_status);

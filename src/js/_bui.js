@@ -120,7 +120,6 @@ function jquery_function_replace($obj, func_name){
 		return $obj[func_name].handle; // 已经注册过了
 	}
 	//console.log('replace jquery method: '+func_name);
-	$obj._test = 1;
 	function processor(elem, name, value){
 		var handle = '_' + name;
 		var isGet = value === undefined;

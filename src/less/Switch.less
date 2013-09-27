@@ -1,98 +1,87 @@
-
 /* 切换按钮 */
 .bui-switch {
 	cursor: pointer;
 	overflow: hidden;
 	border-radius: 200px;
-	background-color: #428bca;
-	height: 34px;
-	padding-right: 34px;
+	background-color: #4fabf7;
+	.square(@input-height-base);
+	padding-right: @input-height-base;
 	.user-select(none);
 
 	vertical-align: middle;
 	border: 1px solid #cccccc;
-	-webkit-box-shadow: inset 2px 3px 2px black;
-	box-shadow: inset 2px 3px 2px black;
-	-webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-	transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-}
-.bui-switch.drag {
-	cursor: ew-resize;
-}
+	.box-shadow(inset 2px 3px 2px black);
+	.transition("border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s");
+	&.disabled {
+		background-color: #99A9B8;
+	}
+	&.drag {
+		cursor: ew-resize;
+	}
+	&:hover {
+		border-color: #66afe9;
+		outline: 0;
+		.box-shadow("inset 2px 3px 2px black, 0 0 8px rgba(102, 175, 233, 0.6)")
+	}
+	&.on {
+		.bui-switch-btn {
+			left: 100%;
+		}
+		.bui-switch-mask {
+			left: 100%;
+		}
+	}
+	&.drag {
+		.bui-switch-mask {
+			-webkit-transition: none;
+			transition: none;
+		}
+		.bui-switch-btn {
+			-webkit-transition: none;
+			transition: none;
+		}
+	}
 
-.bui-switch:hover {
-	border-color: #66afe9;
-	outline: 0;
-	-webkit-box-shadow: inset 2px 3px 2px black, 0 0 8px rgba(102, 175, 233, 0.6);
-	box-shadow: inset 2px 3px 2px black, 0 0 8px rgba(102, 175, 233, 0.6);
-}
+	&.bui-switch-sm {
+		height: @input-height-small;
+		.bui-switch-btn {
+			.square(@input-height-small)
+		}
+	}
+	&.bui-switch-lg {
+		height: @input-height-large;
+		.bui-switch-btn {
+			.square(@input-height-large);
+		}
+	}
 
-.bui-switch.bui-switch-sm {
-	height: 30px;
-}
+	.bui-switch-container {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
 
-.bui-switch.bui-switch-lg {
-	height: 45px;
-}
+	.bui-switch-btn {
+		cursor: ew-resize;
+		z-index: 1;
+		border-radius: 200px;
+		left: 0;
+		top: 0;
+		position: absolute;
+		.transition(left 0.4s);
+		.square(@input-height-base);
+	}
 
-.bui-switch-container {
-	position: relative;
-	width: 100%;
-	height: 100%;
-}
-
-.bui-switch-btn {
-	cursor: ew-resize;
-	z-index: 1;
-	border-radius: 200px;
-	left: 0;
-	top: 0;
-	height: 34px;
-	width: 34px;
-	position: absolute;
-	-webkit-transition: left 0.4s;
-	transition: left 0.4s;
-}
-
-.bui-switch.drag .bui-switch-btn {
-	-webkit-transition: none;
-	transition: none;
-}
-
-.bui-switch.on .bui-switch-btn {
-	left: 100%;
-}
-
-.bui-switch-btn.bui-switch-sm {
-	height: 30px;
-	width: 30px;
-}
-
-.bui-switch-btn.bui-switch-lg {
-	height: 45px;
-	width: 45px;
-}
-
-.bui-switch-mask {
-	z-index: 0;
-	background-color: #ccc;
-	width: 200%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	border-radius: 200px;
-	position: absolute;
-	-webkit-transition: left 0.4s;
-	transition: left 0.4s;
-	-webkit-box-shadow: inset -1px 2px 1px black;
-	box-shadow: inset -1px 2px 1px black;
-}
-
-.bui-switch.drag .bui-switch-mask {
-	-webkit-transition: none;
-	transition: none;
-}
-
-.bui-switch.on .bui-switch-mask {
-	left: 100%;
+	.bui-switch-mask {
+		z-index: 0;
+		background-color: #ccc;
+		width: 200%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		border-radius: 200px;
+		position: absolute;
+		.box-shadow(inset -1px 2px 1px black);
+		.transition(left 0.4s);
+	}
 }
