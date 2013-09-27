@@ -106,6 +106,11 @@ function Range(range){
 					r[0] = r[1] = parseFloat(str);
 					return ret;
 				}
+				if(!str){
+					r[0]=-Infinity;
+					r[1]=Infinity;
+					return ret;
+				}
 				r = str.split(',');
 
 				rr[0] = r[0].substr(0, 1) == '[';

@@ -14,16 +14,16 @@ function plugin(name, constructor){
 
 		$obj.addClass('bui' + (p.class? ' bui-' + p.class : ''));
 		$obj.data('bui', name.toLowerCase());
+		$obj.data('_bui', $obj);
 
 		if(p.proxyInput){
 			jquery_function_replace($obj, 'attr')('name', function (n){
 				$obj.$input.attr('name', n);
-				return $obj;
 			}, function (){
 				return $obj.$input.attr('name');
 			});
 			$obj.val = function (v){
-				if(v === undefined){//get
+				if(arguments.length<1){//get
 					v = $obj.$input.val();
 					return $obj.$input.get? $obj.$input.get(v) : v;
 				} else{// set
@@ -132,7 +132,7 @@ function jquery_function_replace($obj, func_name){
 				//console.log('access get : '+func_name+'('+name+','+value+')');
 				value = $obj[func_name].handle[handle].get.call($obj);
 				if(value !== undefined){
-					return false;
+					return value;
 				}
 			} else{ // 设置
 				//console.log('access set : '+func_name+'('+name+','+value+')');

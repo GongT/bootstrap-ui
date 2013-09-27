@@ -21,6 +21,7 @@
 			range = '';
 		}
 		//初始化变量
+		var last_success_value = 0;
 		var $this = $bui.FormControl.call(this);
 		$this.val(0);
 		var r = $this.range = new Range();
@@ -38,11 +39,12 @@
 					$this.removeClass('has-error');
 					return false;
 				}
+				last_success_value = val;
 				return val;
 			}
 			value = r.fit(value);
 			$this.addClass('has-error');
-			return value+'';
+			return value + '';
 		};
 		$input.get = intval;
 
@@ -58,7 +60,9 @@
 				}
 				var v = $this.val() + go.dir*$this.prop('speed');
 				$this.val(v);
-				trigger_change($this, v);
+				if(v==last_success_value){
+					trigger_change($this, v);
+				}
 				go._time = setTimeout(go, $this.pressed);
 			}
 		}
