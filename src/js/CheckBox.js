@@ -1,11 +1,11 @@
 (function ($bui){
 	"use strict";
-	var Checkbox = $bui.Checkbox = plugin('Checkbox', construct);
-	Checkbox.proxyInput = true;
-	Checkbox.hook('attr', 'label', 'set', function (v){
+	var CheckBox = $bui.CheckBox = plugin('CheckBox', construct);
+	CheckBox.proxyInput = true;
+	CheckBox.hook('attr', 'label', 'set', function (v){
 		this.$text.text(v);
 	});
-	Checkbox.hook('attr', 'label', 'get', function (){
+	CheckBox.hook('attr', 'label', 'get', function (){
 		return this.$text.text();
 	});
 
