@@ -4,7 +4,7 @@
 	overflow: hidden;
 	border-radius: 200px;
 	background-color: #4fabf7;
-	.square(@input-height-base);
+	height: @input-height-base;
 	padding-right: @input-height-base;
 	.user-select(none);
 
@@ -44,12 +44,14 @@
 
 	&.bui-switch-sm {
 		height: @input-height-small;
+		padding-right: @input-height-small;
 		.bui-switch-btn {
 			.square(@input-height-small)
 		}
 	}
 	&.bui-switch-lg {
 		height: @input-height-large;
+		padding-right: @input-height-large;
 		.bui-switch-btn {
 			.square(@input-height-large);
 		}

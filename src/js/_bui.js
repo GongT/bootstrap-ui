@@ -15,6 +15,21 @@ function plugin(name, constructor){
 		$obj.data('bui', name.toLowerCase());
 		$obj.data('_bui', $obj);
 
+		$obj.large=function(){
+			if($obj.hasClass('bui-' + p.class+'-sm')){
+				$obj.removeClass('bui-' + p.class+'-sm');
+			}
+			$obj.addClass('bui-' + p.class+'-lg');
+			return $obj;
+		};
+		$obj.small=function(){
+			if($obj.hasClass('bui-' + p.class+'-lg')){
+				$obj.removeClass('bui-' + p.class+'-lg');
+			}
+			$obj.addClass('bui-' + p.class+'-sm');
+			return $obj;
+		};
+
 		if(p.proxyInput){
 			jquery_function_replace($obj, 'attr')('name', function (n){
 				$obj.$input.attr('name', n);

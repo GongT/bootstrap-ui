@@ -177,3 +177,19 @@ function bui_bool(value){
 	}
 	return value;
 }
+
+function onmousedown($obj, down, up){
+	function set(e){
+		return down.call($obj, e);
+	}
+
+	$obj.on('mousedown', set);
+	function clear(e){
+		var ret = up.call($obj, e);
+		$obj.off('mousedown', set);
+		$(document).off('mouseup', clear);
+		return ret;
+	}
+
+	$(document).on('mouseup', clear);
+}

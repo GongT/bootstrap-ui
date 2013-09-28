@@ -11,7 +11,7 @@
 
 	function construct(label){
 		var $label = $('<label>').appendTo(this);
-		$('<span class="checkbox-show">').appendTo($label);
+		$('<span class="checkbox-show">').appendTo($label).html('<span class="ico"/>');
 		this.$input = $('<input/>').val('false').attr('type', 'hidden').appendTo($label);
 		this.$text = $('<span/>').appendTo($label);
 		this.addClass('checkbox');
@@ -19,7 +19,7 @@
 		var checked = false;
 		this.$input.set = function (v){
 			checked = bui_bool(v);
-			$this[(checked? 'add' : 'remove') + 'Class']('on');
+			$this[(checked? 'add' : 'remove') + 'Class']('active');
 			return checked?'true':'false';
 		};
 		this.$input.get = function (){
