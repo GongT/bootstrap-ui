@@ -1,0 +1,72 @@
+.panel-tab {
+	border: none;
+	&.panel-default {
+		.buitab-panel-variant(@panel-default-border, @panel-default-text, @panel-default-heading-bg, @panel-default-border);
+	}
+	&.panel-primary {
+		.buitab-panel-variant(@panel-primary-border, @panel-primary-text, @panel-primary-heading-bg, @panel-primary-border);
+	}
+	&.panel-success {
+		.buitab-panel-variant(@panel-success-border, @panel-success-text, @panel-success-heading-bg, @panel-success-border);
+	}
+	&.panel-warning {
+		.buitab-panel-variant(@panel-warning-border, @panel-warning-text, @panel-warning-heading-bg, @panel-warning-border);
+	}
+	&.panel-danger {
+		.buitab-panel-variant(@panel-danger-border, @panel-danger-text, @panel-danger-heading-bg, @panel-danger-border);
+	}
+	&.panel-info {
+		.buitab-panel-variant(@panel-info-border, @panel-info-text, @panel-info-heading-bg, @panel-info-border);
+	}
+}
+
+.buitab-panel-variant(@border, @heading-text-color, @heading-bg-color, @heading-border) {
+	.panel-heading {
+		border: none;
+		list-style: none;
+		background: transparent;
+		padding: 0;
+		margin: 0;
+		&:before,
+		&:after {
+			content: " ";
+			display: table;
+		}
+		&:after {
+			clear: both;
+		}
+		> *{
+			&:first-child{
+				border-top-left-radius: @panel-border-radius;
+			}
+			&:last-child{
+				border-top-right-radius: @panel-border-radius;
+			}
+			border-top: 1px solid @heading-border;
+			border-left: 1px solid @heading-border;
+			border-right: 1px solid @heading-border;
+			color:  darken(@heading-bg-color, 50%);
+			background-color: lighten(@heading-text-color, 50%);
+			padding: 10px 15px;
+			float: left;
+			&:hover,
+			&:focus,
+			&:active,
+			&.active{
+				color:  @heading-text-color;
+				background-color: @heading-bg-color;
+			}
+		}
+	}
+	& > .panel-body {
+		border-left: 1px solid @border;
+		border-right: 1px solid @border;
+		border-top: 1px solid @heading-border;
+		border-top-right-radius: @panel-border-radius;
+	}
+	& > .panel-footer {
+		border-left: 1px solid @border;
+		border-right: 1px solid @border;
+		border-bottom: 1px solid @border;
+	}
+}
