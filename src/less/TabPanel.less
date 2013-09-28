@@ -46,7 +46,7 @@
 			border-left: 1px solid @heading-border;
 			border-right: 1px solid @heading-border;
 			color:  darken(@heading-bg-color, 50%);
-			background-color: lighten(@heading-text-color, 50%);
+			background-color: lighten(@heading-text-color, 70%);
 			padding: 10px 15px;
 			float: left;
 			&:hover,
@@ -63,6 +63,13 @@
 		border-right: 1px solid @border;
 		border-top: 1px solid @heading-border;
 		border-top-right-radius: @panel-border-radius;
+		display: none;
+		&:only-of-type{
+			display: block;
+		}
+		&.active{
+			display: block;
+		}
 	}
 	& > .panel-footer {
 		border-left: 1px solid @border;

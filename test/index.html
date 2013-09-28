@@ -249,15 +249,42 @@
 
 	<form id="TabPanel" class="panel panel-default panel-tab">
 		<ul class="panel-heading">
-			<li class="active" data-class="default">default</li>
-			<li data-class="primary">primary</li>
-			<li data-class="success">success</li>
-			<li data-class="warning">warning</li>
-			<li data-class="danger">danger</li>
-			<li data-class="info">info</li>
+			<li class="active" data-class="default" href="#TabPanelDefault" data-toggle="tab">
+				default
+			</li>
+			<li data-class="primary" href="#TabPanelPrimary" data-toggle="tab">
+				primary
+			</li>
+			<li data-class="success" href="#TabPanelSuccess" data-toggle="tab">
+				success
+			</li>
+			<li data-class="warning" href="#TabPanelWarning" data-toggle="tab">
+				warning
+			</li>
+			<li data-class="danger" href="#TabPanelDanger" data-toggle="tab">
+				danger
+			</li>
+			<li data-class="info" href="#TabPanelInfo" data-toggle="tab">
+				info
+			</li>
 		</ul>
-		<div class="panel-body">
-			哈哈哈
+		<div id="TabPanelDefault" class="panel-body active">
+			TabPanelDefault 内容
+		</div>
+		<div id="TabPanelPrimary" class="panel-body">
+			TabPanelPrimary 内容
+		</div>
+		<div id="TabPanelSuccess" class="panel-body">
+			TabPanelSuccess 内容
+		</div>
+		<div id="TabPanelWarning" class="panel-body">
+			TabPanelWarning 内容
+		</div>
+		<div id="TabPanelDanger" class="panel-body">
+			TabPanelDanger 内容
+		</div>
+		<div id="TabPanelInfo" class="panel-body">
+			TabPanelInfo 内容
 		</div>
 		<div class="panel-footer">
 			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
