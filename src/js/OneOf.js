@@ -9,8 +9,6 @@
 		var current = -1;
 
 		function doSelect(name){
-			//console.log('select '+name);
-			//console.trace()
 			if(!name){
 				return;
 			}
@@ -21,12 +19,12 @@
 			var new_item = items[new_index];
 			trigger_change($this, new_index, name, new_item);
 
-			new_item.attr('name', name);
-			new_item.oprepend.css('color', '#356635').change('check').addClass('alert-success');
+			new_item._item.attr('name', name);
+			new_item.addClass('active');
 
 			if(current != -1){
-				items[current].attr('name', '');
-				items[current].oprepend.change('unchecked').removeClass('alert-success');
+				items[current]._item.attr('name', '');
+				items[current].removeClass('active');
 			}
 
 			current = new_index;
@@ -34,30 +32,30 @@
 
 		this.addItem = function (buiItem){
 			var name = buiItem.attr('name');
+			if(!name){
+				throw new Error('bui.OneOf.addItem 参数必须是其他bui object，或者有name属性的元素');
+			}
 			buiItem.attr('name', '');
-			buiItem.on('click', function (){
+			buiItem.attr('tabindex', '-1');
+			
+			var $div = $('<div class="line"/>');
+			var ico = (new $bui.Icon('unchecked')).addClass('one_state');
+			$('<div class="icon"/>').append(ico).appendTo($div);
+			$('<div class="control"/>').append(buiItem).appendTo($div);
+			$div._item = buiItem;
+			$div.appendTo(this);
+
+			items.push($div);
+			name_list.push(name);
+			if(current == -1){
+				doSelect(name);
+			}
+			$div.on('click', function (){
 				doSelect(name);
 			});
 			buiItem.on('change', function (){
 				doSelect(name);
 			});
-			buiItem.attr('tabindex', '-1');
-			if(!buiItem.parent().length){
-				buiItem.appendTo(this);
-			}
-			var ico = new $bui.Icon('unchecked');
-			buiItem.oprepend = ico;
-			if(buiItem.data('bui') == 'formcontrol'){
-				buiItem.prepend(ico);
-			}else{
-				ico.insertBefore(buiItem);
-			}
-
-			items.push(buiItem);
-			name_list.push(name);
-			if(current == -1){
-				doSelect(name);
-			}
 			return this;
 		};
 		this.focus(function (){

@@ -13,7 +13,7 @@
 		var $label = $('<label>').appendTo(this);
 		$('<span class="checkbox-show">').appendTo($label).html('<span class="ico"/>');
 		this.$input = $('<input/>').val('false').attr('type', 'hidden').appendTo($label);
-		this.$text = $('<span/>').appendTo($label);
+		this.$text = $('<span class="checkbox-title"/>').appendTo($label);
 		this.addClass('checkbox');
 
 		var checked = false;
@@ -29,6 +29,7 @@
 		var $this = this;
 		this.click(function (){
 			$this.val(!checked);
+			trigger_change($this,checked);
 			return false;
 		});
 

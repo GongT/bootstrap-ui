@@ -19,14 +19,29 @@
 
 	function construct(){
 		var $this = this;
-		$this.$input = $('<input class="form-control center-widget"/>').attr('type', 'text').appendTo($this);
+		var $center = $('<div class="center-widget"/>').appendTo($this);
+		$this.$input = $('<input class="form-control"/>').attr('type', 'text').appendTo($center);
 		var $prepend, $append;
 
 		$this.addClass('input-group');
 
+		var hidden = false;
 		$this.centerWidget = function (newvalue){
 			if(arguments.length == 1){
-				$this.$input.removeClass('center-widget').replaceWith(newvalue.addClass('center-widget form-control'));
+				if(hidden){
+					hidden.remove();
+					hidden = null;
+				}
+				if(newvalue.attr('type') == 'hidden'){
+					hidden = $('<input class="form-control"/>').attr({
+						'disabled': 'disabled',
+						'type'    : 'text'
+					}).val(newvalue.attr('title'));
+					$this.$input.replaceWith(hidden);
+					newvalue.insertAfter(hidden);
+				} else{
+					$this.$input.replaceWith(newvalue.addClass('form-control'));
+				}
 				$this.$input = newvalue;
 			}
 			return $this.$input;

@@ -1,0 +1,24 @@
+.bui-oneof {
+	>.line {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		position: relative;
+		padding-left: 2*@padding-base-horizontal + @font-size-base;
+		>.icon {
+			display: inline-block;
+			padding: @padding-base-vertical @padding-base-horizontal;
+			font-size: @font-size-base;
+			font-weight: @btn-font-weight;
+			line-height: @line-height-base;
+			position: absolute;
+			left: 0;
+		}
+	}
+	> .active > .icon{
+		background: @alert-success-bg;
+	}
+	.control>.bui-checkbox{
+		padding: 0;
+		margin: 0;
+	}
+}

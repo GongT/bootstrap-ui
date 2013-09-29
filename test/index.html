@@ -66,6 +66,7 @@
 	<script type="text/javascript">
 		$(function (){
 			var b;
+			var a,i;
 
 			// MultiSelect
 			/*b = $('#MultiSelect').find('.panel-body');
@@ -139,10 +140,19 @@
 
 			// OneOf
 			b = $('#OneOf').find('.panel-body');
+			var oo_field = new $bui.FormControl();
+			oo_field.centerWidget($('<input/>').attr({'type': 'hidden', 'name': 'test_oo_4'}));
+			var oo_select = (new $bui.Select()).appendTo(b).attr({'name': 'test_oo_5'});
+			for(i = 65; i < 91; i++){
+				a = String.fromCharCode(i);
+				oo_select.addOption('选项' + a, i);
+			}
 			new $bui.OneOf().appendTo(b)
 					.addItem((new $bui.IntInput('')).val(9).attr('name', 'test_oo_1'))
-					.addItem((new $bui.IntInput('')).val(233).attr('name', 'test_oo_2'))
-					.addItem(new $bui.Switch().attr('name', 'test_oo_3'));
+					.addItem((new $bui.CheckBox('多选框')).large().attr('name', 'test_oo_2'))
+					.addItem((new $bui.Switch()).attr('name', 'test_oo_3'))
+					.addItem(oo_select)
+					.addItem(oo_field);
 
 			//Icon
 			b = $('#Icon').find('.panel-body');
@@ -171,9 +181,9 @@
 			var test_select = b.find('div');
 			($bui.Select.call(test_select)).attr({'name': 'test_s_1'}).val('1');
 			var select = (new $bui.Select()).appendTo(b).attr({'name': 'test_s_2'});
-			for(var i = 65; i < 91; i++){
-				var a=String.fromCharCode(i);
-				select.addOption('选项'+a, i);
+			for(i = 65; i < 91; i++){
+				a = String.fromCharCode(i);
+				select.addOption('选项' + a, i);
 			}
 		});
 		function serilize(ths){

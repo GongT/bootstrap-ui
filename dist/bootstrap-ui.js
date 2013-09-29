@@ -307,7 +307,7 @@ module.exports[module.name] = $bui;
 		var $label = $('<label>').appendTo(this);
 		$('<span class="checkbox-show">').appendTo($label).html('<span class="ico"/>');
 		this.$input = $('<input/>').val('false').attr('type', 'hidden').appendTo($label);
-		this.$text = $('<span/>').appendTo($label);
+		this.$text = $('<span class="checkbox-title"/>').appendTo($label);
 		this.addClass('checkbox');
 
 		var checked = false;
@@ -323,6 +323,7 @@ module.exports[module.name] = $bui;
 		var $this = this;
 		this.click(function (){
 			$this.val(!checked);
+			trigger_change($this,checked);
 			return false;
 		});
 
@@ -351,14 +352,29 @@ module.exports[module.name] = $bui;
 
 	function construct(){
 		var $this = this;
-		$this.$input = $('<input class="form-control center-widget"/>').attr('type', 'text').appendTo($this);
+		var $center = $('<div class="center-widget"/>').appendTo($this);
+		$this.$input = $('<input class="form-control"/>').attr('type', 'text').appendTo($center);
 		var $prepend, $append;
 
 		$this.addClass('input-group');
 
+		var hidden = false;
 		$this.centerWidget = function (newvalue){
 			if(arguments.length == 1){
-				$this.$input.removeClass('center-widget').replaceWith(newvalue.addClass('center-widget form-control'));
+				if(hidden){
+					hidden.remove();
+					hidden = null;
+				}
+				if(newvalue.attr('type') == 'hidden'){
+					hidden = $('<input class="form-control"/>').attr({
+						'disabled': 'disabled',
+						'type'    : 'text'
+					}).val(newvalue.attr('title'));
+					$this.$input.replaceWith(hidden);
+					newvalue.insertAfter(hidden);
+				} else{
+					$this.$input.replaceWith(newvalue.addClass('form-control'));
+				}
 				$this.$input = newvalue;
 			}
 			return $this.$input;
@@ -820,8 +836,6 @@ $(document).on('click', '.bui-select-option', function (){
 		var current = -1;
 
 		function doSelect(name){
-			//console.log('select '+name);
-			//console.trace()
 			if(!name){
 				return;
 			}
@@ -829,15 +843,16 @@ $(document).on('click', '.bui-select-option', function (){
 			if(current === new_index){
 				return;
 			}
+			console.log('switch '+name)
 			var new_item = items[new_index];
 			trigger_change($this, new_index, name, new_item);
 
-			new_item.attr('name', name);
-			new_item.oprepend.css('color', '#356635').change('check').addClass('alert-success');
+			new_item._item.attr('name', name);
+			new_item.addClass('active');
 
 			if(current != -1){
-				items[current].attr('name', '');
-				items[current].oprepend.change('unchecked').removeClass('alert-success');
+				items[current]._item.attr('name', '');
+				items[current].removeClass('active');
 			}
 
 			current = new_index;
@@ -845,30 +860,30 @@ $(document).on('click', '.bui-select-option', function (){
 
 		this.addItem = function (buiItem){
 			var name = buiItem.attr('name');
+			if(!name){
+				throw new Error('bui.OneOf.addItem 参数必须是其他bui object，或者有name属性的元素');
+			}
 			buiItem.attr('name', '');
-			buiItem.on('click', function (){
+			buiItem.attr('tabindex', '-1');
+			
+			var $div = $('<div class="line"/>');
+			var ico = (new $bui.Icon('unchecked')).addClass('one_state');
+			$('<div class="icon"/>').append(ico).appendTo($div);
+			$('<div class="control"/>').append(buiItem).appendTo($div);
+			$div._item = buiItem;
+			$div.appendTo(this);
+
+			items.push($div);
+			name_list.push(name);
+			if(current == -1){
+				doSelect(name);
+			}
+			$div.on('click', function (){
 				doSelect(name);
 			});
 			buiItem.on('change', function (){
 				doSelect(name);
 			});
-			buiItem.attr('tabindex', '-1');
-			if(!buiItem.parent().length){
-				buiItem.appendTo(this);
-			}
-			var ico = new $bui.Icon('unchecked');
-			buiItem.oprepend = ico;
-			if(buiItem.data('bui') == 'formcontrol'){
-				buiItem.prepend(ico);
-			}else{
-				ico.insertBefore(buiItem);
-			}
-
-			items.push(buiItem);
-			name_list.push(name);
-			if(current == -1){
-				doSelect(name);
-			}
 			return this;
 		};
 		this.focus(function (){

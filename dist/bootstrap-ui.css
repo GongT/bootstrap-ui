@@ -61,6 +61,16 @@ fieldset[disabled] .bui-checkbox .checkbox-show {
 .bui-checkbox .checkbox-show.active {
   background-image: none;
 }
+.bui-checkbox .checkbox-title {
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: black;
+  -webkit-transition: 600ms cubic-bezier(0.325, 0.07, 0.29, 1.295);
+  transition: 600ms cubic-bezier(0.325, 0.07, 0.29, 1.295);
+}
 .bui-checkbox:hover .checkbox-show .ico:before,
 .bui-checkbox:focus .checkbox-show .ico:before,
 .bui-checkbox:active .checkbox-show .ico:before,
@@ -71,6 +81,9 @@ fieldset[disabled] .bui-checkbox .checkbox-show {
   color: #ffffff;
   background-color: #3276b1;
   border-color: #285e8e;
+}
+.bui-checkbox.active .checkbox-title {
+  color: #107300;
 }
 .bui-checkbox .ico {
   font-size: 29px;
@@ -93,12 +106,18 @@ fieldset[disabled] .bui-checkbox .checkbox-show {
   font-size: 12px;
   line-height: 1.5;
 }
+.bui-checkbox-sm .checkbox-title {
+  padding: 5px 10px;
+}
 .bui-checkbox-lg {
   height: 1.5;
 }
 .bui-checkbox-lg .checkbox-show {
   font-size: 18px;
   line-height: 1.33;
+}
+.bui-checkbox-lg .checkbox-title {
+  padding: 10px 16px;
 }
 .bui-formcontrol > div > * {
   display: inline-block;
@@ -123,11 +142,14 @@ fieldset[disabled] .bui-checkbox .checkbox-show {
 .bui-formcontrol .center-widget {
   width: 100%;
 }
-.bui-formcontrol .center-widget:first-child {
+.bui-formcontrol .center-widget input {
+  width: 100%;
+}
+.bui-formcontrol .center-widget:first-child input {
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
 }
-.bui-formcontrol .center-widget:last-child {
+.bui-formcontrol .center-widget:last-child input {
   border-bottom-right-radius: 4px;
   border-top-right-radius: 4px;
 }
@@ -176,6 +198,7 @@ input[type="number"]::-moz-inner-spin-button {
 }
 .bui-select {
   position: relative;
+  display: block;
 }
 .bui-select .bui-toggle {
   vertical-align: middle;
@@ -631,4 +654,26 @@ input[type="number"]::-moz-inner-spin-button {
   border-left: 1px solid #bce8f1;
   border-right: 1px solid #bce8f1;
   border-bottom: 1px solid #bce8f1;
+}
+.bui-oneof > .line {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 38px;
+}
+.bui-oneof > .line > .icon {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  position: absolute;
+  left: 0;
+}
+.bui-oneof > .active > .icon {
+  background: #dff0d8;
+}
+.bui-oneof .control > .bui-checkbox {
+  padding: 0;
+  margin: 0;
 }
