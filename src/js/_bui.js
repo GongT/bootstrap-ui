@@ -4,6 +4,10 @@ var $bui = function (call, arg){
 
 function plugin(name, constructor){
 	function BuiItemConstructor(){
+		if(p.init){
+			p.init();
+			delete p.init;
+		}
 		var $obj;
 		if(this.__proto__ == $.fn){
 			$obj = this;
@@ -11,22 +15,22 @@ function plugin(name, constructor){
 			$obj = $('<div/>');
 		}
 
-		$obj.addClass('bui' + (p.class? ' bui-' + p.class : ''));
+		$obj.addClass(p.class? ' bui-' + p.class : '');
 		$obj.data('bui', name.toLowerCase());
 		$obj.data('_bui', $obj);
 
-		$obj.large=function(){
-			if($obj.hasClass('bui-' + p.class+'-sm')){
-				$obj.removeClass('bui-' + p.class+'-sm');
+		$obj.large = function (){
+			if($obj.hasClass('bui-' + p.class + '-sm')){
+				$obj.removeClass('bui-' + p.class + '-sm');
 			}
-			$obj.addClass('bui-' + p.class+'-lg');
+			$obj.addClass('bui-' + p.class + '-lg');
 			return $obj;
 		};
-		$obj.small=function(){
-			if($obj.hasClass('bui-' + p.class+'-lg')){
-				$obj.removeClass('bui-' + p.class+'-lg');
+		$obj.small = function (){
+			if($obj.hasClass('bui-' + p.class + '-lg')){
+				$obj.removeClass('bui-' + p.class + '-lg');
 			}
-			$obj.addClass('bui-' + p.class+'-sm');
+			$obj.addClass('bui-' + p.class + '-sm');
 			return $obj;
 		};
 
@@ -37,7 +41,7 @@ function plugin(name, constructor){
 				return $obj.$input.attr('name');
 			});
 			$obj.val = function (v){
-				if(arguments.length<1){//get
+				if(arguments.length < 1){//get
 					v = $obj.$input.val();
 					return $obj.$input.get? $obj.$input.get(v) : v;
 				} else{// set

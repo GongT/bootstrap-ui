@@ -1,0 +1,31 @@
+.bui-select {
+	position: relative;
+	.bui-toggle {
+		&-lg {
+			.lg;
+		}
+		&-sm {
+			.sm;
+		}
+		vertical-align: middle;
+		.caret{
+			float: right;
+			margin-top: 9px;
+		}
+	}
+	&.active {
+		.dropdown-menu {
+			display: block;
+		}
+	}
+	.dropdown-menu {
+		z-index: 100;
+		position: absolute;
+		width: 100%;
+		display: none;
+		overflow-y: auto;
+		overflow-x: hidden;
+		max-height: 500%;
+	}
+}
+
