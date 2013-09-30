@@ -671,11 +671,7 @@ input[type="number"]::-moz-inner-spin-button {
 .bui-inputlist:before,
 .bui-inputlist:after {
   content: " ";
-  /* 1 */
-
   display: table;
-  /* 2 */
-
 }
 .bui-inputlist:after {
   clear: both;
@@ -702,7 +698,7 @@ input[type="number"]::-moz-inner-spin-button {
   padding-left: 4px;
 }
 .bui-inputlist .list .bui-delete:before {
-  content: "\e020";
+  content: "\e014";
 }
 .bui-inputlist .list .bui-delete:empty {
   width: 1em;
@@ -712,6 +708,9 @@ input[type="number"]::-moz-inner-spin-button {
   border: #52878F 1px solid;
   padding: 2px 8px;
   margin: 6px 2px;
+}
+.bui-inputlist.nodelete .bui-delete {
+  display: none;
 }
 .bui-inputlist.inline .list {
   float: left;

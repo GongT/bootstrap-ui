@@ -196,10 +196,12 @@
 
 		// InputList
 		b = $('#InputList').find('.panel-body');
+		b.append('行内样式：');
+		
 		(new $bui.InputList()).appendTo(b).addClass('inline')
-				.attr('name', 'test_il_1').data('unique', true).val([1, 2, 3, 4])
+				.attr('name', 'test_il_1').val([1, 2, 3, 4])
 				.centerWidget(new $bui.IntInput());
-		b.append('<hr/>');
+		b.append('<hr/>不能重复：');
 		var il_select = (new $bui.Select()).appendTo(b).attr({'name': 'test_oo_5'});
 		for(i = 65; i < 91; i++){
 			a = String.fromCharCode(i);

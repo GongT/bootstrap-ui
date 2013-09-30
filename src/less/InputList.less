@@ -1,8 +1,8 @@
 .bui-inputlist {
 	&:before,
 	&:after {
-		content: " "; /* 1 */
-		display: table; /* 2 */
+		content: " ";
+		display: table;
 	}
 	&:after {
 		clear: both;
@@ -12,7 +12,7 @@
 		list-style: none;
 		border: @label-color;
 		.bui-delete {
-			.glyphicon-trash;
+			.glyphicon-remove;
 			.glyphicon;
 			cursor: pointer;
 			text-decoration: none;
@@ -26,6 +26,11 @@
 			border: #52878F 1px solid;
 			padding: 2px 8px;
 			margin: 6px 2px;
+		}
+	}
+	&.nodelete{
+		.bui-delete {
+			display: none;
 		}
 	}
 	&.inline {

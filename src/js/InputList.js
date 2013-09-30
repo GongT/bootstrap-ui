@@ -39,8 +39,18 @@
 		this.centerWidget = function (newinput){
 			$center.off('keydown', handler);
 			$center = control.centerWidget(newinput);
+			newinput.attr('name','');
 			newinput.on('keydown', handler);
 		};
+		this.on('click','.bui-delete',function(e){
+			var v= $(this).prev().val();
+			var i  = value.indexOf(v);
+			if(i>-1){
+				value.splice(i, 1);
+			}
+			$(this).parent().remove();
+			e.preventDefault();
+		});
 
 		function handler(event){
 			if(event.shiftKey || event.ctrlKey || event.altKey){
