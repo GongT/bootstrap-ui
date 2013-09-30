@@ -1,60 +1,71 @@
-.bui-formcontrol >div>:not(.bui-formcontrol) {
-	display: inline-block;
-}
+.bui-formcontrol {
+	>.bui-prepend {
+		> :first-child { // 前置第一个元素左侧圆角
+			.border-left-radius(4px);
+			overflow: hidden;
+			.bui-formcontrol & { // 嵌套的formcontrol不用圆角
+				.border-right-radius(0px);
+			}
+		}
+		>* {
+			display: inline-block;
+		}
 
-.bui-formcontrol input,
-.bui-formcontrol .btn {
-	border-radius: 0;
-}
+	}
 
-.bui-formcontrol .bui-prepend > :first-child {
-	.border-left-radius(4px);
-	overflow: hidden;
-}
-
-.bui-formcontrol .bui-append > :last-child {
-	.border-right-radius(4px);
-	overflow: hidden;
-}
-
-.bui-formcontrol .form-control {
-	width: auto;
-}
-
-.bui-formcontrol .center-widget {
-	width: 100%;
-	input{
+	>.bui-append {
+		> :last-child { // 后置最后一个元素右侧圆角
+			.border-right-radius(4px);
+			overflow: hidden;
+			.bui-formcontrol & { // 嵌套的formcontrol不用圆角
+				.border-right-radius(0px);
+			}
+		}
+		>* {
+			display: inline-block;
+		}
+	}
+	>.center-widget {
 		width: 100%;
+		.form-control, input {
+			display: block;
+			width: 100%;
+		}
+		&:first-child > input {
+			.border-left-radius(4px);
+		}
+		&:last-child > input {
+			.border-right-radius(4px);
+		}
 	}
-	&:first-child > input{
-		.border-left-radius(4px);
+
+	input, .btn {
+		border-radius: 0;
 	}
-	&:last-child > input{
-		.border-right-radius(4px);
+	.form-control {
+		width: auto;
 	}
-}
 
-.bui-formcontrol .bui-icon-outer {
-	display: inline-block;
-	padding: 6px 12px;
-	margin-bottom: 0;
-	font-size: 14px;
-	font-weight: normal;
-	background-color: #eeeeee;
-	border: 1px solid #cccccc;
-	text-align: center;
-	white-space: nowrap;
-	vertical-align: middle;
-	font-size: 14px;
-	font-weight: normal;
-	text-align: center;
-	.user-select(none);
-}
-
-.bui-formcontrol .bui-icon-outer .bui-append {
-	float: none;
-}
-
-.bui-formcontrol .btn-group > .btn {
-	float: none;
+	.bui-icon-outer {
+		display: inline-block;
+		padding: 6px 12px;
+		margin-bottom: 0;
+		font-size: 14px;
+		font-weight: normal;
+		background-color: #eeeeee;
+		border: 1px solid #cccccc;
+		text-align: center;
+		white-space: nowrap;
+		vertical-align: middle;
+		font-size: 14px;
+		font-weight: normal;
+		text-align: center;
+		.user-select(none);
+		.bui-append {
+			float: none;
+		}
+	}
+	.btn-group > .btn {
+		float: none;
+	}
 }

@@ -38,7 +38,7 @@
 		$this.$left = $this.prepend($bui.Button(new $bui.Icon('arrow-left'), 'span', 'default'));
 		$this.$right = $this.append($bui.Button(new $bui.Icon('arrow-right'), 'span', 'default'));
 
-		$input.set = function (val){
+		$input.setValue = function (val){
 			var value = parseInt(val);
 			if(value == val && r.test(value)){
 				if($this.hasClass('has-error')){
@@ -52,7 +52,7 @@
 			$this.addClass('has-error');
 			return value + '';
 		};
-		$input.get = intval;
+		$input.getValue = intval;
 
 		$this.attr('range', range);
 		$this.alert('');

@@ -17,12 +17,12 @@
 		this.addClass('checkbox');
 
 		var checked = false;
-		this.$input.set = function (v){
+		this.$input.setValue = function (v){
 			checked = bui_bool(v);
 			$this[(checked? 'add' : 'remove') + 'Class']('active');
 			return checked?'true':'false';
 		};
-		this.$input.get = function (){
+		this.$input.getValue = function (){
 			return checked;
 		};
 

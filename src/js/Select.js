@@ -38,8 +38,9 @@
 		$('<span class="caret"/>').appendTo($btn);
 
 		$this.$input = $('<input/>').attr('type', 'hidden').val('').prependTo($this);
-		$this.$input.set = function (v){
+		$this.$input.setValue = function (v){
 			if(!item_list.hasOwnProperty(v)){
+				$this.$show.text('请选择');
 				return '';
 			}
 			$this.$show.text(item_list[v]);

@@ -54,10 +54,10 @@ function plugin(name, constructor){
 			$obj.val = function (v){
 				if(arguments.length < 1){//get
 					v = $obj.$input.val();
-					return $obj.$input.get? $obj.$input.get(v) : v;
+					return $obj.$input.getValue? $obj.$input.getValue(v) : v;
 				} else{// set
-					if($obj.$input.set){
-						v = $obj.$input.set(v);
+					if($obj.$input.setValue){
+						v = $obj.$input.setValue(v);
 						if(v === false){
 							return this;
 						}
@@ -311,12 +311,12 @@ module.exports[module.name] = $bui;
 		this.addClass('checkbox');
 
 		var checked = false;
-		this.$input.set = function (v){
+		this.$input.setValue = function (v){
 			checked = bui_bool(v);
 			$this[(checked? 'add' : 'remove') + 'Class']('active');
 			return checked?'true':'false';
 		};
-		this.$input.get = function (){
+		this.$input.getValue = function (){
 			return checked;
 		};
 
@@ -373,7 +373,10 @@ module.exports[module.name] = $bui;
 					$this.$input.replaceWith(hidden);
 					newvalue.insertAfter(hidden);
 				} else{
-					$this.$input.replaceWith(newvalue.addClass('form-control'));
+					if(!newvalue.hasClass('bui-formcontrol')){
+						newvalue.addClass('form-control');
+					}
+					$this.$input.replaceWith(newvalue);
 				}
 				$this.$input = newvalue;
 			}
@@ -685,7 +688,7 @@ function mouse_button(expect, fn){
 		var li = $('<li/>');
 		$('<span/>').addClass('bui-label').text(value).appendTo(li);
 		$('<input/>').attr({'type': 'hidden', 'name': name + '[]'}).val(value).appendTo(li);
-		$('<span/>').addClass('bui-delete').appendTo(li);
+		$('<a/>').addClass('bui-delete').appendTo(li);
 		return li;
 	}
 
@@ -693,18 +696,18 @@ function mouse_button(expect, fn){
 		if(val.constructor !== Array){
 			throw new TypeError("$bui.InputList.val() 参数必须是数组。");
 		}
-		var list = $();
+		var list = [];
 		for(var i = 0, cnt = val.length; i < cnt; i++){
-			list.pushStack(item(val[i], name));
+			list[i] = item(val[i], name)[0];
 		}
-		return list;
+		return $(list);
 	}
 
 	function construct(){
 		var $this = this;
 		var value = [];
 		var $list = $('<ul class="list"/>').appendTo(this);
-		var control = (new $bui.FormControl()).appendTo(this);
+		var control = (new $bui.FormControl()).appendTo($('<div class="control"/>').appendTo(this));
 		var $center = control.centerWidget($('<input/>').attr('type', 'text'));
 		var addBtn = new $bui.Button(new $bui.Icon('plus'));
 		this.$list = $list;
@@ -712,12 +715,9 @@ function mouse_button(expect, fn){
 
 		$center.on('keydown', handler);
 		this.centerWidget = function (newinput){
-			newinput.removeAttr('name');
-			$center.replaceWith(newinput);
-			$center.addClass('center-widget');
 			$center.off('keydown', handler);
+			$center = control.centerWidget(newinput);
 			newinput.on('keydown', handler);
-			$center = newinput;
 		};
 
 		function handler(event){
@@ -737,14 +737,16 @@ function mouse_button(expect, fn){
 				return value;
 			} else{
 				var name = $this.attr('name');
-				value.push(v);
-				unserilize(v, name).appendTo($list.empty());
+				value = v;
+				var o = unserilize(v, name);
+				o.appendTo($list.empty());
 				return this;
 			}
 		};
 
 		addBtn.on('click', mouse_button('left', function (){
 			var val = $center.val();
+			console.log(val);
 			$center.val('').focus();
 			addItem(val);
 		}));
@@ -802,7 +804,7 @@ function mouse_button(expect, fn){
 		$this.$left = $this.prepend($bui.Button(new $bui.Icon('arrow-left'), 'span', 'default'));
 		$this.$right = $this.append($bui.Button(new $bui.Icon('arrow-right'), 'span', 'default'));
 
-		$input.set = function (val){
+		$input.setValue = function (val){
 			var value = parseInt(val);
 			if(value == val && r.test(value)){
 				if($this.hasClass('has-error')){
@@ -816,7 +818,7 @@ function mouse_button(expect, fn){
 			$this.addClass('has-error');
 			return value + '';
 		};
-		$input.get = intval;
+		$input.getValue = intval;
 
 		$this.attr('range', range);
 		$this.alert('');
@@ -1066,8 +1068,9 @@ $(document).on('shown.bs.tab', function (e){
 		$('<span class="caret"/>').appendTo($btn);
 
 		$this.$input = $('<input/>').attr('type', 'hidden').val('').prependTo($this);
-		$this.$input.set = function (v){
+		$this.$input.setValue = function (v){
 			if(!item_list.hasOwnProperty(v)){
+				$this.$show.text('请选择');
 				return '';
 			}
 			$this.$show.text(item_list[v]);
@@ -1132,13 +1135,13 @@ $(document).on('shown.bs.tab', function (e){
 		this.current_status = !!state;
 		this.icon = new $bui.Icon('');
 		this.$input = $('<input/>').val('true').attr('type', 'hidden').appendTo(this);
-		this.$input.set = function (value){
+		this.$input.setValue = function (value){
 			value = bui_bool(value);
 			$this[(value? 'add' : 'remove') + 'Class']('on');
 			$this.current_status = value;
 			return value? 'true' : 'false';
 		};
-		this.$input.get = function (){
+		this.$input.getValue = function (){
 			return $this.current_status;
 		};
 

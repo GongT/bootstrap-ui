@@ -40,7 +40,10 @@
 					$this.$input.replaceWith(hidden);
 					newvalue.insertAfter(hidden);
 				} else{
-					$this.$input.replaceWith(newvalue.addClass('form-control'));
+					if(!newvalue.hasClass('bui-formcontrol')){
+						newvalue.addClass('form-control');
+					}
+					$this.$input.replaceWith(newvalue);
 				}
 				$this.$input = newvalue;
 			}

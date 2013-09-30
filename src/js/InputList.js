@@ -10,7 +10,7 @@
 		var li = $('<li/>');
 		$('<span/>').addClass('bui-label').text(value).appendTo(li);
 		$('<input/>').attr({'type': 'hidden', 'name': name + '[]'}).val(value).appendTo(li);
-		$('<span/>').addClass('bui-delete').appendTo(li);
+		$('<a/>').addClass('bui-delete').appendTo(li);
 		return li;
 	}
 
@@ -18,18 +18,18 @@
 		if(val.constructor !== Array){
 			throw new TypeError("$bui.InputList.val() 参数必须是数组。");
 		}
-		var list = $();
+		var list = [];
 		for(var i = 0, cnt = val.length; i < cnt; i++){
-			list.pushStack(item(val[i], name));
+			list[i] = item(val[i], name)[0];
 		}
-		return list;
+		return $(list);
 	}
 
 	function construct(){
 		var $this = this;
 		var value = [];
 		var $list = $('<ul class="list"/>').appendTo(this);
-		var control = (new $bui.FormControl()).appendTo(this);
+		var control = (new $bui.FormControl()).appendTo($('<div class="control"/>').appendTo(this));
 		var $center = control.centerWidget($('<input/>').attr('type', 'text'));
 		var addBtn = new $bui.Button(new $bui.Icon('plus'));
 		this.$list = $list;
@@ -37,12 +37,9 @@
 
 		$center.on('keydown', handler);
 		this.centerWidget = function (newinput){
-			newinput.removeAttr('name');
-			$center.replaceWith(newinput);
-			$center.addClass('center-widget');
 			$center.off('keydown', handler);
+			$center = control.centerWidget(newinput);
 			newinput.on('keydown', handler);
-			$center = newinput;
 		};
 
 		function handler(event){
@@ -62,14 +59,16 @@
 				return value;
 			} else{
 				var name = $this.attr('name');
-				value.push(v);
-				unserilize(v, name).appendTo($list.empty());
+				value = v;
+				var o = unserilize(v, name);
+				o.appendTo($list.empty());
 				return this;
 			}
 		};
 
 		addBtn.on('click', mouse_button('left', function (){
 			var val = $center.val();
+			console.log(val);
 			$center.val('').focus();
 			addItem(val);
 		}));

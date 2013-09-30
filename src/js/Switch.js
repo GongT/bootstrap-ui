@@ -35,13 +35,13 @@
 		this.current_status = !!state;
 		this.icon = new $bui.Icon('');
 		this.$input = $('<input/>').val('true').attr('type', 'hidden').appendTo(this);
-		this.$input.set = function (value){
+		this.$input.setValue = function (value){
 			value = bui_bool(value);
 			$this[(value? 'add' : 'remove') + 'Class']('on');
 			$this.current_status = value;
 			return value? 'true' : 'false';
 		};
-		this.$input.get = function (){
+		this.$input.getValue = function (){
 			return $this.current_status;
 		};
 

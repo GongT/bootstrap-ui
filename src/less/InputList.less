@@ -1,0 +1,49 @@
+.bui-inputlist {
+	&:before,
+	&:after {
+		content: " "; /* 1 */
+		display: table; /* 2 */
+	}
+	&:after {
+		clear: both;
+	}
+	.list {
+		padding-left: 0;
+		list-style: none;
+		border: @label-color;
+		.bui-delete {
+			.glyphicon-trash;
+			.glyphicon;
+			cursor: pointer;
+			text-decoration: none;
+			border-left: #52878F 1px solid;
+			float: right;
+			margin: 2px 4px;
+			padding-left: 4px;
+		}
+		li {
+			background: #D9ECEF;
+			border: #52878F 1px solid;
+			padding: 2px 8px;
+			margin: 6px 2px;
+		}
+	}
+	&.inline {
+		.list {
+			float: left;
+			li {
+				float: left;
+			}
+			.bui-delete {
+				float: none;
+				padding: 0;
+				margin: 0 0 0 8px;
+				padding: 0 0 0 3px;
+			}
+		}
+		.control{
+			float: right;
+			max-width: 260px;
+		}
+	}
+}

@@ -43,10 +43,10 @@ function plugin(name, constructor){
 			$obj.val = function (v){
 				if(arguments.length < 1){//get
 					v = $obj.$input.val();
-					return $obj.$input.get? $obj.$input.get(v) : v;
+					return $obj.$input.getValue? $obj.$input.getValue(v) : v;
 				} else{// set
-					if($obj.$input.set){
-						v = $obj.$input.set(v);
+					if($obj.$input.setValue){
+						v = $obj.$input.setValue(v);
 						if(v === false){
 							return this;
 						}
