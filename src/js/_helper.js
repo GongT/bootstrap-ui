@@ -21,17 +21,22 @@ function keycodefilter(plogic_and, pspecial_keys){
 	if(typeof plogic_and === 'string'){
 		logic_and = !(plogic_and == 'or');
 		i++;
-	} else if(typeof logic_and === 'boolean'){
+	} else if(typeof plogic_and === 'boolean'){
 		logic_and = false;
-		special_keys = logic_and;
+		special_keys = plogic_and;
 		i++;
 	}
 	if(typeof pspecial_keys === 'boolean'){
 		i++;
 		special_keys = pspecial_keys;
 	}
-
-	for(; i < arguments.length; i++){
+	var fn = null;
+	var len = arguments.length
+	for(; i < len; i++){
+		if(typeof arguments[i] == 'function'){
+			fn = arguments[i];
+			continue;
+		}
 		if(parseInt(arguments[i]) == arguments[i]){
 			equal.push(parseInt(arguments[i]));
 		} else{
@@ -53,31 +58,37 @@ function keycodefilter(plogic_and, pspecial_keys){
 
 	return function (event){
 		if(event.shiftKey || event.ctrlKey || event.altKey){
-			return true;
+			return fn?fn.apply(this, arguments):true;
 		}
-		if(!special_keys){
+		if(special_keys){
 			if(testSpecial(event.which)){
-				return;
+				return fn?fn.apply(this, arguments):true;
 			}
 		}
-		var in_range = true;
-		for(var i = filter.length - 1; i >= 0; i--){
+		var in_range = false;
+		for(var i = equal.length - 1; i >= 0; i--){
 			in_range = equal[i] === event.which;
 			if(logic_and && !in_range){
-				return false;
+				event.preventDefault();
+				return;
 			} else if(in_range){
-				return true;
+				return fn?fn.apply(this, arguments):true;
 			}
 		}
 		for(i = filter.length - 1; i >= 0; i--){
 			in_range = filter[i].test(event.which);
 			if(logic_and && !in_range){
-				return false;
+				event.preventDefault();
+				return;
 			} else if(in_range){
-				return true;
+				return fn?fn.apply(this, arguments):true;
 			}
 		}
-		return in_range;
+		if(in_range){
+			return fn?fn.apply(this, arguments):true;
+		}
+		event.preventDefault();
+		return;
 	}
 }
 
@@ -192,4 +203,27 @@ function onmousedown($obj, down, up){
 	}
 
 	$(document).on('mouseup', clear);
+}
+
+function mouse_button(expect, fn){
+	if(typeof expect == 'string'){
+		expect = expect.toLowerCase();
+		if(expect == 'left'){
+			expect = 1;
+		} else if(expect == 'right'){
+			expect = 3;
+		} else if(expect == 'middle'){
+			expect = 2;
+		}
+	}
+	if(typeof expect === 'function'){
+		fn = expect;
+		expect = 1;
+	}
+	return function (e){
+		if(e.which !== expect){
+			return;
+		}
+		fn.apply(this, arguments);
+	}
 }

@@ -437,17 +437,22 @@ function keycodefilter(plogic_and, pspecial_keys){
 	if(typeof plogic_and === 'string'){
 		logic_and = !(plogic_and == 'or');
 		i++;
-	} else if(typeof logic_and === 'boolean'){
+	} else if(typeof plogic_and === 'boolean'){
 		logic_and = false;
-		special_keys = logic_and;
+		special_keys = plogic_and;
 		i++;
 	}
 	if(typeof pspecial_keys === 'boolean'){
 		i++;
 		special_keys = pspecial_keys;
 	}
-
-	for(; i < arguments.length; i++){
+	var fn = null;
+	var len = arguments.length
+	for(; i < len; i++){
+		if(typeof arguments[i] == 'function'){
+			fn = arguments[i];
+			continue;
+		}
 		if(parseInt(arguments[i]) == arguments[i]){
 			equal.push(parseInt(arguments[i]));
 		} else{
@@ -469,31 +474,37 @@ function keycodefilter(plogic_and, pspecial_keys){
 
 	return function (event){
 		if(event.shiftKey || event.ctrlKey || event.altKey){
-			return true;
+			return fn?fn.apply(this, arguments):true;
 		}
-		if(!special_keys){
+		if(special_keys){
 			if(testSpecial(event.which)){
-				return;
+				return fn?fn.apply(this, arguments):true;
 			}
 		}
-		var in_range = true;
-		for(var i = filter.length - 1; i >= 0; i--){
+		var in_range = false;
+		for(var i = equal.length - 1; i >= 0; i--){
 			in_range = equal[i] === event.which;
 			if(logic_and && !in_range){
-				return false;
+				event.preventDefault();
+				return;
 			} else if(in_range){
-				return true;
+				return fn?fn.apply(this, arguments):true;
 			}
 		}
 		for(i = filter.length - 1; i >= 0; i--){
 			in_range = filter[i].test(event.which);
 			if(logic_and && !in_range){
-				return false;
+				event.preventDefault();
+				return;
 			} else if(in_range){
-				return true;
+				return fn?fn.apply(this, arguments):true;
 			}
 		}
-		return in_range;
+		if(in_range){
+			return fn?fn.apply(this, arguments):true;
+		}
+		event.preventDefault();
+		return;
 	}
 }
 
@@ -609,6 +620,29 @@ function onmousedown($obj, down, up){
 
 	$(document).on('mouseup', clear);
 }
+
+function mouse_button(expect, fn){
+	if(typeof expect == 'string'){
+		expect = expect.toLowerCase();
+		if(expect == 'left'){
+			expect = 1;
+		} else if(expect == 'right'){
+			expect = 3;
+		} else if(expect == 'middle'){
+			expect = 2;
+		}
+	}
+	if(typeof expect === 'function'){
+		fn = expect;
+		expect = 1;
+	}
+	return function (e){
+		if(e.which !== expect){
+			return;
+		}
+		fn.apply(this, arguments);
+	}
+}
 (function ($bui){
 	var list = 'adjust,align-center,align-justify,align-left,align-right,arrow-down,arrow-left,arrow-right,arrow-up,asterisk,backward,ban-circle,barcode,bell,bold,book,bookmark,briefcase,bullhorn,calendar,camera,certificate,check,chevron-down,chevron-left,chevron-right,chevron-up,circle-arrow-down,circle-arrow-left,circle-arrow-right,circle-arrow-up,cloud,cloud-download,cloud-upload,cog,collapse-down,collapse-up,comment,compressed,copyright-mark,credit-card,cutlery,dashboard,download,download-alt,earphone,edit,eject,envelope,euro,exclamation-sign,expand,export,eye-close,eye-open,facetime-video,fast-backward,fast-forward,file,film,filter,fire,flag,flash,floppy-disk,floppy-open,floppy-remove,floppy-save,floppy-saved,folder-close,folder-open,font,forward,fullscreen,gbp,gift,glass,globe,hand-down,hand-left,hand-right,hand-up,hd-video,hdd,header,headphones,heart,heart-empty,home,import,inbox,indent-left,indent-right,info-sign,italic,leaf,link,list,list-alt,lock,log-in,log-out,magnet,map-marker,minus,minus-sign,move,music,new-window,off,ok,ok-circle,ok-sign,open,paperclip,pause,pencil,phone,phone-alt,picture,plane,play,play-circle,plus,plus-sign,print,pushpin,qrcode,question-sign,random,record,refresh,registration-mark,remove,remove-circle,remove-sign,repeat,resize-full,resize-horizontal,resize-small,resize-vertical,retweet,road,save,saved,screenshot,sd-video,search,send,share,share-alt,shopping-cart,signal,sort,sort-by-alphabet,sort-by-alphabet-alt,sort-by-attributes,sort-by-attributes-alt,sort-by-order,sort-by-order-alt,sound-5-1,sound-6-1,sound-7-1,sound-dolby,sound-stereo,star,star-empty,stats,step-backward,step-forward,stop,subtitles,tag,tags,tasks,text-height,text-width,th,th-large,th-list,thumbs-down,thumbs-up,time,tint,tower,transfer,trash,tree-conifer,tree-deciduous,unchecked,upload,usd,user,volume-down,volume-off,volume-up,warning-sign,wrench,zoom-in,zoom-out'.split(',');
 
@@ -641,6 +675,95 @@ function onmousedown($obj, down, up){
 	}
 })($bui);
 (function ($bui){
+	var InputList = $bui.InputList = plugin('InputList', construct);
+	InputList.hook('attr', 'name', 'set', function (v){
+		this.$list.find('input').attr('name', v + '[]');
+		return v;
+	});
+
+	function item(value, name){
+		var li = $('<li/>');
+		$('<span/>').addClass('bui-label').text(value).appendTo(li);
+		$('<input/>').attr({'type': 'hidden', 'name': name + '[]'}).val(value).appendTo(li);
+		$('<span/>').addClass('bui-delete').appendTo(li);
+		return li;
+	}
+
+	function unserilize(val, name){
+		if(val.constructor !== Array){
+			throw new TypeError("$bui.InputList.val() 参数必须是数组。");
+		}
+		var list = $();
+		for(var i = 0, cnt = val.length; i < cnt; i++){
+			list.pushStack(item(val[i], name));
+		}
+		return list;
+	}
+
+	function construct(){
+		var $this = this;
+		var value = [];
+		var $list = $('<ul class="list"/>').appendTo(this);
+		var control = (new $bui.FormControl()).appendTo(this);
+		var $center = control.centerWidget($('<input/>').attr('type', 'text'));
+		var addBtn = new $bui.Button(new $bui.Icon('plus'));
+		this.$list = $list;
+		control.append(addBtn);
+
+		$center.on('keydown', handler);
+		this.centerWidget = function (newinput){
+			newinput.removeAttr('name');
+			$center.replaceWith(newinput);
+			$center.addClass('center-widget');
+			$center.off('keydown', handler);
+			newinput.on('keydown', handler);
+			$center = newinput;
+		};
+
+		function handler(event){
+			if(event.shiftKey || event.ctrlKey || event.altKey){
+				return;
+			}
+			if(event.which == 13){
+				var val = $center.val();
+				$center.val('').focus();
+				addItem(val);
+				return false;
+			}
+		}
+
+		this.val = function (v){
+			if(arguments.length == 0){
+				return value;
+			} else{
+				var name = $this.attr('name');
+				value.push(v);
+				unserilize(v, name).appendTo($list.empty());
+				return this;
+			}
+		};
+
+		addBtn.on('click', mouse_button('left', function (){
+			var val = $center.val();
+			$center.val('').focus();
+			addItem(val);
+		}));
+
+		function addItem(val){
+			if(!val){
+				return false;
+			}
+			if($this.data('unique') && value.indexOf(val) >= 0){
+				return false;
+			}
+			var name = $this.attr('name');
+			item(val, name).appendTo($list);
+			value.push(val);
+			trigger_change($this, value);
+		}
+	}
+})($bui);
+(function ($bui){
 	var IntInput = $bui.IntInput = plugin('IntInput', IntInputConstruct);
 
 	IntInput.hook('attr', 'range', 'get', function (){
@@ -669,7 +792,13 @@ function onmousedown($obj, down, up){
 		$this.prop('speed', 1);
 
 		// 输入框和左右按钮
-		var $input = $this.$input = $this.centerWidget().addClass('text-center').attr('type', 'number').on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189'));
+		var $input = $this.$input = $this.centerWidget().addClass('text-center').attr('type', 'number')
+				.on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189', function (e){
+					$this.removeClass('has-error');
+				})).change(function(){
+					$this.val($(this).val());
+					trigger_change($this, $this.val());
+				});
 		$this.$left = $this.prepend($bui.Button(new $bui.Icon('arrow-left'), 'span', 'default'));
 		$this.$right = $this.append($bui.Button(new $bui.Icon('arrow-right'), 'span', 'default'));
 
@@ -701,7 +830,7 @@ function onmousedown($obj, down, up){
 				}
 				var v = $this.val() + go.dir*$this.prop('speed');
 				$this.val(v);
-				if(v==last_success_value){
+				if(v == last_success_value){
 					trigger_change($this, v);
 				}
 				go._time = setTimeout(go, $this.pressed);
@@ -843,7 +972,6 @@ $(document).on('click', '.bui-select-option', function (){
 			if(current === new_index){
 				return;
 			}
-			console.log('switch '+name)
 			var new_item = items[new_index];
 			trigger_change($this, new_index, name, new_item);
 

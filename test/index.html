@@ -62,11 +62,12 @@
 	<script src="../src/js/Select.js" type="text/javascript"></script>
 	<script src="../src/js/Switch.js" type="text/javascript"></script>
 	<script src="../src/js/PanelTab.js" type="text/javascript"></script>
+	<script src="../src/js/InputList.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
 		$(function (){
 			var b;
-			var a,i;
+			var a, i;
 
 			// MultiSelect
 			/*b = $('#MultiSelect').find('.panel-body');
@@ -185,6 +186,18 @@
 				a = String.fromCharCode(i);
 				select.addOption('选项' + a, i);
 			}
+
+			var menu = $('#test-navbar').find('ul');
+			$('#test_holder').children().last().children().each(function(i,e){
+				var id = $(e).attr('id');
+				$('<li/>').append($('<a/>').attr({'href':'#'+id}).text(id)).appendTo(menu);
+			});
+			$('body').scrollspy({target: '#test-navbar'});
+
+			// InputList
+			b = $('#InputList').find('.panel-body');
+			(new $bui.InputList()).appendTo(b).attr('name','test_il_1').data('unique',true).centerWidget(new $bui.IntInput())
+			
 		});
 		function serilize(ths){
 			var form = $(ths).parentsUntil('form').parent();
@@ -199,128 +212,148 @@
 </head>
 <body>
 <div class="container">
-
-	<form id="Button" class="panel panel-primary">
-		<div class="panel-heading">按钮、表单元素</div>
-		<div class="panel-body">
-
-		</div>
-	</form>
-
-	<form id="IntInput" class="panel panel-primary">
-		<div class="panel-heading">整数输入</div>
-		<div class="panel-body">
-
-		</div>
-		<div class="panel-footer">
-			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
-		</div>
-	</form>
-
-	<form id="OneOf" class="panel panel-primary">
-		<div class="panel-heading">选择部分提交</div>
-		<div class="panel-body">
-
-		</div>
-		<div class="panel-footer">
-			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
-		</div>
-	</form>
-
-	<form id="Icon" class="panel panel-primary">
-		<div class="panel-heading">图标</div>
-		<div class="panel-body">
-
-		</div>
-		<div class="panel-footer"></div>
-	</form>
-
-	<form id="MultiSelect" class="panel panel-primary">
-		<div class="panel-heading">多选</div>
-		<div class="panel-body">
-
-		</div>
-		<div class="panel-footer">
-			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
-		</div>
-	</form>
-
-	<form id="CheckBox" class="panel panel-primary">
-		<div class="panel-heading">复选</div>
-		<div class="panel-body">
-
-		</div>
-		<div class="panel-footer">
-			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
-		</div>
-	</form>
-
-	<form id="Switch" class="panel panel-primary">
-		<div class="panel-heading">开关</div>
-		<div class="panel-body">
-
-		</div>
-		<div class="panel-footer">
-			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
-		</div>
-	</form>
-
-	<form id="Select" class="panel panel-primary">
-		<div class="panel-heading">美化的select</div>
-		<div class="panel-body bui-select-lg">
-			<div>
-				<option value="1">1</option>
-				<option value="2">2</option>
+	<div id="test_holder" class="row">
+		<div class="col-xs-2">
+			<div id="test-navbar" class="affix">
+				<ul class="nav nav-pills nav-stacked">
+					
+				</ul>
 			</div>
 		</div>
-		<div class="panel-footer">
-			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
-		</div>
-	</form>
+		<div class="col-xs-10">
+			<form id="Button" class="panel panel-primary">
+				<div class="panel-heading">按钮、表单元素</div>
+				<div class="panel-body">
 
-	<form id="TabPanel" class="panel panel-default panel-tab">
-		<ul class="panel-heading">
-			<li class="active" data-class="default" href="#TabPanelDefault" data-toggle="tab">
-				default
-			</li>
-			<li data-class="primary" href="#TabPanelPrimary" data-toggle="tab">
-				primary
-			</li>
-			<li data-class="success" href="#TabPanelSuccess" data-toggle="tab">
-				success
-			</li>
-			<li data-class="warning" href="#TabPanelWarning" data-toggle="tab">
-				warning
-			</li>
-			<li data-class="danger" href="#TabPanelDanger" data-toggle="tab">
-				danger
-			</li>
-			<li data-class="info" href="#TabPanelInfo" data-toggle="tab">
-				info
-			</li>
-		</ul>
-		<div id="TabPanelDefault" class="panel-body active">
-			TabPanelDefault 内容
+				</div>
+			</form>
+
+			<form id="IntInput" class="panel panel-primary">
+				<div class="panel-heading">整数输入</div>
+				<div class="panel-body">
+
+				</div>
+				<div class="panel-footer">
+					<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
+				</div>
+			</form>
+
+			<form id="OneOf" class="panel panel-primary">
+				<div class="panel-heading">选择部分提交</div>
+				<div class="panel-body">
+
+				</div>
+				<div class="panel-footer">
+					<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
+				</div>
+			</form>
+
+			<form id="Icon" class="panel panel-primary">
+				<div class="panel-heading">图标</div>
+				<div class="panel-body">
+
+				</div>
+				<div class="panel-footer"></div>
+			</form>
+
+			<form id="MultiSelect" class="panel panel-primary">
+				<div class="panel-heading">多选</div>
+				<div class="panel-body">
+
+				</div>
+				<div class="panel-footer">
+					<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
+				</div>
+			</form>
+
+			<form id="CheckBox" class="panel panel-primary">
+				<div class="panel-heading">复选</div>
+				<div class="panel-body">
+
+				</div>
+				<div class="panel-footer">
+					<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
+				</div>
+			</form>
+
+			<form id="Switch" class="panel panel-primary">
+				<div class="panel-heading">开关</div>
+				<div class="panel-body">
+
+				</div>
+				<div class="panel-footer">
+					<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
+				</div>
+			</form>
+
+			<form id="Select" class="panel panel-primary">
+				<div class="panel-heading">美化的select</div>
+				<div class="panel-body">
+					<div class=" bui-select-sm">
+						<option value="1">1</option>
+						<option value="2">2</option>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
+				</div>
+			</form>
+
+			<form id="TabPanel" class="panel panel-default panel-tab">
+				<ul class="panel-heading">
+					<li class="active" data-class="default" href="#TabPanelDefault" data-toggle="tab">
+						default
+					</li>
+					<li data-class="primary" href="#TabPanelPrimary" data-toggle="tab">
+						primary
+					</li>
+					<li data-class="success" href="#TabPanelSuccess" data-toggle="tab">
+						success
+					</li>
+					<li data-class="warning" href="#TabPanelWarning" data-toggle="tab">
+						warning
+					</li>
+					<li data-class="danger" href="#TabPanelDanger" data-toggle="tab">
+						danger
+					</li>
+					<li data-class="info" href="#TabPanelInfo" data-toggle="tab">
+						info
+					</li>
+				</ul>
+				<div id="TabPanelDefault" class="panel-body active">
+					TabPanelDefault 内容
+				</div>
+				<div id="TabPanelPrimary" class="panel-body">
+					TabPanelPrimary 内容
+				</div>
+				<div id="TabPanelSuccess" class="panel-body">
+					TabPanelSuccess 内容
+				</div>
+				<div id="TabPanelWarning" class="panel-body">
+					TabPanelWarning 内容
+				</div>
+				<div id="TabPanelDanger" class="panel-body">
+					TabPanelDanger 内容
+				</div>
+				<div id="TabPanelInfo" class="panel-body">
+					TabPanelInfo 内容
+				</div>
+				<div class="panel-footer">
+					<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
+				</div>
+			</form>
+
+			<form id="InputList" class="panel panel-primary">
+				<div class="panel-heading">输入列表</div>
+				<div class="panel-body">
+					
+				</div>
+				<div class="panel-footer">
+					<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
+				</div>
+			</form>
 		</div>
-		<div id="TabPanelPrimary" class="panel-body">
-			TabPanelPrimary 内容
-		</div>
-		<div id="TabPanelSuccess" class="panel-body">
-			TabPanelSuccess 内容
-		</div>
-		<div id="TabPanelWarning" class="panel-body">
-			TabPanelWarning 内容
-		</div>
-		<div id="TabPanelDanger" class="panel-body">
-			TabPanelDanger 内容
-		</div>
-		<div id="TabPanelInfo" class="panel-body">
-			TabPanelInfo 内容
-		</div>
-		<div class="panel-footer">
-			<a class="btn btn-primary" onclick="serilize(this);">序列化</a>
-		</div>
-	</form>
+	</div>
 </div>
 </body>
 </html>

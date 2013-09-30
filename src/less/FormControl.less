@@ -1,4 +1,4 @@
-.bui-formcontrol >div>* {
+.bui-formcontrol >div>:not(.bui-formcontrol) {
 	display: inline-block;
 }
 
@@ -26,10 +26,10 @@
 	input{
 		width: 100%;
 	}
-	&:first-child input{
+	&:first-child > input{
 		.border-left-radius(4px);
 	}
-	&:last-child input{
+	&:last-child > input{
 		.border-right-radius(4px);
 	}
 }

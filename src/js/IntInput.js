@@ -28,7 +28,13 @@
 		$this.prop('speed', 1);
 
 		// 输入框和左右按钮
-		var $input = $this.$input = $this.centerWidget().addClass('text-center').attr('type', 'number').on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189'));
+		var $input = $this.$input = $this.centerWidget().addClass('text-center').attr('type', 'number')
+				.on('keydown', keycodefilter('or', '[96,105]', '[48,57]', '109', '189', function (e){
+					$this.removeClass('has-error');
+				})).change(function(){
+					$this.val($(this).val());
+					trigger_change($this, $this.val());
+				});
 		$this.$left = $this.prepend($bui.Button(new $bui.Icon('arrow-left'), 'span', 'default'));
 		$this.$right = $this.append($bui.Button(new $bui.Icon('arrow-right'), 'span', 'default'));
 
@@ -60,7 +66,7 @@
 				}
 				var v = $this.val() + go.dir*$this.prop('speed');
 				$this.val(v);
-				if(v==last_success_value){
+				if(v == last_success_value){
 					trigger_change($this, v);
 				}
 				go._time = setTimeout(go, $this.pressed);
