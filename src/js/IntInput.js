@@ -116,6 +116,6 @@
 			return false;
 		});
 
-		return $this;
+		return $this.removeClass('has-error');
 	}
 })($bui);

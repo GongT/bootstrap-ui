@@ -78,11 +78,11 @@
 
 		addBtn.on('click', mouse_button('left', function (){
 			var val = $center.val();
-			console.log(val);
 			$center.val('').focus();
 			addItem(val);
 		}));
 
+		this.addVal = addItem;
 		function addItem(val){
 			if(!val){
 				return false;

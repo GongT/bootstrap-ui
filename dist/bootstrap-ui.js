@@ -717,8 +717,18 @@ function mouse_button(expect, fn){
 		this.centerWidget = function (newinput){
 			$center.off('keydown', handler);
 			$center = control.centerWidget(newinput);
+			newinput.attr('name','');
 			newinput.on('keydown', handler);
 		};
+		this.on('click','.bui-delete',function(e){
+			var v= $(this).prev().val();
+			var i  = value.indexOf(v);
+			if(i>-1){
+				value.splice(i, 1);
+			}
+			$(this).parent().remove();
+			e.preventDefault();
+		});
 
 		function handler(event){
 			if(event.shiftKey || event.ctrlKey || event.altKey){
@@ -746,11 +756,11 @@ function mouse_button(expect, fn){
 
 		addBtn.on('click', mouse_button('left', function (){
 			var val = $center.val();
-			console.log(val);
 			$center.val('').focus();
 			addItem(val);
 		}));
 
+		this.addVal = addItem;
 		function addItem(val){
 			if(!val){
 				return false;
@@ -882,7 +892,7 @@ function mouse_button(expect, fn){
 			return false;
 		});
 
-		return $this;
+		return $this.removeClass('has-error');
 	}
 })($bui);
 (function ($bui){
@@ -1034,6 +1044,12 @@ $(document).on('shown.bs.tab', function (e){
 	plug.init = function (){
 		$(document).on('click', hide);
 	};
+	plug.hook('attr', 'title', 'set', function (v){
+		if(this.$input && !this.$input.val()){
+			this.$show.text(v);
+		}
+		return v;
+	});
 
 	var current = null;
 
@@ -1064,18 +1080,21 @@ $(document).on('shown.bs.tab', function (e){
 		$list.append(this.children()).appendTo(this);
 
 		var $btn = $('<div class="bui-toggle"/>').prependTo($this);
-		$this.$show = $('<span/>').html('请选择').appendTo($btn);
+		$this.$show = $('<span/>').appendTo($btn);
 		$('<span class="caret"/>').appendTo($btn);
 
 		$this.$input = $('<input/>').attr('type', 'hidden').val('').prependTo($this);
 		$this.$input.setValue = function (v){
 			if(!item_list.hasOwnProperty(v)){
-				$this.$show.text('请选择');
+				$this.$show.text($this.attr('title'));
 				return '';
 			}
 			$this.$show.text(item_list[v]);
 			return v;
 		};
+		if(!this.attr('title')){
+			this.attr('title', '请选择');
+		}
 
 		// active
 		$this.click(function (){

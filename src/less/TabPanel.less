@@ -18,9 +18,6 @@
 	&.panel-info {
 		.buitab-panel-variant(@panel-info-border, @panel-info-text, @panel-info-heading-bg, @panel-info-border);
 	}
-}
-
-.buitab-panel-variant(@border, @heading-text-color, @heading-bg-color, @heading-border) {
 	.panel-heading {
 		border: none;
 		list-style: none;
@@ -42,13 +39,33 @@
 			&:last-child{
 				border-top-right-radius: @panel-border-radius;
 			}
+			padding: 10px 15px;
+			float: left;
+		}
+	}
+	& > .panel-body {
+		border-top-right-radius: @panel-border-radius;
+	}
+	> .panel-body{
+		display: none;
+		&.active{
+			display: block;
+		}
+	}
+}
+.panel>table.panel-body{
+	width: 100%;
+}
+
+.buitab-panel-variant(@border, @heading-text-color, @heading-bg-color, @heading-border) {
+	.panel-heading {
+		> *{
 			border-top: 1px solid @heading-border;
 			border-left: 1px solid @heading-border;
 			border-right: 1px solid @heading-border;
+			border-bottom: none;
 			color:  darken(@heading-bg-color, 50%);
 			background-color: lighten(@heading-text-color, 70%);
-			padding: 10px 15px;
-			float: left;
 			&:hover,
 			&:focus,
 			&:active,
@@ -63,13 +80,6 @@
 		border-right: 1px solid @border;
 		border-top: 1px solid @heading-border;
 		border-top-right-radius: @panel-border-radius;
-		display: none;
-		&:only-of-type{
-			display: block;
-		}
-		&.active{
-			display: block;
-		}
 	}
 	& > .panel-footer {
 		border-left: 1px solid @border;

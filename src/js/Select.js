@@ -4,6 +4,12 @@
 	plug.init = function (){
 		$(document).on('click', hide);
 	};
+	plug.hook('attr', 'title', 'set', function (v){
+		if(this.$input && !this.$input.val()){
+			this.$show.text(v);
+		}
+		return v;
+	});
 
 	var current = null;
 
@@ -34,18 +40,21 @@
 		$list.append(this.children()).appendTo(this);
 
 		var $btn = $('<div class="bui-toggle"/>').prependTo($this);
-		$this.$show = $('<span/>').html('请选择').appendTo($btn);
+		$this.$show = $('<span/>').appendTo($btn);
 		$('<span class="caret"/>').appendTo($btn);
 
 		$this.$input = $('<input/>').attr('type', 'hidden').val('').prependTo($this);
 		$this.$input.setValue = function (v){
 			if(!item_list.hasOwnProperty(v)){
-				$this.$show.text('请选择');
+				$this.$show.text($this.attr('title'));
 				return '';
 			}
 			$this.$show.text(item_list[v]);
 			return v;
 		};
+		if(!this.attr('title')){
+			this.attr('title', '请选择');
+		}
 
 		// active
 		$this.click(function (){
