@@ -4,25 +4,6 @@
 	var UploadSingle = $bui.UploadSingle = plugin('UploadSingle', UploadSingleConstructor);
 	UploadSingle.proxyInput = true;
 
-	var uploadButton = $('<button/>')
-			.addClass('btn btn-primary')
-			.prop('disabled', true)
-			.text('Processing...')
-			.on('click', function (){
-				var $this = $(this),
-						data = $this.data();
-				$this
-						.off('click')
-						.text('Abort')
-						.on('click', function (){
-							$this.remove();
-							data.abort();
-						});
-				data.submit().always(function (){
-					$this.remove();
-				});
-			});
-
 	function UploadSingleConstructor(option){
 		if(typeof option === 'string'){
 			option = {url: option};
@@ -38,31 +19,37 @@
 			disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
 			previewMaxWidth   : 100,
 			previewMaxHeight  : 100,
-			previewCrop       : true
+			maxChunkSize      : 4000000, // 10 MB
+			multipart         : false,
+			previewCrop       : true,
+			current           : null
 		}, option);
 
+		var $container = (new $bui.FormControl()).appendTo(this);
+
 		var current = option.current;
-		this.$input = $('<input/>');
+		var $this = this;
+		this.$input = $('<input style="display: none!important;"/>').attr('type', 'text').appendTo(this);
 		this.$input.getValue = function (){
 			return current;
 		};
 		this.$input.setValue = function (v){
-			current = v;
+			return current = v;
 		};
-
-		var $this = $bui.FormControl.call(this);
-		var $input = $this.centerWidget($('<input/>').attr('type', 'file'));
+		var $input = $container.centerWidget($('<input/>').attr('type', 'file'));
 		var progress = new $bui.Progress();
 		progress.addClass('progress-striped active').css({'width': '200px'});
-		$this.append(progress);
+		$container.append(progress);
 
 		var current_preview = $('<span/>').append(new $bui.Icon('eye-open'));
-		$this.prepend(current_preview);
+		$container.prepend(current_preview);
 		current_preview.popover({
 			html     : true,
 			title    : '当前图片',
 			content  : function (){
-				return current? current : '<div style="width:100px;height:100px;text-align:center;">无</div>';
+				return current
+						? '<img src="' + current + '" width="100" height="100"/>'
+						: '<div style="width:100px;height:100px;text-align:center;">无</div>';
 			},
 			placement: 'auto',
 			trigger  : 'hover'
@@ -71,9 +58,9 @@
 		var preview_content = '';
 		var preview = $input.parent().popover({
 			html     : true,
-			title    : '没有上传',
+			title    : '选中的图像',
 			content  : function (){
-				return preview_content;
+				return preview_content? preview_content : '没有选中';
 			},
 			placement: 'auto bottom',
 			trigger  : 'manual hover'
@@ -98,12 +85,12 @@
 					}
 					state_empty();
 				});
-		this.append(uploadStart);
-		this.append(clearUpload);
+		$container.append(uploadStart);
+		$container.append(clearUpload);
 
-		var file_upload = $input.fileupload(option).on('fileuploadadd',function (e, data){
-			data.context = $this;
-			console.log('add', data)
+		$input.fileupload(option).on('fileuploadadd',function (e, data){
+			console.log('add', data);
+			state_ready();
 		}).on('fileuploadprocessalways',function (e, data){
 					upload_instance = data;
 					var index = data.index;
@@ -122,13 +109,15 @@
 						state_ready();
 					}
 				}).on('fileuploadprogressall',function (e, data){
-					var pers = parseInt(data.loaded/data.total*100, 10);
+					var pers = parseInt(data.loaded*1000/data.total, 10)/10;
 					progress.attr('progress', pers);
 				}).on('fileuploaddone',function (e, data){
 					var file = data.result.files[0];
 					if(file.url){
+						$this.val(file.url);
 						console.log('done url', file.url);
 					} else if(file.error){
+						$this.val(option.current);
 						console.log('done error', file.error);
 					}
 					state_empty();
@@ -142,6 +131,7 @@
 		state_empty();
 
 		function state_empty(){
+			preview.popover('hide');
 			uploadStart.addClass('disabled');
 			clearUpload.addClass('disabled');
 			$input.val('').removeAttr('disabled');
@@ -152,14 +142,16 @@
 		function state_ready(){
 			uploadStart.removeClass('disabled');
 			clearUpload.removeClass('disabled');
-			$input.attr('disabled','disabled');
+			$input.attr('disabled', 'disabled');
 			state = 1;
 		}
 
 		function state_upload(){
+			preview_content = null;
+			preview.popover('hide');
 			uploadStart.addClass('disabled');
 			clearUpload.removeClass('disabled');
-			$input.attr('disabled','disabled');
+			$input.attr('disabled', 'disabled');
 			state = 2;
 		}
 	}
