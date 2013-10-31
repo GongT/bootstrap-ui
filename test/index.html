@@ -217,13 +217,15 @@
 				.centerWidget(new $bui.IntInput());
 		b.append('<hr/>不能重复：');
 		var il_select = (new $bui.Select()).appendTo(b).attr({'name': 'test_oo_5'});
+		var il_map = {};
 		for(i = 65; i < 91; i++){
 			a = String.fromCharCode(i);
 			il_select.addOption('选项' + a, a.toLowerCase());
+			il_map[a.toLowerCase()]= '值' + a;
 		}
-		(new $bui.InputList()).appendTo(b)
+		(new $bui.InputList()).mapTitle(il_map).appendTo(b)
 				.attr('name', 'test_il_2').data('unique', true).val(['a', 'b', 'c', 'd'])
-				.centerWidget(il_select)
+				.centerWidget(il_select);
 
 		// UploadSingle
 		b = $('#UploadSingle').find('.panel-body');

@@ -6,21 +6,25 @@
 		return v;
 	});
 
-	function item(value, name){
+	function item(value, title, name){
 		var li = $('<li/>');
-		$('<span/>').addClass('bui-label').text(value).appendTo(li);
+		$('<span/>').addClass('bui-label').text(title? title : value).appendTo(li);
 		$('<input/>').attr({'type': 'hidden', 'name': name + '[]'}).val(value).appendTo(li);
 		$('<a/>').addClass('bui-delete').appendTo(li);
 		return li;
 	}
 
-	function unserilize(val, name){
+	function unserilize(val, titleMap, name){
 		if(val.constructor !== Array){
 			throw new TypeError("$bui.InputList.val() 参数必须是数组。");
 		}
 		var list = [];
+		var title;
 		for(var i = 0, cnt = val.length; i < cnt; i++){
-			list[i] = item(val[i], name)[0];
+			if(titleMap[val[i]]){
+				title = titleMap[val[i]];
+			}
+			list[i] = item(val[i], title, name)[0];
 		}
 		return $(list);
 	}
@@ -28,6 +32,7 @@
 	function construct(){
 		var $this = this;
 		var value = [];
+		var titleMap = {};
 		var $list = $('<ul class="list"/>').appendTo(this);
 		var control = (new $bui.FormControl()).appendTo($('<div class="control"/>').appendTo(this));
 		var $center = control.centerWidget($('<input/>').attr('type', 'text'));
@@ -39,13 +44,13 @@
 		this.centerWidget = function (newinput){
 			$center.off('keydown', handler);
 			$center = control.centerWidget(newinput);
-			newinput.attr('name','');
+			newinput.attr('name', '');
 			newinput.on('keydown', handler);
 		};
-		this.on('click','.bui-delete',function(e){
-			var v= $(this).prev().val();
-			var i  = value.indexOf(v);
-			if(i>-1){
+		this.on('click', '.bui-delete', function (e){
+			var v = $(this).prev().val();
+			var i = value.indexOf(v);
+			if(i > -1){
 				value.splice(i, 1);
 			}
 			$(this).parent().remove();
@@ -70,7 +75,7 @@
 			} else{
 				var name = $this.attr('name');
 				value = v;
-				var o = unserilize(v, name);
+				var o = unserilize(v, titleMap, name);
 				o.appendTo($list.empty());
 				return this;
 			}
@@ -83,17 +88,31 @@
 		}));
 
 		this.addVal = addItem;
-		function addItem(val){
+		function addItem(val, title){
 			if(!val){
 				return false;
+			}
+			if(!title){
+				if(titleMap[val]){
+					title = titleMap[val];
+				}
 			}
 			if($this.data('unique') && value.indexOf(val) >= 0){
 				return false;
 			}
 			var name = $this.attr('name');
-			item(val, name).appendTo($list);
+			item(val, title, name).appendTo($list);
 			value.push(val);
 			trigger_change($this, value);
 		}
+
+		this.mapTitle = function (map, extend){
+			if(extend === undefined || extend){
+				$.extend(titleMap, map);
+			} else{
+				titleMap = map;
+			}
+			return this;
+		};
 	}
 })($bui);

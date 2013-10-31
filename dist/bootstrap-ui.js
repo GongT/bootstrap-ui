@@ -1,10 +1,12 @@
-(function($){"use strict";
+(function(window){"use strict";
+
 
 var module = {
 	exports: window,
 	name   : '$bui'
 };
-/* //$.bui.xxx
+/* 
+ //$.bui.xxx
  var module = {
  exports: jQuery,
  name: 'bui'
@@ -26,22 +28,22 @@ function plugin(name, constructor){
 			$obj = $('<div/>');
 		}
 
-		$obj.addClass(p.class? ' bui-' + p.class : '');
+		$obj.addClass(p.containerClass? ' bui-' + p.containerClass : '');
 		$obj.data('bui', name.toLowerCase());
 		$obj.data('_bui', $obj);
 
 		$obj.large = function (){
-			if($obj.hasClass('bui-' + p.class + '-sm')){
-				$obj.removeClass('bui-' + p.class + '-sm');
+			if($obj.hasClass('bui-' + p.containerClass + '-sm')){
+				$obj.removeClass('bui-' + p.containerClass + '-sm');
 			}
-			$obj.addClass('bui-' + p.class + '-lg');
+			$obj.addClass('bui-' + p.containerClass + '-lg');
 			return $obj;
 		};
 		$obj.small = function (){
-			if($obj.hasClass('bui-' + p.class + '-lg')){
-				$obj.removeClass('bui-' + p.class + '-lg');
+			if($obj.hasClass('bui-' + p.containerClass + '-lg')){
+				$obj.removeClass('bui-' + p.containerClass + '-lg');
 			}
-			$obj.addClass('bui-' + p.class + '-sm');
+			$obj.addClass('bui-' + p.containerClass + '-sm');
 			return $obj;
 		};
 
@@ -91,7 +93,7 @@ function plugin(name, constructor){
 	var proxis = {};
 	var p = BuiItemConstructor;
 
-	p.class = name.toLowerCase();
+	p.containerClass = name.toLowerCase();
 	p.hook = function (type, name, gs, func){
 		if(!handles[type]){
 			handles[type] = {};
@@ -736,21 +738,25 @@ function mouse_button(expect, fn){
 		return v;
 	});
 
-	function item(value, name){
+	function item(value, title, name){
 		var li = $('<li/>');
-		$('<span/>').addClass('bui-label').text(value).appendTo(li);
+		$('<span/>').addClass('bui-label').text(title? title : value).appendTo(li);
 		$('<input/>').attr({'type': 'hidden', 'name': name + '[]'}).val(value).appendTo(li);
 		$('<a/>').addClass('bui-delete').appendTo(li);
 		return li;
 	}
 
-	function unserilize(val, name){
+	function unserilize(val, titleMap, name){
 		if(val.constructor !== Array){
 			throw new TypeError("$bui.InputList.val() 参数必须是数组。");
 		}
 		var list = [];
+		var title;
 		for(var i = 0, cnt = val.length; i < cnt; i++){
-			list[i] = item(val[i], name)[0];
+			if(titleMap[val[i]]){
+				title = titleMap[val[i]];
+			}
+			list[i] = item(val[i], title, name)[0];
 		}
 		return $(list);
 	}
@@ -758,6 +764,7 @@ function mouse_button(expect, fn){
 	function construct(){
 		var $this = this;
 		var value = [];
+		var titleMap = {};
 		var $list = $('<ul class="list"/>').appendTo(this);
 		var control = (new $bui.FormControl()).appendTo($('<div class="control"/>').appendTo(this));
 		var $center = control.centerWidget($('<input/>').attr('type', 'text'));
@@ -769,13 +776,13 @@ function mouse_button(expect, fn){
 		this.centerWidget = function (newinput){
 			$center.off('keydown', handler);
 			$center = control.centerWidget(newinput);
-			newinput.attr('name','');
+			newinput.attr('name', '');
 			newinput.on('keydown', handler);
 		};
-		this.on('click','.bui-delete',function(e){
-			var v= $(this).prev().val();
-			var i  = value.indexOf(v);
-			if(i>-1){
+		this.on('click', '.bui-delete', function (e){
+			var v = $(this).prev().val();
+			var i = value.indexOf(v);
+			if(i > -1){
 				value.splice(i, 1);
 			}
 			$(this).parent().remove();
@@ -800,7 +807,7 @@ function mouse_button(expect, fn){
 			} else{
 				var name = $this.attr('name');
 				value = v;
-				var o = unserilize(v, name);
+				var o = unserilize(v, titleMap, name);
 				o.appendTo($list.empty());
 				return this;
 			}
@@ -813,18 +820,32 @@ function mouse_button(expect, fn){
 		}));
 
 		this.addVal = addItem;
-		function addItem(val){
+		function addItem(val, title){
 			if(!val){
 				return false;
+			}
+			if(!title){
+				if(titleMap[val]){
+					title = titleMap[val];
+				}
 			}
 			if($this.data('unique') && value.indexOf(val) >= 0){
 				return false;
 			}
 			var name = $this.attr('name');
-			item(val, name).appendTo($list);
+			item(val, title, name).appendTo($list);
 			value.push(val);
 			trigger_change($this, value);
 		}
+
+		this.mapTitle = function (map, extend){
+			if(extend === undefined || extend){
+				$.extend(titleMap, map);
+			} else{
+				titleMap = map;
+			}
+			return this;
+		};
 	}
 })($bui);
 (function ($bui){
@@ -1472,4 +1493,4 @@ $(document).on('shown.bs.tab', function (e){
 	}
 })($bui);
 
-})(window.jQuery||jQuery);
+})(window);

@@ -15,22 +15,22 @@ function plugin(name, constructor){
 			$obj = $('<div/>');
 		}
 
-		$obj.addClass(p.class? ' bui-' + p.class : '');
+		$obj.addClass(p.containerClass? ' bui-' + p.containerClass : '');
 		$obj.data('bui', name.toLowerCase());
 		$obj.data('_bui', $obj);
 
 		$obj.large = function (){
-			if($obj.hasClass('bui-' + p.class + '-sm')){
-				$obj.removeClass('bui-' + p.class + '-sm');
+			if($obj.hasClass('bui-' + p.containerClass + '-sm')){
+				$obj.removeClass('bui-' + p.containerClass + '-sm');
 			}
-			$obj.addClass('bui-' + p.class + '-lg');
+			$obj.addClass('bui-' + p.containerClass + '-lg');
 			return $obj;
 		};
 		$obj.small = function (){
-			if($obj.hasClass('bui-' + p.class + '-lg')){
-				$obj.removeClass('bui-' + p.class + '-lg');
+			if($obj.hasClass('bui-' + p.containerClass + '-lg')){
+				$obj.removeClass('bui-' + p.containerClass + '-lg');
 			}
-			$obj.addClass('bui-' + p.class + '-sm');
+			$obj.addClass('bui-' + p.containerClass + '-sm');
 			return $obj;
 		};
 
@@ -80,7 +80,7 @@ function plugin(name, constructor){
 	var proxis = {};
 	var p = BuiItemConstructor;
 
-	p.class = name.toLowerCase();
+	p.containerClass = name.toLowerCase();
 	p.hook = function (type, name, gs, func){
 		if(!handles[type]){
 			handles[type] = {};
