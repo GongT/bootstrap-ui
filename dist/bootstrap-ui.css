@@ -345,7 +345,18 @@ input[type="number"]::-moz-inner-spin-button {
 .panel-tab {
   border: none;
 }
-.panel-tab.panel-default .panel-heading > * {
+.panel-tab.panel-default .panel-heading > h1,
+.panel-tab.panel-default .panel-heading > h2,
+.panel-tab.panel-default .panel-heading > h3,
+.panel-tab.panel-default .panel-heading > h4,
+.panel-tab.panel-default .panel-heading > h5,
+.panel-tab.panel-default .panel-heading > div,
+.panel-tab.panel-default .panel-heading > span,
+.panel-tab.panel-default .panel-heading > button,
+.panel-tab.panel-default .panel-heading > .btn,
+.panel-tab.panel-default .panel-heading .tab > li,
+.panel-tab.panel-default .panel-heading > dt,
+.panel-tab.panel-default .panel-heading > dd {
   border-top: 1px solid #dddddd;
   border-left: 1px solid #dddddd;
   border-right: 1px solid #dddddd;
@@ -353,10 +364,54 @@ input[type="number"]::-moz-inner-spin-button {
   color: #767676;
   background-color: #e5e5e5;
 }
-.panel-tab.panel-default .panel-heading > *:hover,
-.panel-tab.panel-default .panel-heading > *:focus,
-.panel-tab.panel-default .panel-heading > *:active,
-.panel-tab.panel-default .panel-heading > *.active {
+.panel-tab.panel-default .panel-heading > h1:hover,
+.panel-tab.panel-default .panel-heading > h2:hover,
+.panel-tab.panel-default .panel-heading > h3:hover,
+.panel-tab.panel-default .panel-heading > h4:hover,
+.panel-tab.panel-default .panel-heading > h5:hover,
+.panel-tab.panel-default .panel-heading > div:hover,
+.panel-tab.panel-default .panel-heading > span:hover,
+.panel-tab.panel-default .panel-heading > button:hover,
+.panel-tab.panel-default .panel-heading > .btn:hover,
+.panel-tab.panel-default .panel-heading .tab > li:hover,
+.panel-tab.panel-default .panel-heading > dt:hover,
+.panel-tab.panel-default .panel-heading > dd:hover,
+.panel-tab.panel-default .panel-heading > h1:focus,
+.panel-tab.panel-default .panel-heading > h2:focus,
+.panel-tab.panel-default .panel-heading > h3:focus,
+.panel-tab.panel-default .panel-heading > h4:focus,
+.panel-tab.panel-default .panel-heading > h5:focus,
+.panel-tab.panel-default .panel-heading > div:focus,
+.panel-tab.panel-default .panel-heading > span:focus,
+.panel-tab.panel-default .panel-heading > button:focus,
+.panel-tab.panel-default .panel-heading > .btn:focus,
+.panel-tab.panel-default .panel-heading .tab > li:focus,
+.panel-tab.panel-default .panel-heading > dt:focus,
+.panel-tab.panel-default .panel-heading > dd:focus,
+.panel-tab.panel-default .panel-heading > h1:active,
+.panel-tab.panel-default .panel-heading > h2:active,
+.panel-tab.panel-default .panel-heading > h3:active,
+.panel-tab.panel-default .panel-heading > h4:active,
+.panel-tab.panel-default .panel-heading > h5:active,
+.panel-tab.panel-default .panel-heading > div:active,
+.panel-tab.panel-default .panel-heading > span:active,
+.panel-tab.panel-default .panel-heading > button:active,
+.panel-tab.panel-default .panel-heading > .btn:active,
+.panel-tab.panel-default .panel-heading .tab > li:active,
+.panel-tab.panel-default .panel-heading > dt:active,
+.panel-tab.panel-default .panel-heading > dd:active,
+.panel-tab.panel-default .panel-heading > h1.active,
+.panel-tab.panel-default .panel-heading > h2.active,
+.panel-tab.panel-default .panel-heading > h3.active,
+.panel-tab.panel-default .panel-heading > h4.active,
+.panel-tab.panel-default .panel-heading > h5.active,
+.panel-tab.panel-default .panel-heading > div.active,
+.panel-tab.panel-default .panel-heading > span.active,
+.panel-tab.panel-default .panel-heading > button.active,
+.panel-tab.panel-default .panel-heading > .btn.active,
+.panel-tab.panel-default .panel-heading .tab > li.active,
+.panel-tab.panel-default .panel-heading > dt.active,
+.panel-tab.panel-default .panel-heading > dd.active {
   color: #333333;
   background-color: #f5f5f5;
 }
@@ -366,12 +421,26 @@ input[type="number"]::-moz-inner-spin-button {
   border-top: 1px solid #dddddd;
   border-top-right-radius: 4px;
 }
+.panel-tab.panel-default > .panel-body:last-child {
+  border-bottom: 1px solid #dddddd;
+}
 .panel-tab.panel-default > .panel-footer {
   border-left: 1px solid #dddddd;
   border-right: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
 }
-.panel-tab.panel-primary .panel-heading > * {
+.panel-tab.panel-primary .panel-heading > h1,
+.panel-tab.panel-primary .panel-heading > h2,
+.panel-tab.panel-primary .panel-heading > h3,
+.panel-tab.panel-primary .panel-heading > h4,
+.panel-tab.panel-primary .panel-heading > h5,
+.panel-tab.panel-primary .panel-heading > div,
+.panel-tab.panel-primary .panel-heading > span,
+.panel-tab.panel-primary .panel-heading > button,
+.panel-tab.panel-primary .panel-heading > .btn,
+.panel-tab.panel-primary .panel-heading .tab > li,
+.panel-tab.panel-primary .panel-heading > dt,
+.panel-tab.panel-primary .panel-heading > dd {
   border-top: 1px solid #428bca;
   border-left: 1px solid #428bca;
   border-right: 1px solid #428bca;
@@ -379,10 +448,54 @@ input[type="number"]::-moz-inner-spin-button {
   color: #03070a;
   background-color: #ffffff;
 }
-.panel-tab.panel-primary .panel-heading > *:hover,
-.panel-tab.panel-primary .panel-heading > *:focus,
-.panel-tab.panel-primary .panel-heading > *:active,
-.panel-tab.panel-primary .panel-heading > *.active {
+.panel-tab.panel-primary .panel-heading > h1:hover,
+.panel-tab.panel-primary .panel-heading > h2:hover,
+.panel-tab.panel-primary .panel-heading > h3:hover,
+.panel-tab.panel-primary .panel-heading > h4:hover,
+.panel-tab.panel-primary .panel-heading > h5:hover,
+.panel-tab.panel-primary .panel-heading > div:hover,
+.panel-tab.panel-primary .panel-heading > span:hover,
+.panel-tab.panel-primary .panel-heading > button:hover,
+.panel-tab.panel-primary .panel-heading > .btn:hover,
+.panel-tab.panel-primary .panel-heading .tab > li:hover,
+.panel-tab.panel-primary .panel-heading > dt:hover,
+.panel-tab.panel-primary .panel-heading > dd:hover,
+.panel-tab.panel-primary .panel-heading > h1:focus,
+.panel-tab.panel-primary .panel-heading > h2:focus,
+.panel-tab.panel-primary .panel-heading > h3:focus,
+.panel-tab.panel-primary .panel-heading > h4:focus,
+.panel-tab.panel-primary .panel-heading > h5:focus,
+.panel-tab.panel-primary .panel-heading > div:focus,
+.panel-tab.panel-primary .panel-heading > span:focus,
+.panel-tab.panel-primary .panel-heading > button:focus,
+.panel-tab.panel-primary .panel-heading > .btn:focus,
+.panel-tab.panel-primary .panel-heading .tab > li:focus,
+.panel-tab.panel-primary .panel-heading > dt:focus,
+.panel-tab.panel-primary .panel-heading > dd:focus,
+.panel-tab.panel-primary .panel-heading > h1:active,
+.panel-tab.panel-primary .panel-heading > h2:active,
+.panel-tab.panel-primary .panel-heading > h3:active,
+.panel-tab.panel-primary .panel-heading > h4:active,
+.panel-tab.panel-primary .panel-heading > h5:active,
+.panel-tab.panel-primary .panel-heading > div:active,
+.panel-tab.panel-primary .panel-heading > span:active,
+.panel-tab.panel-primary .panel-heading > button:active,
+.panel-tab.panel-primary .panel-heading > .btn:active,
+.panel-tab.panel-primary .panel-heading .tab > li:active,
+.panel-tab.panel-primary .panel-heading > dt:active,
+.panel-tab.panel-primary .panel-heading > dd:active,
+.panel-tab.panel-primary .panel-heading > h1.active,
+.panel-tab.panel-primary .panel-heading > h2.active,
+.panel-tab.panel-primary .panel-heading > h3.active,
+.panel-tab.panel-primary .panel-heading > h4.active,
+.panel-tab.panel-primary .panel-heading > h5.active,
+.panel-tab.panel-primary .panel-heading > div.active,
+.panel-tab.panel-primary .panel-heading > span.active,
+.panel-tab.panel-primary .panel-heading > button.active,
+.panel-tab.panel-primary .panel-heading > .btn.active,
+.panel-tab.panel-primary .panel-heading .tab > li.active,
+.panel-tab.panel-primary .panel-heading > dt.active,
+.panel-tab.panel-primary .panel-heading > dd.active {
   color: #ffffff;
   background-color: #428bca;
 }
@@ -392,12 +505,26 @@ input[type="number"]::-moz-inner-spin-button {
   border-top: 1px solid #428bca;
   border-top-right-radius: 4px;
 }
+.panel-tab.panel-primary > .panel-body:last-child {
+  border-bottom: 1px solid #428bca;
+}
 .panel-tab.panel-primary > .panel-footer {
   border-left: 1px solid #428bca;
   border-right: 1px solid #428bca;
   border-bottom: 1px solid #428bca;
 }
-.panel-tab.panel-success .panel-heading > * {
+.panel-tab.panel-success .panel-heading > h1,
+.panel-tab.panel-success .panel-heading > h2,
+.panel-tab.panel-success .panel-heading > h3,
+.panel-tab.panel-success .panel-heading > h4,
+.panel-tab.panel-success .panel-heading > h5,
+.panel-tab.panel-success .panel-heading > div,
+.panel-tab.panel-success .panel-heading > span,
+.panel-tab.panel-success .panel-heading > button,
+.panel-tab.panel-success .panel-heading > .btn,
+.panel-tab.panel-success .panel-heading .tab > li,
+.panel-tab.panel-success .panel-heading > dt,
+.panel-tab.panel-success .panel-heading > dd {
   border-top: 1px solid #d6e9c6;
   border-left: 1px solid #d6e9c6;
   border-right: 1px solid #d6e9c6;
@@ -405,10 +532,54 @@ input[type="number"]::-moz-inner-spin-button {
   color: #529138;
   background-color: #ffffff;
 }
-.panel-tab.panel-success .panel-heading > *:hover,
-.panel-tab.panel-success .panel-heading > *:focus,
-.panel-tab.panel-success .panel-heading > *:active,
-.panel-tab.panel-success .panel-heading > *.active {
+.panel-tab.panel-success .panel-heading > h1:hover,
+.panel-tab.panel-success .panel-heading > h2:hover,
+.panel-tab.panel-success .panel-heading > h3:hover,
+.panel-tab.panel-success .panel-heading > h4:hover,
+.panel-tab.panel-success .panel-heading > h5:hover,
+.panel-tab.panel-success .panel-heading > div:hover,
+.panel-tab.panel-success .panel-heading > span:hover,
+.panel-tab.panel-success .panel-heading > button:hover,
+.panel-tab.panel-success .panel-heading > .btn:hover,
+.panel-tab.panel-success .panel-heading .tab > li:hover,
+.panel-tab.panel-success .panel-heading > dt:hover,
+.panel-tab.panel-success .panel-heading > dd:hover,
+.panel-tab.panel-success .panel-heading > h1:focus,
+.panel-tab.panel-success .panel-heading > h2:focus,
+.panel-tab.panel-success .panel-heading > h3:focus,
+.panel-tab.panel-success .panel-heading > h4:focus,
+.panel-tab.panel-success .panel-heading > h5:focus,
+.panel-tab.panel-success .panel-heading > div:focus,
+.panel-tab.panel-success .panel-heading > span:focus,
+.panel-tab.panel-success .panel-heading > button:focus,
+.panel-tab.panel-success .panel-heading > .btn:focus,
+.panel-tab.panel-success .panel-heading .tab > li:focus,
+.panel-tab.panel-success .panel-heading > dt:focus,
+.panel-tab.panel-success .panel-heading > dd:focus,
+.panel-tab.panel-success .panel-heading > h1:active,
+.panel-tab.panel-success .panel-heading > h2:active,
+.panel-tab.panel-success .panel-heading > h3:active,
+.panel-tab.panel-success .panel-heading > h4:active,
+.panel-tab.panel-success .panel-heading > h5:active,
+.panel-tab.panel-success .panel-heading > div:active,
+.panel-tab.panel-success .panel-heading > span:active,
+.panel-tab.panel-success .panel-heading > button:active,
+.panel-tab.panel-success .panel-heading > .btn:active,
+.panel-tab.panel-success .panel-heading .tab > li:active,
+.panel-tab.panel-success .panel-heading > dt:active,
+.panel-tab.panel-success .panel-heading > dd:active,
+.panel-tab.panel-success .panel-heading > h1.active,
+.panel-tab.panel-success .panel-heading > h2.active,
+.panel-tab.panel-success .panel-heading > h3.active,
+.panel-tab.panel-success .panel-heading > h4.active,
+.panel-tab.panel-success .panel-heading > h5.active,
+.panel-tab.panel-success .panel-heading > div.active,
+.panel-tab.panel-success .panel-heading > span.active,
+.panel-tab.panel-success .panel-heading > button.active,
+.panel-tab.panel-success .panel-heading > .btn.active,
+.panel-tab.panel-success .panel-heading .tab > li.active,
+.panel-tab.panel-success .panel-heading > dt.active,
+.panel-tab.panel-success .panel-heading > dd.active {
   color: #468847;
   background-color: #dff0d8;
 }
@@ -418,12 +589,26 @@ input[type="number"]::-moz-inner-spin-button {
   border-top: 1px solid #d6e9c6;
   border-top-right-radius: 4px;
 }
+.panel-tab.panel-success > .panel-body:last-child {
+  border-bottom: 1px solid #d6e9c6;
+}
 .panel-tab.panel-success > .panel-footer {
   border-left: 1px solid #d6e9c6;
   border-right: 1px solid #d6e9c6;
   border-bottom: 1px solid #d6e9c6;
 }
-.panel-tab.panel-warning .panel-heading > * {
+.panel-tab.panel-warning .panel-heading > h1,
+.panel-tab.panel-warning .panel-heading > h2,
+.panel-tab.panel-warning .panel-heading > h3,
+.panel-tab.panel-warning .panel-heading > h4,
+.panel-tab.panel-warning .panel-heading > h5,
+.panel-tab.panel-warning .panel-heading > div,
+.panel-tab.panel-warning .panel-heading > span,
+.panel-tab.panel-warning .panel-heading > button,
+.panel-tab.panel-warning .panel-heading > .btn,
+.panel-tab.panel-warning .panel-heading .tab > li,
+.panel-tab.panel-warning .panel-heading > dt,
+.panel-tab.panel-warning .panel-heading > dd {
   border-top: 1px solid #fbeed5;
   border-left: 1px solid #fbeed5;
   border-right: 1px solid #fbeed5;
@@ -431,10 +616,54 @@ input[type="number"]::-moz-inner-spin-button {
   color: #caad16;
   background-color: #ffffff;
 }
-.panel-tab.panel-warning .panel-heading > *:hover,
-.panel-tab.panel-warning .panel-heading > *:focus,
-.panel-tab.panel-warning .panel-heading > *:active,
-.panel-tab.panel-warning .panel-heading > *.active {
+.panel-tab.panel-warning .panel-heading > h1:hover,
+.panel-tab.panel-warning .panel-heading > h2:hover,
+.panel-tab.panel-warning .panel-heading > h3:hover,
+.panel-tab.panel-warning .panel-heading > h4:hover,
+.panel-tab.panel-warning .panel-heading > h5:hover,
+.panel-tab.panel-warning .panel-heading > div:hover,
+.panel-tab.panel-warning .panel-heading > span:hover,
+.panel-tab.panel-warning .panel-heading > button:hover,
+.panel-tab.panel-warning .panel-heading > .btn:hover,
+.panel-tab.panel-warning .panel-heading .tab > li:hover,
+.panel-tab.panel-warning .panel-heading > dt:hover,
+.panel-tab.panel-warning .panel-heading > dd:hover,
+.panel-tab.panel-warning .panel-heading > h1:focus,
+.panel-tab.panel-warning .panel-heading > h2:focus,
+.panel-tab.panel-warning .panel-heading > h3:focus,
+.panel-tab.panel-warning .panel-heading > h4:focus,
+.panel-tab.panel-warning .panel-heading > h5:focus,
+.panel-tab.panel-warning .panel-heading > div:focus,
+.panel-tab.panel-warning .panel-heading > span:focus,
+.panel-tab.panel-warning .panel-heading > button:focus,
+.panel-tab.panel-warning .panel-heading > .btn:focus,
+.panel-tab.panel-warning .panel-heading .tab > li:focus,
+.panel-tab.panel-warning .panel-heading > dt:focus,
+.panel-tab.panel-warning .panel-heading > dd:focus,
+.panel-tab.panel-warning .panel-heading > h1:active,
+.panel-tab.panel-warning .panel-heading > h2:active,
+.panel-tab.panel-warning .panel-heading > h3:active,
+.panel-tab.panel-warning .panel-heading > h4:active,
+.panel-tab.panel-warning .panel-heading > h5:active,
+.panel-tab.panel-warning .panel-heading > div:active,
+.panel-tab.panel-warning .panel-heading > span:active,
+.panel-tab.panel-warning .panel-heading > button:active,
+.panel-tab.panel-warning .panel-heading > .btn:active,
+.panel-tab.panel-warning .panel-heading .tab > li:active,
+.panel-tab.panel-warning .panel-heading > dt:active,
+.panel-tab.panel-warning .panel-heading > dd:active,
+.panel-tab.panel-warning .panel-heading > h1.active,
+.panel-tab.panel-warning .panel-heading > h2.active,
+.panel-tab.panel-warning .panel-heading > h3.active,
+.panel-tab.panel-warning .panel-heading > h4.active,
+.panel-tab.panel-warning .panel-heading > h5.active,
+.panel-tab.panel-warning .panel-heading > div.active,
+.panel-tab.panel-warning .panel-heading > span.active,
+.panel-tab.panel-warning .panel-heading > button.active,
+.panel-tab.panel-warning .panel-heading > .btn.active,
+.panel-tab.panel-warning .panel-heading .tab > li.active,
+.panel-tab.panel-warning .panel-heading > dt.active,
+.panel-tab.panel-warning .panel-heading > dd.active {
   color: #c09853;
   background-color: #fcf8e3;
 }
@@ -444,12 +673,26 @@ input[type="number"]::-moz-inner-spin-button {
   border-top: 1px solid #fbeed5;
   border-top-right-radius: 4px;
 }
+.panel-tab.panel-warning > .panel-body:last-child {
+  border-bottom: 1px solid #fbeed5;
+}
 .panel-tab.panel-warning > .panel-footer {
   border-left: 1px solid #fbeed5;
   border-right: 1px solid #fbeed5;
   border-bottom: 1px solid #fbeed5;
 }
-.panel-tab.panel-danger .panel-heading > * {
+.panel-tab.panel-danger .panel-heading > h1,
+.panel-tab.panel-danger .panel-heading > h2,
+.panel-tab.panel-danger .panel-heading > h3,
+.panel-tab.panel-danger .panel-heading > h4,
+.panel-tab.panel-danger .panel-heading > h5,
+.panel-tab.panel-danger .panel-heading > div,
+.panel-tab.panel-danger .panel-heading > span,
+.panel-tab.panel-danger .panel-heading > button,
+.panel-tab.panel-danger .panel-heading > .btn,
+.panel-tab.panel-danger .panel-heading .tab > li,
+.panel-tab.panel-danger .panel-heading > dt,
+.panel-tab.panel-danger .panel-heading > dd {
   border-top: 1px solid #eed3d7;
   border-left: 1px solid #eed3d7;
   border-right: 1px solid #eed3d7;
@@ -457,10 +700,54 @@ input[type="number"]::-moz-inner-spin-button {
   color: #963b3b;
   background-color: #ffffff;
 }
-.panel-tab.panel-danger .panel-heading > *:hover,
-.panel-tab.panel-danger .panel-heading > *:focus,
-.panel-tab.panel-danger .panel-heading > *:active,
-.panel-tab.panel-danger .panel-heading > *.active {
+.panel-tab.panel-danger .panel-heading > h1:hover,
+.panel-tab.panel-danger .panel-heading > h2:hover,
+.panel-tab.panel-danger .panel-heading > h3:hover,
+.panel-tab.panel-danger .panel-heading > h4:hover,
+.panel-tab.panel-danger .panel-heading > h5:hover,
+.panel-tab.panel-danger .panel-heading > div:hover,
+.panel-tab.panel-danger .panel-heading > span:hover,
+.panel-tab.panel-danger .panel-heading > button:hover,
+.panel-tab.panel-danger .panel-heading > .btn:hover,
+.panel-tab.panel-danger .panel-heading .tab > li:hover,
+.panel-tab.panel-danger .panel-heading > dt:hover,
+.panel-tab.panel-danger .panel-heading > dd:hover,
+.panel-tab.panel-danger .panel-heading > h1:focus,
+.panel-tab.panel-danger .panel-heading > h2:focus,
+.panel-tab.panel-danger .panel-heading > h3:focus,
+.panel-tab.panel-danger .panel-heading > h4:focus,
+.panel-tab.panel-danger .panel-heading > h5:focus,
+.panel-tab.panel-danger .panel-heading > div:focus,
+.panel-tab.panel-danger .panel-heading > span:focus,
+.panel-tab.panel-danger .panel-heading > button:focus,
+.panel-tab.panel-danger .panel-heading > .btn:focus,
+.panel-tab.panel-danger .panel-heading .tab > li:focus,
+.panel-tab.panel-danger .panel-heading > dt:focus,
+.panel-tab.panel-danger .panel-heading > dd:focus,
+.panel-tab.panel-danger .panel-heading > h1:active,
+.panel-tab.panel-danger .panel-heading > h2:active,
+.panel-tab.panel-danger .panel-heading > h3:active,
+.panel-tab.panel-danger .panel-heading > h4:active,
+.panel-tab.panel-danger .panel-heading > h5:active,
+.panel-tab.panel-danger .panel-heading > div:active,
+.panel-tab.panel-danger .panel-heading > span:active,
+.panel-tab.panel-danger .panel-heading > button:active,
+.panel-tab.panel-danger .panel-heading > .btn:active,
+.panel-tab.panel-danger .panel-heading .tab > li:active,
+.panel-tab.panel-danger .panel-heading > dt:active,
+.panel-tab.panel-danger .panel-heading > dd:active,
+.panel-tab.panel-danger .panel-heading > h1.active,
+.panel-tab.panel-danger .panel-heading > h2.active,
+.panel-tab.panel-danger .panel-heading > h3.active,
+.panel-tab.panel-danger .panel-heading > h4.active,
+.panel-tab.panel-danger .panel-heading > h5.active,
+.panel-tab.panel-danger .panel-heading > div.active,
+.panel-tab.panel-danger .panel-heading > span.active,
+.panel-tab.panel-danger .panel-heading > button.active,
+.panel-tab.panel-danger .panel-heading > .btn.active,
+.panel-tab.panel-danger .panel-heading .tab > li.active,
+.panel-tab.panel-danger .panel-heading > dt.active,
+.panel-tab.panel-danger .panel-heading > dd.active {
   color: #b94a48;
   background-color: #f2dede;
 }
@@ -470,12 +757,26 @@ input[type="number"]::-moz-inner-spin-button {
   border-top: 1px solid #eed3d7;
   border-top-right-radius: 4px;
 }
+.panel-tab.panel-danger > .panel-body:last-child {
+  border-bottom: 1px solid #eed3d7;
+}
 .panel-tab.panel-danger > .panel-footer {
   border-left: 1px solid #eed3d7;
   border-right: 1px solid #eed3d7;
   border-bottom: 1px solid #eed3d7;
 }
-.panel-tab.panel-info .panel-heading > * {
+.panel-tab.panel-info .panel-heading > h1,
+.panel-tab.panel-info .panel-heading > h2,
+.panel-tab.panel-info .panel-heading > h3,
+.panel-tab.panel-info .panel-heading > h4,
+.panel-tab.panel-info .panel-heading > h5,
+.panel-tab.panel-info .panel-heading > div,
+.panel-tab.panel-info .panel-heading > span,
+.panel-tab.panel-info .panel-heading > button,
+.panel-tab.panel-info .panel-heading > .btn,
+.panel-tab.panel-info .panel-heading .tab > li,
+.panel-tab.panel-info .panel-heading > dt,
+.panel-tab.panel-info .panel-heading > dd {
   border-top: 1px solid #bce8f1;
   border-left: 1px solid #bce8f1;
   border-right: 1px solid #bce8f1;
@@ -483,10 +784,54 @@ input[type="number"]::-moz-inner-spin-button {
   color: #247fad;
   background-color: #ffffff;
 }
-.panel-tab.panel-info .panel-heading > *:hover,
-.panel-tab.panel-info .panel-heading > *:focus,
-.panel-tab.panel-info .panel-heading > *:active,
-.panel-tab.panel-info .panel-heading > *.active {
+.panel-tab.panel-info .panel-heading > h1:hover,
+.panel-tab.panel-info .panel-heading > h2:hover,
+.panel-tab.panel-info .panel-heading > h3:hover,
+.panel-tab.panel-info .panel-heading > h4:hover,
+.panel-tab.panel-info .panel-heading > h5:hover,
+.panel-tab.panel-info .panel-heading > div:hover,
+.panel-tab.panel-info .panel-heading > span:hover,
+.panel-tab.panel-info .panel-heading > button:hover,
+.panel-tab.panel-info .panel-heading > .btn:hover,
+.panel-tab.panel-info .panel-heading .tab > li:hover,
+.panel-tab.panel-info .panel-heading > dt:hover,
+.panel-tab.panel-info .panel-heading > dd:hover,
+.panel-tab.panel-info .panel-heading > h1:focus,
+.panel-tab.panel-info .panel-heading > h2:focus,
+.panel-tab.panel-info .panel-heading > h3:focus,
+.panel-tab.panel-info .panel-heading > h4:focus,
+.panel-tab.panel-info .panel-heading > h5:focus,
+.panel-tab.panel-info .panel-heading > div:focus,
+.panel-tab.panel-info .panel-heading > span:focus,
+.panel-tab.panel-info .panel-heading > button:focus,
+.panel-tab.panel-info .panel-heading > .btn:focus,
+.panel-tab.panel-info .panel-heading .tab > li:focus,
+.panel-tab.panel-info .panel-heading > dt:focus,
+.panel-tab.panel-info .panel-heading > dd:focus,
+.panel-tab.panel-info .panel-heading > h1:active,
+.panel-tab.panel-info .panel-heading > h2:active,
+.panel-tab.panel-info .panel-heading > h3:active,
+.panel-tab.panel-info .panel-heading > h4:active,
+.panel-tab.panel-info .panel-heading > h5:active,
+.panel-tab.panel-info .panel-heading > div:active,
+.panel-tab.panel-info .panel-heading > span:active,
+.panel-tab.panel-info .panel-heading > button:active,
+.panel-tab.panel-info .panel-heading > .btn:active,
+.panel-tab.panel-info .panel-heading .tab > li:active,
+.panel-tab.panel-info .panel-heading > dt:active,
+.panel-tab.panel-info .panel-heading > dd:active,
+.panel-tab.panel-info .panel-heading > h1.active,
+.panel-tab.panel-info .panel-heading > h2.active,
+.panel-tab.panel-info .panel-heading > h3.active,
+.panel-tab.panel-info .panel-heading > h4.active,
+.panel-tab.panel-info .panel-heading > h5.active,
+.panel-tab.panel-info .panel-heading > div.active,
+.panel-tab.panel-info .panel-heading > span.active,
+.panel-tab.panel-info .panel-heading > button.active,
+.panel-tab.panel-info .panel-heading > .btn.active,
+.panel-tab.panel-info .panel-heading .tab > li.active,
+.panel-tab.panel-info .panel-heading > dt.active,
+.panel-tab.panel-info .panel-heading > dd.active {
   color: #3a87ad;
   background-color: #d9edf7;
 }
@@ -495,6 +840,9 @@ input[type="number"]::-moz-inner-spin-button {
   border-right: 1px solid #bce8f1;
   border-top: 1px solid #bce8f1;
   border-top-right-radius: 4px;
+}
+.panel-tab.panel-info > .panel-body:last-child {
+  border-bottom: 1px solid #bce8f1;
 }
 .panel-tab.panel-info > .panel-footer {
   border-left: 1px solid #bce8f1;

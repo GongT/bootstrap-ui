@@ -32,11 +32,11 @@
 		&:after {
 			clear: both;
 		}
-		> *{
-			&:first-child{
+		> * {
+			&:first-child {
 				border-top-left-radius: @panel-border-radius;
 			}
-			&:last-child{
+			&:last-child {
 				border-top-right-radius: @panel-border-radius;
 			}
 			padding: 10px 15px;
@@ -46,31 +46,36 @@
 	& > .panel-body {
 		border-top-right-radius: @panel-border-radius;
 	}
-	> .panel-body{
+	> .panel-body {
 		display: none;
-		&.active{
+		&.active {
 			display: block;
 		}
 	}
 }
-.panel>table.panel-body{
+
+.panel > table.panel-body {
 	width: 100%;
 }
 
 .buitab-panel-variant(@border, @heading-text-color, @heading-bg-color, @heading-border) {
 	.panel-heading {
-		> *{
+		> h1, > h2, > h3, > h4, > h5,
+		> div,
+		> span, > button, > .btn,
+		.tab
+		> li, > dt, > dd {
 			border-top: 1px solid @heading-border;
 			border-left: 1px solid @heading-border;
 			border-right: 1px solid @heading-border;
 			border-bottom: none;
-			color:  darken(@heading-bg-color, 50%);
+			color: darken(@heading-bg-color, 50%);
 			background-color: lighten(@heading-text-color, 70%);
 			&:hover,
 			&:focus,
 			&:active,
-			&.active{
-				color:  @heading-text-color;
+			&.active {
+				color: @heading-text-color;
 				background-color: @heading-bg-color;
 			}
 		}
@@ -80,6 +85,9 @@
 		border-right: 1px solid @border;
 		border-top: 1px solid @heading-border;
 		border-top-right-radius: @panel-border-radius;
+		&:last-child {
+			border-bottom: 1px solid @border;
+		}
 	}
 	& > .panel-footer {
 		border-left: 1px solid @border;
