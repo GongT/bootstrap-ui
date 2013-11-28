@@ -1349,15 +1349,18 @@ $(document).on('shown.bs.tab', function (e){
 		option = $.extend({
 			dataType          : 'json',
 			autoUpload        : false,
-			acceptFileTypes   : /(\.|\/)(gif|jpe?g|png)$/i,
-			maxFileSize       : 5000000, // 5 MB
+			acceptFileTypes   : /\.(gif|jpe?g|png)$/i,
+			maxFileSize       : 3000000, // 3 MB
 			disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
 			previewMaxWidth   : 100,
 			previewMaxHeight  : 100,
-			maxChunkSize      : 4000000, // 10 MB
-			multipart         : false,
+			maxChunkSize      : undefined,
+			multipart         : true,
 			previewCrop       : true,
-			current           : null
+			current           : null,
+			formData          : function (){
+				return [];
+			}
 		}, option);
 
 		var $container = (new $bui.FormControl()).appendTo(this);
@@ -1408,6 +1411,8 @@ $(document).on('shown.bs.tab', function (e){
 						return;
 					}
 					upload_instance.submit();
+					upload_instance.jqXHR.url = upload_instance.url;
+					LogStandardReturn(upload_instance.jqXHR, '单个图片文件上传');
 					state_upload();
 				});
 		var clearUpload = (new $bui.Button(new $bui.Icon('remove')))
@@ -1424,7 +1429,6 @@ $(document).on('shown.bs.tab', function (e){
 		$container.append(clearUpload);
 
 		$input.fileupload(option).on('fileuploadadd',function (e, data){
-			console.log('add', data);
 			state_ready();
 		}).on('fileuploadprocessalways',function (e, data){
 					upload_instance = data;
@@ -1447,11 +1451,10 @@ $(document).on('shown.bs.tab', function (e){
 					var pers = parseInt(data.loaded*1000/data.total, 10)/10;
 					progress.attr('progress', pers);
 				}).on('fileuploaddone',function (e, data){
-					var file = data.result.files[0];
-					if(file.url){
-						$this.val(file.url);
+					if(data.result && data.result.success){
+						$this.val(data.result.url);
 						current_preview.popover('show');
-					} else if(file.error){
+					} else{
 						$this.val(option.current);
 						preview_content = '上传失败';
 						preview.popover('show');
