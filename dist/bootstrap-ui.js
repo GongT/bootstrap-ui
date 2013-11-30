@@ -957,7 +957,7 @@ function mouse_button(expect, fn){
 		});
 
 		// 滚轮调整
-		$this.on('mousewheel', function (e, delta){
+		$this.on('mousewheel', 'input:focus',function (e, delta){
 			$this.pressed = 1000;
 			go.dir = delta;
 			go();
