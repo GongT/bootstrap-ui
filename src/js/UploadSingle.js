@@ -70,15 +70,10 @@
 		});
 
 		var upload_instance = {};
+		var upload_disabled = true;
 		var uploadStart = (new $bui.Button(new $bui.Icon('cloud-upload')))
 				.click(function (){
-					if($(this).hasClass('disabled')){
-						return;
-					}
-					upload_instance.submit();
-					upload_instance.jqXHR.url = upload_instance.url;
-					LogStandardReturn(upload_instance.jqXHR, '单个图片文件上传');
-					state_upload();
+					doUpload();
 				});
 		var clearUpload = (new $bui.Button(new $bui.Icon('remove')))
 				.click(function (){
@@ -132,11 +127,26 @@
 				});
 
 		var state = 0;
+		this.doUpload = doUpload;
+		this.getInstance = function (){
+			return upload_instance;
+		};
 		state_empty();
+
+		function doUpload(debug){
+			if(upload_disabled){
+				return;
+			}
+			upload_instance.submit();
+			upload_instance.jqXHR.url = upload_instance.url;
+			LogStandardReturn(upload_instance.jqXHR, debug? debug : '单个图片文件上传');
+			state_upload();
+		}
 
 		function state_empty(){
 			preview.popover('hide');
 			uploadStart.addClass('disabled');
+			upload_disabled = true;
 			clearUpload.addClass('disabled');
 			$input.val('').removeAttr('disabled');
 			progress.attr('progress', 0);
@@ -145,6 +155,7 @@
 
 		function state_ready(){
 			uploadStart.removeClass('disabled');
+			upload_disabled = false;
 			clearUpload.removeClass('disabled');
 			$input.attr('disabled', 'disabled');
 			state = 1;
@@ -154,6 +165,7 @@
 			preview_content = null;
 			preview.popover('hide');
 			uploadStart.addClass('disabled');
+			upload_disabled = true;
 			clearUpload.removeClass('disabled');
 			$input.attr('disabled', 'disabled');
 			state = 2;
