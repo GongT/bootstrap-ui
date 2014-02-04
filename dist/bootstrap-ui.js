@@ -223,7 +223,6 @@ function modify_jquery($obj){
 }
 
 module.exports[module.name] = $bui;
-
 (function ($bui){
 	var Button = $bui.Button = plugin('Button', construct);
 
@@ -432,7 +431,7 @@ module.exports[module.name] = $bui;
 		return size;
 	});
 
-	gravatar.default = 'identicon';
+	gravatar['default'] = 'identicon';
 
 	function buildUrl(data){
 		var ret = 'http://www.gravatar.com/avatar/';
@@ -445,7 +444,7 @@ module.exports[module.name] = $bui;
 			ret += '&r=' + data.rating;
 		}
 
-		var def = data.default || gravatar.default;
+		var def = data['default'] || gravatar['default'];
 		if(/^https?:\/\//i.test(def)){
 			ret += '&d=' + encodeURIComponent(def);
 		} else if(/[0-9a-z]{32}/i.test(def)){

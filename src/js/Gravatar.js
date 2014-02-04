@@ -11,7 +11,7 @@
 		return size;
 	});
 
-	gravatar.default = 'identicon';
+	gravatar['default'] = 'identicon';
 
 	function buildUrl(data){
 		var ret = 'http://www.gravatar.com/avatar/';
@@ -24,7 +24,7 @@
 			ret += '&r=' + data.rating;
 		}
 
-		var def = data.default || gravatar.default;
+		var def = data['default'] || gravatar['default'];
 		if(/^https?:\/\//i.test(def)){
 			ret += '&d=' + encodeURIComponent(def);
 		} else if(/[0-9a-z]{32}/i.test(def)){

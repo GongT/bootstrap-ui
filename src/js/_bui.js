@@ -210,4 +210,3 @@ function modify_jquery($obj){
 }
 
 module.exports[module.name] = $bui;
-
