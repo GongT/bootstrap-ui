@@ -1379,25 +1379,40 @@ $(document).on('shown.bs.tab', function (e){
 		$container.append(progress);
 
 		var current_preview = $('<span/>').append(new $bui.Icon('eye-open'));
+		var $preview_holder_current = $('<div><img width="100" height="100"/><div style="width:100px;height:100px;text-align:center;">无</div></div>');
 		$container.prepend(current_preview);
 		current_preview.popover({
 			html     : true,
 			title    : '当前图片',
 			content  : function (){
-				return current
-						? '<img src="' + current + '" width="100" height="100"/>'
-						: '<div style="width:100px;height:100px;text-align:center;">无</div>';
+				$preview_holder_current.find('img').attr('src', current);
+				if(current){
+					$preview_holder_current.find('img').show();
+					$preview_holder_current.find('div').hide();
+				} else{
+					$preview_holder_current.find('img').hide();
+					$preview_holder_current.find('div').show();
+				}
+				return $preview_holder_current;
 			},
 			placement: 'auto',
 			trigger  : 'hover'
 		});
 
 		var preview_content = '';
+		var $preview_holder_select = $('<div><div style="width:100px;height:100px;text-align:center;">没有选中</div></div>');
 		var preview = $input.parent().popover({
 			html     : true,
 			title    : '选中的图像',
 			content  : function (){
-				return preview_content? preview_content : '没有选中';
+				$preview_holder_select.find('canvas').remove();
+				if(preview_content){
+					$preview_holder_select.append(preview_content);
+					$preview_holder_select.find('div').hide();
+				} else{
+					$preview_holder_select.find('div').show();
+				}
+				return $preview_holder_select;
 			},
 			placement: 'auto bottom',
 			trigger  : 'manual hover'
@@ -1482,7 +1497,7 @@ $(document).on('shown.bs.tab', function (e){
 			uploadStart.addClass('disabled');
 			upload_disabled = true;
 			clearUpload.addClass('disabled');
-			$input.val('').removeAttr('disabled');
+			$input.val('');//.removeAttr('disabled');
 			progress.attr('progress', 0);
 			state = 0;
 		}
@@ -1491,7 +1506,7 @@ $(document).on('shown.bs.tab', function (e){
 			uploadStart.removeClass('disabled');
 			upload_disabled = false;
 			clearUpload.removeClass('disabled');
-			$input.attr('disabled', 'disabled');
+			//$input.attr('disabled', 'disabled');
 			state = 1;
 		}
 
@@ -1501,7 +1516,7 @@ $(document).on('shown.bs.tab', function (e){
 			uploadStart.addClass('disabled');
 			upload_disabled = true;
 			clearUpload.removeClass('disabled');
-			$input.attr('disabled', 'disabled');
+			//$input.attr('disabled', 'disabled');
 			state = 2;
 		}
 	}
