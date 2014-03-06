@@ -41,7 +41,8 @@
 		};
 		var $input = $container.centerWidget($('<input/>').attr('type', 'file'));
 		var progress = new $bui.Progress();
-		progress.addClass('progress-striped active').css({'width': '200px'});
+		progress.getBar().attr({progress: 0, striped: true, active: true});
+		progress.css({'width': '200px'});
 		$container.append(progress);
 
 		var current_preview = $('<span/>').append(new $bui.Icon('eye-open'));
@@ -86,7 +87,7 @@
 
 		var upload_instance = {};
 		var upload_disabled = true;
-		var uploadStart = (new $bui.Button(new $bui.Icon('cloud-upload')))
+		var uploadStart = (new $bui.Button(new $bui.Icon('cloud-upload'), null, 'primary'))
 				.click(function (){
 					doUpload();
 				});
