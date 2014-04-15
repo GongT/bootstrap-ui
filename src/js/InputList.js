@@ -29,24 +29,33 @@
 		return $(list);
 	}
 
+	function stopPropagation(e){
+		e.stopPropagation();
+	}
+
 	function construct(){
 		var $this = this;
 		var value = [];
 		var titleMap = {};
 		var $list = $('<ul class="list"/>').appendTo(this);
 		var control = (new $bui.FormControl()).appendTo($('<div class="control"/>').appendTo(this));
-		var $center = control.centerWidget($('<input/>').attr('type', 'text'));
+		var $center;
 		var addBtn = new $bui.Button(new $bui.Icon('plus'));
 		this.$list = $list;
 		control.append(addBtn);
 
-		$center.on('keydown', handler);
 		this.centerWidget = function (newinput){
-			$center.off('keydown', handler);
+			if($center){
+				$center.off('keydown', handler);
+				$center.off('change', stopPropagation);
+			}
 			$center = control.centerWidget(newinput);
-			newinput.attr('name', '');
-			newinput.on('keydown', handler);
+			$center.attr('name', '');
+			$center.on('keydown', handler);
+			$center.on('change', stopPropagation);
 		};
+		this.centerWidget($('<input/>').attr('type', 'text'));
+		
 		this.on('click', '.bui-delete', function (e){
 			var v = $(this).prev().val();
 			var i = value.indexOf(v);
@@ -55,6 +64,7 @@
 			}
 			$(this).parent().remove();
 			e.preventDefault();
+			trigger_change($this, value);
 		});
 
 		function handler(event){

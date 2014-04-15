@@ -760,24 +760,33 @@ function mouse_button(expect, fn){
 		return $(list);
 	}
 
+	function stopPropagation(e){
+		e.stopPropagation();
+	}
+
 	function construct(){
 		var $this = this;
 		var value = [];
 		var titleMap = {};
 		var $list = $('<ul class="list"/>').appendTo(this);
 		var control = (new $bui.FormControl()).appendTo($('<div class="control"/>').appendTo(this));
-		var $center = control.centerWidget($('<input/>').attr('type', 'text'));
+		var $center;
 		var addBtn = new $bui.Button(new $bui.Icon('plus'));
 		this.$list = $list;
 		control.append(addBtn);
 
-		$center.on('keydown', handler);
 		this.centerWidget = function (newinput){
-			$center.off('keydown', handler);
+			if($center){
+				$center.off('keydown', handler);
+				$center.off('change', stopPropagation);
+			}
 			$center = control.centerWidget(newinput);
-			newinput.attr('name', '');
-			newinput.on('keydown', handler);
+			$center.attr('name', '');
+			$center.on('keydown', handler);
+			$center.on('change', stopPropagation);
 		};
+		this.centerWidget($('<input/>').attr('type', 'text'));
+		
 		this.on('click', '.bui-delete', function (e){
 			var v = $(this).prev().val();
 			var i = value.indexOf(v);
@@ -786,6 +795,7 @@ function mouse_button(expect, fn){
 			}
 			$(this).parent().remove();
 			e.preventDefault();
+			trigger_change($this, value);
 		});
 
 		function handler(event){
@@ -1491,43 +1501,47 @@ $(document).on('shown.bs.tab', function (e){
 		$container.append(uploadStart);
 		$container.append(clearUpload);
 
-		$input.fileupload(option).on('fileuploadadd',function (e, data){
+		$input.fileupload(option).on('fileuploadadd', function (e, data){
 			state_ready();
-		}).on('fileuploadprocessalways',function (e, data){
-					upload_instance = data;
-					var index = data.index;
-					var file = data.files[index];
-					if(!file){
-						return state_empty();
-					}
-					if(file.preview){
-						preview_content = file.preview;
-						preview.popover('show');
-					}
-					if(file.error){
-						preview_content = '上传失败';
-						preview.popover('show');
-					} else{
-						state_ready();
-					}
-				}).on('fileuploadprogressall',function (e, data){
-					var pers = parseInt(data.loaded*1000/data.total, 10)/10;
-					progress.attr('progress', pers);
-				}).on('fileuploaddone',function (e, data){
-					if(data.result && data.result.success){
-						$this.val(data.result.url);
-						current_preview.popover('show');
-					} else{
-						$this.val(option.current);
-						preview_content = '上传失败';
-						preview.popover('show');
-					}
-					state_empty();
-				}).on('fileuploadfail', function (e, data){
-					preview_content = '发生网络错误，上传失败，请重试。';
+		}).on('fileuploadprocessalways', function (e, data){
+			upload_instance = data;
+			var index = data.index;
+			var file = data.files[index];
+			if(!file){
+				return state_empty();
+			}
+			if(file.preview){
+				preview_content = file.preview;
+				preview.popover('show');
+			}
+			if(file.error){
+				preview_content = '上传失败';
+				preview.popover('show');
+			} else{
+				state_ready();
+			}
+		}).on('fileuploadprogressall', function (e, data){
+			var pers = parseInt(data.loaded*1000/data.total, 10)/10;
+			progress.attr('progress', pers);
+		}).on('fileuploaddone', function (e, data){
+			var eve = new $.Event('upload_result');
+			$this.trigger(eve, [data.result]);
+			if(eve.isDefaultPrevented()){
+				$this.val(option.current);
+				if(!eve.isPropagationStopped()){
+					preview_content = '上传失败';
 					preview.popover('show');
-					state_empty();
-				});
+				}
+			} else{
+				$this.val(data.result.url);
+				current_preview.popover('show');
+			}
+			state_empty();
+		}).on('fileuploadfail', function (e, data){
+			preview_content = '发生网络错误，上传失败，请重试。';
+			preview.popover('show');
+			state_empty();
+		});
 
 		var state = 0;
 		this.doUpload = doUpload;
